@@ -4,8 +4,8 @@ AC_CONFIG_SRCDIR([awf.c])
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
-AC_PROG_INSTALL
 AM_PROG_CC_C_O
+AC_PROG_INSTALL
 
 AC_ARG_WITH([gtk3], AS_HELP_STRING([--with-gtk3], [Build with gtk3 instead of gtk2.]))
 AS_IF([test "x$with_gtk3" = "xyes"],
