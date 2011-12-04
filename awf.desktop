@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=awf
+Name=A widget factory
 Comment=A widget factory - a theme preview application for gtk2 and gtk3
 Exec=awf-gtk2
 Terminal=false
