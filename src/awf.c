@@ -131,10 +131,10 @@ int main (int argc, char **argv)
 	gtk_container_add (GTK_CONTAINER (window), vbox_window);
 
 	menubar = create_menu (window);
-	gtk_container_add (GTK_CONTAINER (vbox_window), menubar);
+	gtk_box_pack_start (GTK_BOX (vbox_window), menubar, FALSE, FALSE, 0);
 
-	toolbar = gtk_toolbar_new();
-	gtk_container_add (GTK_CONTAINER (vbox_window), toolbar);
+	toolbar = gtk_toolbar_new ();
+	gtk_box_pack_start (GTK_BOX (vbox_window), toolbar, FALSE, FALSE, 0);
 
 	vbox_widget = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (vbox_window), vbox_widget);
