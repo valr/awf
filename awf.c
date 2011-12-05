@@ -297,7 +297,7 @@ int main (int argc, char **argv)
 	/* toolbar */
 
 	refresh = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_REFRESH));
-	awf = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_EXECUTE));
+	awf = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_PREFERENCES));
 	icon1 = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_GOTO_FIRST));
 	icon2 = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_GOTO_LAST));
 	toggle = GTK_WIDGET (gtk_toggle_tool_button_new_from_stock (GTK_STOCK_ADD));
@@ -313,8 +313,8 @@ int main (int argc, char **argv)
 	g_signal_connect (G_OBJECT(refresh), "clicked", G_CALLBACK (refresh_theme), NULL);
 	g_signal_connect (G_OBJECT(awf), "clicked", G_CALLBACK (run_awf), NULL);
 
-	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), GTK_TOOL_ITEM (refresh), -1);
 	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), GTK_TOOL_ITEM (awf), -1);
+	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), GTK_TOOL_ITEM (refresh), -1);
 	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), gtk_separator_tool_item_new (), -1);
 	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), GTK_TOOL_ITEM (icon1), -1);
 	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), GTK_TOOL_ITEM (icon2), -1);
