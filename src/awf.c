@@ -39,82 +39,8 @@
  * - gtk3: GtkOptionMenu doesn't exist anymore. GtkSwitch exists.
  */
 
+#include "gtk_empty.h"
 #include <gtk/gtk.h>
-
-/**********************************
- * Empty custom widget definition *
- **********************************/
-
-typedef struct _GtkEmpty		GtkEmpty;
-typedef struct _GtkEmptyClass	GtkEmptyClass;
-
-struct _GtkEmpty
-{
-	GtkDrawingArea parent;
-};
-
-struct _GtkEmptyClass
-{
-	GtkDrawingAreaClass parent_class;
-};
-
-G_DEFINE_TYPE (GtkEmpty, gtk_empty, GTK_TYPE_DRAWING_AREA);
-
-#define GTK_TYPE_EMPTY			(gtk_empty_get_type ())
-#define GTK_EMPTY(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_EMPTY, GtkEmpty))
-#define GTK_EMPTY_CLASS(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), GTK_EMPTY,  GtkEmptyClass))
-#define GTK_IS_EMPTY(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_EMPTY))
-#define GTK_IS_EMPTY_CLASS(obj)	(G_TYPE_CHECK_CLASS_TYPE ((obj), GTK_TYPE_EMPTY))
-#define GTK_EMPTY_GET_CLASS		(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_EMPTY, GtkEmptyClass))
-
-#if GTK_CHECK_VERSION(3,0,0)
-static void
-gtk_empty_get_preferred_width (GtkWidget *widget, gint *minimal_width, gint *natural_width)
-{
-	*minimal_width = *natural_width = 10;
-}
-
-static void
-gtk_empty_get_preferred_height (GtkWidget *widget, gint *minimal_height, gint *natural_height)
-{
-	*minimal_height = *natural_height = 10;
-}
-#else
-static void
-gtk_empty_size_request (GtkWidget *widget, GtkRequisition *requisition)
-{
-	requisition->width = 10;
-	requisition->height = 10;
-}
-#endif
-
-static void
-gtk_empty_class_init (GtkEmptyClass *class)
-{
-	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (class);
-
-#if GTK_CHECK_VERSION(3,0,0)
-	widget_class->get_preferred_width = gtk_empty_get_preferred_width;
-	widget_class->get_preferred_height = gtk_empty_get_preferred_height;
-#else
-	widget_class->size_request = gtk_empty_size_request;
-#endif
-}
-
-static void
-gtk_empty_init (GtkEmpty *empty)
-{
-}
-
-static GtkWidget*
-gtk_empty_new (void)
-{
-	return g_object_new (GTK_TYPE_EMPTY, NULL);
-}
-
-/*******************************
- * A widget factory definition *
- *******************************/
 
 /* main widget */
 

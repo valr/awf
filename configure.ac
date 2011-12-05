@@ -1,5 +1,5 @@
-AC_INIT([A widget factory], [1.0.0])
-AC_CONFIG_SRCDIR([awf.c])
+AC_INIT([A widget factory], [1.0.1])
+AC_CONFIG_SRCDIR([src/awf.c])
 
 AM_INIT_AUTOMAKE
 
@@ -20,6 +20,7 @@ AC_SUBST(GTK_SUFFIX)
 
 AC_CONFIG_FILES([
 Makefile
-]) 
+src/Makefile
+])
 
 AC_OUTPUT
