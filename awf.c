@@ -814,6 +814,11 @@ refresh_theme (GtkWidget *widget, gpointer item)
 
 	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &theme, NULL);
 	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", 
+									 "Raleigh", "gtkrc:0");
+
+	g_usleep (G_USEC_PER_SEC);
+
+	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", 
 									 (const gchar*)theme, "gtkrc:0");
 }
 
