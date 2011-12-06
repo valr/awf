@@ -13,20 +13,4 @@ A theme preview application for gtk2 and gtk3.
 It displays the various widget types provided by gtk2/gtk3 in a single window
 allowing to see the final visual effect of the applied theme.
 
-
-
-Features:
-
- - Display widget types available in gtk2/gtk3.
-
-   Remark: Option menu widget type only exists in gtk2.
-           Switch widget type only exists in gtk3.
-
- - Menus to select the available themes either at system level or user level.
-
- - Toolbar button to start the other gtk version of the tool.
-
- - Toolbar button to refresh the current theme.
-
-   Remark: To allow gtk to refresh the theme, I had to temporarily switch 
-           to another theme (Raleigh).
+Website: http://dobedo.github.com/awf
