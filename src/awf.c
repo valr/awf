@@ -48,6 +48,7 @@ GtkWidget *window;
 
 /* menu and toolbar */
 
+static void set_title (void);
 static GtkWidget* create_menu (GtkWidget *window);
 static void add_theme (gchar *directory_name, GtkWidget *menu);
 static void set_theme (gpointer theme, guint callback_action, GtkWidget *widget);
@@ -120,11 +121,7 @@ int main (int argc, char **argv)
 	/* window */
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-#if GTK_CHECK_VERSION(3,0,0)
-	gtk_window_set_title (GTK_WINDOW (window), "A widget factory - gtk3");
-#else
-	gtk_window_set_title (GTK_WINDOW (window), "A widget factory - gtk2");
-#endif
+	set_title ();
 	g_signal_connect (G_OBJECT (window), "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
 	vbox_window = gtk_vbox_new (FALSE, 0);
@@ -581,6 +578,26 @@ int main (int argc, char **argv)
     return 0;
 }
 
+static void
+set_title (void)
+{
+	gchar *title, *theme;
+
+	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &theme, NULL);
+
+	title = g_strjoin (" - ", "A widget factory", theme, 
+#if GTK_CHECK_VERSION(3,0,0)
+			   "gtk3", NULL);
+#else
+			   "gtk2", NULL);
+#endif
+
+	gtk_window_set_title (GTK_WINDOW (window), title);
+
+	g_free (title);
+	g_free (theme);
+}
+
 static GtkWidget*
 create_menu (GtkWidget *window)
 {
@@ -731,6 +748,8 @@ set_theme (gpointer theme, guint callback_action, GtkWidget *widget)
 {
 	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", 
 									 (const gchar*)theme, "gtkrc:0");
+
+	set_title ();
 }
 
 static void
@@ -739,6 +758,7 @@ refresh_theme (GtkWidget *widget, gpointer item)
 	gchar *theme;
 
 	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &theme, NULL);
+
 	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", 
 									 "Raleigh", "gtkrc:0");
 
@@ -746,6 +766,8 @@ refresh_theme (GtkWidget *widget, gpointer item)
 
 	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", 
 									 (const gchar*)theme, "gtkrc:0");
+
+	g_free (theme);
 }
 
 static void
