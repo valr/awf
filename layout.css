@@ -2,12 +2,11 @@
 /* CSS Document */
 
 body {
-	font-family: Verdana, Geneva, sans-serif;
+	font-family: "Courier New";
 	text-align:center;
 	padding:0px;
 	margin:0px;
 }
-
 #container{
 	text-align:left;
 	width:800px;
@@ -16,6 +15,7 @@ body {
 	margin:auto;
 }
 #nav{
+	font-family: "Comic Sans MS";
 	background-color:#EFF2FB;
 	height:30px;
 }
@@ -38,12 +38,13 @@ body {
 	border-bottom-color: #CCC;
 }
 .projectShowCase{
+	margin-top:5px;
 	margin-left:10px;
 	float:left;
 }
 .prjectDescription{
+	margin-top:5px;
 	width:280px;
-	margin-top:20px;
 	padding-left:20px;
 	float:right;
 	border-left-width: thin;
@@ -95,6 +96,7 @@ body {
 }
 .floatright{
 	color:#666;
+	margin-top:10px;
 	float:left;
 	margin-left:10px;
 }
