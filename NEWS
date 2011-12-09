@@ -1,8 +1,4 @@
-2011-12-05 : version 1.0.1
+2011-12-09 : version 1.0.2
 
-fixed bug in refresh theme (didn't work at all)
-icon set in desktop file and changed in toolbar
-gtk version added in application title
-GTK_SUFFIX removed from CPP_FLAGS
-src directory created
-awf.c splitted into awf.c and gtk_empty.c,.h
+fixed bug in gtk3 toolbar (missing primary-toolbar style)
+use list when loading available themes
