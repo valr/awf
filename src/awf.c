@@ -137,6 +137,9 @@ int main (int argc, char **argv)
 	gtk_box_pack_start (GTK_BOX (vbox_window), menubar, FALSE, FALSE, 0);
 
 	toolbar = gtk_toolbar_new ();
+#if GTK_CHECK_VERSION(3,0,0)
+    gtk_style_context_add_class (gtk_widget_get_style_context (toolbar), "primary-toolbar");
+#endif
 	gtk_box_pack_start (GTK_BOX (vbox_window), toolbar, FALSE, FALSE, 0);
 
 	vbox_widget = gtk_vbox_new (FALSE, 0);
