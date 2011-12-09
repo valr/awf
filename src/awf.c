@@ -50,7 +50,8 @@ GtkWidget *window;
 
 static void set_title (void);
 static GtkWidget* create_menu (GtkWidget *window);
-static void add_theme (gchar *directory_name, GtkWidget *menu);
+static GSList* load_theme (gchar *directory_name);
+static void add_menu_item (gpointer theme_name, gpointer menu);
 static void set_theme (gpointer theme, guint callback_action, GtkWidget *widget);
 static void refresh_theme (GtkWidget *widget, gpointer item);
 static void run_awf (GtkWidget *widget, gpointer item);
@@ -74,6 +75,11 @@ enum
 	COLUMN2,
 	NUM_COLS
 } ;
+
+/* list of available themes */
+
+static GSList *list_system_theme = NULL;
+static GSList *list_user_theme = NULL;
 
 /* run baby, run! */
 
@@ -671,13 +677,17 @@ create_menu (GtkWidget *window)
 
 			case 2:
 				directory = g_strdup ("/usr/share/themes");
-				add_theme (directory, menu);
+				list_system_theme = load_theme (directory);
+				list_system_theme = g_slist_reverse (list_system_theme);
+		        g_slist_foreach (list_system_theme, add_menu_item, menu);
 				g_free (directory);
 				break;
 
 			case 3:
 		        directory = g_build_path ("/", g_getenv ("HOME"), ".themes", NULL);
-				add_theme (directory, menu);
+				list_user_theme = load_theme (directory);
+				list_user_theme = g_slist_reverse (list_user_theme);
+		        g_slist_foreach (list_user_theme, add_menu_item, menu);
 				g_free (directory);
 				break;
 
@@ -692,9 +702,11 @@ create_menu (GtkWidget *window)
 	return menubar;
 }
 
-static void add_theme (gchar *directory_name, GtkWidget *menu)
+static GSList* load_theme (gchar *directory_name)
 {
-    g_return_if_fail (directory_name != NULL);
+	GSList *list_theme = NULL;
+
+    g_return_val_if_fail(directory_name != NULL, NULL);
 
 	if (g_file_test (directory_name, G_FILE_TEST_EXISTS))
 	{
@@ -702,7 +714,7 @@ static void add_theme (gchar *directory_name, GtkWidget *menu)
 		GDir *directory = g_dir_open (directory_name, 0, &error);
 
 		if (directory) {
-			const gchar *theme_name = g_strdup (g_dir_read_name (directory));
+			gchar *theme_name = g_strdup (g_dir_read_name (directory));
 
 			while (theme_name) {
 				gchar *theme_path_name = g_build_path ("/", directory_name, theme_name, NULL);
@@ -713,14 +725,8 @@ static void add_theme (gchar *directory_name, GtkWidget *menu)
 #else
 					gchar *theme_subpath_name = g_build_path ("/", theme_path_name, "gtk-2.0", NULL);
 #endif
-					if (g_file_test (theme_subpath_name, G_FILE_TEST_IS_DIR)) {
-						GtkWidget *menuitem = gtk_menu_item_new_with_mnemonic (theme_name);
-						gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
-						gtk_widget_show (menuitem);
-
-						g_signal_connect_swapped (G_OBJECT(menuitem), "activate",
-												  G_CALLBACK(set_theme), (gpointer)theme_name);
-					}
+					if (g_file_test (theme_subpath_name, G_FILE_TEST_IS_DIR))
+						list_theme = g_slist_prepend (list_theme, theme_name);
 
 					g_free (theme_subpath_name);
 				}
@@ -741,6 +747,19 @@ static void add_theme (gchar *directory_name, GtkWidget *menu)
 			g_error_free (error); error = NULL;
 		}
 	}
+
+	return list_theme;
+}
+
+static void add_menu_item (gpointer theme_name, gpointer menu)
+{
+	GtkWidget *menuitem = gtk_menu_item_new_with_mnemonic ((const gchar*)theme_name);
+
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+	gtk_widget_show (menuitem);
+
+	g_signal_connect_swapped (G_OBJECT(menuitem), "activate",
+							  G_CALLBACK(set_theme), theme_name);
 }
 
 static void
