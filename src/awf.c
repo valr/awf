@@ -596,9 +596,9 @@ set_title (void)
 
 	title = g_strjoin (" - ", "A widget factory", theme, 
 #if GTK_CHECK_VERSION(3,0,0)
-			   "gtk3", NULL);
+			   "Gtk3", NULL);
 #else
-			   "gtk2", NULL);
+			   "Gtk2", NULL);
 #endif
 
 	gtk_window_set_title (GTK_WINDOW (window), title);
