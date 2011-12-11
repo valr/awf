@@ -51,6 +51,8 @@ GtkWidget *window;
 static void set_title (void);
 static GtkWidget* create_menu (GtkWidget *window);
 static GSList* load_theme (gchar *directory_name);
+static gint find_theme (gconstpointer theme_a, gconstpointer theme_b);
+static void exclude_system_theme (gpointer user_theme, gpointer unused);
 static void add_menu_item (gpointer theme_name, gpointer menu);
 static void set_theme (gpointer theme, guint callback_action, GtkWidget *widget);
 static void refresh_theme (GtkWidget *widget, gpointer item);
@@ -629,14 +631,14 @@ create_menu (GtkWidget *window)
 		void (*callback)(gpointer, guint, GtkWidget*);
 	} info[9] = {
 	{ 0, "_System theme", "<Control>s", NULL             , NULL             },
-	{ 2, ""             , ""          , NULL             , NULL             },
+	{ 1, ""             , ""          , NULL             , NULL             },
 	{ 0, "_User theme"  , "<Control>u", NULL             , NULL             },
-	{ 3, ""             , ""          , NULL             , NULL             },
+	{ 2, ""             , ""          , NULL             , NULL             },
 	{ 0, "_Test menu"   , "<Control>t", NULL             , NULL             },
-	{ 1, "_Item1"       , "<Control>i", GTK_STOCK_OPEN   , NULL             },
-	{ 1, "Item2"        , ""          , GTK_STOCK_SAVE   , NULL             },
+	{ 3, "_Item1"       , "<Control>i", GTK_STOCK_OPEN   , NULL             },
+	{ 3, "Item2"        , ""          , GTK_STOCK_SAVE   , NULL             },
 	{ 4, ""             , ""          , NULL             , NULL             },
-	{ 1, "Item3"        , ""          , NULL             , NULL             }};
+	{ 3, "Item3"        , ""          , NULL             , NULL             }};
 
 	ag = gtk_accel_group_new ();
 	gtk_window_add_accel_group (GTK_WINDOW (window), ag);
@@ -657,6 +659,25 @@ create_menu (GtkWidget *window)
 				break;
 
 			case 1:
+				directory = g_strdup ("/usr/share/themes");
+				list_system_theme = load_theme (directory);
+				list_system_theme = g_slist_reverse (list_system_theme);
+				g_free (directory);
+
+		        directory = g_build_path ("/", g_getenv ("HOME"), ".themes", NULL);
+				list_user_theme = load_theme (directory);
+				list_user_theme = g_slist_reverse (list_user_theme);
+				g_free (directory);
+
+		        g_slist_foreach (list_user_theme, exclude_system_theme, NULL);
+		        g_slist_foreach (list_system_theme, add_menu_item, menu);
+				break;
+
+			case 2:
+		        g_slist_foreach (list_user_theme, add_menu_item, menu);
+				break;
+
+			case 3:
 				if (info[i].image) {
 					menuitem = gtk_image_menu_item_new_with_mnemonic (info[i].mnemonic);
 					menuimage = gtk_image_new_from_stock (info[i].image, GTK_ICON_SIZE_MENU);
@@ -676,22 +697,6 @@ create_menu (GtkWidget *window)
 				if (info[i].callback)
 					g_signal_connect_swapped (G_OBJECT(menuitem), "activate",
 										G_CALLBACK(info[i].callback), window);
-				break;
-
-			case 2:
-				directory = g_strdup ("/usr/share/themes");
-				list_system_theme = load_theme (directory);
-				list_system_theme = g_slist_reverse (list_system_theme);
-		        g_slist_foreach (list_system_theme, add_menu_item, menu);
-				g_free (directory);
-				break;
-
-			case 3:
-		        directory = g_build_path ("/", g_getenv ("HOME"), ".themes", NULL);
-				list_user_theme = load_theme (directory);
-				list_user_theme = g_slist_reverse (list_user_theme);
-		        g_slist_foreach (list_user_theme, add_menu_item, menu);
-				g_free (directory);
 				break;
 
 			case 4:
@@ -763,6 +768,23 @@ static void add_menu_item (gpointer theme_name, gpointer menu)
 
 	g_signal_connect_swapped (G_OBJECT(menuitem), "activate",
 							  G_CALLBACK(set_theme), theme_name);
+}
+
+static void exclude_system_theme (gpointer user_theme, gpointer unused)
+{
+	GSList *theme = g_slist_find_custom (list_system_theme,
+									     (GSList*)user_theme,
+										 &find_theme);
+
+	if (theme) {
+		g_free (theme->data);
+		list_system_theme = g_slist_delete_link (list_system_theme, theme);
+	}
+}
+
+static gint find_theme (gconstpointer theme_a, gconstpointer theme_b)
+{
+    return g_strcmp0 ((gchar*)theme_a, (gchar*)theme_b);
 }
 
 static void
