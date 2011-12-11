@@ -87,6 +87,7 @@ static GSList *list_user_theme = NULL;
 
 int main (int argc, char **argv)
 {
+	gchar *directory;
 	GtkWidget *menubar, *toolbar;
 	GtkWidget *vbox_window, *vbox_widget;
 	GtkWidget *vbox_label_treeview, *vbox_other_button, *vbox_progressbar_scale;
@@ -125,6 +126,20 @@ int main (int argc, char **argv)
 	GtkTreeIter iter;
 
     gtk_init (&argc, &argv);
+
+	/* load themes */
+
+	directory = g_strdup ("/usr/share/themes");
+	list_system_theme = load_theme (directory);
+	list_system_theme = g_slist_reverse (list_system_theme);
+	g_free (directory);
+
+	directory = g_build_path ("/", g_getenv ("HOME"), ".themes", NULL);
+	list_user_theme = load_theme (directory);
+	list_user_theme = g_slist_reverse (list_user_theme);
+	g_free (directory);
+
+	g_slist_foreach (list_user_theme, exclude_system_theme, NULL);
 
 	/* window */
 
@@ -581,6 +596,15 @@ int main (int argc, char **argv)
 
 	gtk_box_pack_start (GTK_BOX (vbox_window), gtk_statusbar_new (), FALSE, FALSE, 0);
 
+	/* set theme */
+
+	if (argc == 2)
+	{
+		if (g_slist_find_custom (list_system_theme, (gconstpointer)argv[1], &find_theme) ||
+		    g_slist_find_custom (list_user_theme, (gconstpointer)argv[1], &find_theme))
+			set_theme (argv[1], 0, NULL);
+	}
+
 	/* go! */
 
 	gtk_widget_show_all (window);
@@ -619,7 +643,6 @@ create_menu (GtkWidget *window)
 	GtkWidget *menuimage;
 	guint accelerator_key;
 	GdkModifierType accelerator_mods;
-	gchar *directory;
 	gint i;
 
 	struct _MenuInfo
@@ -659,17 +682,6 @@ create_menu (GtkWidget *window)
 				break;
 
 			case 1:
-				directory = g_strdup ("/usr/share/themes");
-				list_system_theme = load_theme (directory);
-				list_system_theme = g_slist_reverse (list_system_theme);
-				g_free (directory);
-
-		        directory = g_build_path ("/", g_getenv ("HOME"), ".themes", NULL);
-				list_user_theme = load_theme (directory);
-				list_user_theme = g_slist_reverse (list_user_theme);
-				g_free (directory);
-
-		        g_slist_foreach (list_user_theme, exclude_system_theme, NULL);
 		        g_slist_foreach (list_system_theme, add_menu_item, menu);
 				break;
 
@@ -722,7 +734,7 @@ static GSList* load_theme (gchar *directory_name)
 		GDir *directory = g_dir_open (directory_name, 0, &error);
 
 		if (directory) {
-			gchar *theme_name = g_strdup (g_dir_read_name (directory));
+			gchar *theme_name = g_strstrip (g_strdup (g_dir_read_name (directory)));
 
 			while (theme_name) {
 				gchar *theme_path_name = g_build_path ("/", directory_name, theme_name, NULL);
@@ -773,7 +785,7 @@ static void add_menu_item (gpointer theme_name, gpointer menu)
 static void exclude_system_theme (gpointer user_theme, gpointer unused)
 {
 	GSList *theme = g_slist_find_custom (list_system_theme,
-									     (GSList*)user_theme,
+									     (gconstpointer)user_theme,
 										 &find_theme);
 
 	if (theme) {
@@ -825,27 +837,34 @@ run_awf (GtkWidget *widget, gpointer item)
 {
     GError *error = NULL;
     gchar **argv; gint argp;
+	gchar *awf, *theme, *command;
     gchar *display;
 
 #if GTK_CHECK_VERSION(3,0,0)
-	gchar *awf = g_find_program_in_path ("awf-gtk2");
+	awf = g_find_program_in_path ("awf-gtk2");
 #else
-	gchar *awf = g_find_program_in_path ("awf-gtk3");
+	awf = g_find_program_in_path ("awf-gtk3");
 #endif
 
 	if (awf) {
-		g_shell_parse_argv (awf, &argp, &argv, &error);
+		g_object_get (gtk_settings_get_default (), "gtk-theme-name", &theme, NULL);
+
+		command = g_strjoin (" ", awf, theme, NULL);
+
+		g_shell_parse_argv (command, &argp, &argv, &error);
 
 		if (error) {
 			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (window),
 									GTK_DIALOG_DESTROY_WITH_PARENT,
 									GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
-									"Unable to parse command: %s (%s)", awf, error->message);
+									"Unable to parse command: %s (%s)", command, error->message);
 
 			gtk_dialog_run (GTK_DIALOG (dialog));
 			gtk_widget_destroy (dialog);
 
-			g_free (awf); 
+			g_free (command); 
+			g_free (theme);
+			g_free (awf);
 			g_error_free (error); error = NULL;
 			return;
 		}
@@ -860,7 +879,7 @@ run_awf (GtkWidget *widget, gpointer item)
 			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (window),
 									GTK_DIALOG_DESTROY_WITH_PARENT,
 									GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
-									"Unable to spawn command: %s (%s)", awf, error->message);
+									"Unable to spawn command: %s (%s)", command, error->message);
 
 			gtk_dialog_run (GTK_DIALOG (dialog));
 			gtk_widget_destroy (dialog);
@@ -870,6 +889,8 @@ run_awf (GtkWidget *widget, gpointer item)
 
 		g_free(display);
 		g_strfreev(argv);
+		g_free (command);
+		g_free (theme);
 		g_free (awf);
 	} else {
 		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (window),
