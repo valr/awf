@@ -31,9 +31,6 @@
  */
 
 /*
- * awf has been made in a couple of hours, so design and code is simple
- * and sometimes dirty.
- *
  * Widgets difference between gtk2 and gtk3:
  * - gtk2: GtkOptionMenu exists. GtkSwitch doesn't exist yet.
  * - gtk3: GtkOptionMenu doesn't exist anymore. GtkSwitch exists.
