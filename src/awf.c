@@ -18,7 +18,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with awf.  If not, see <http://www.gnu.org/licenses/>.
+ *  along with awf. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -39,37 +39,22 @@
  * - gtk3: GtkOptionMenu doesn't exist anymore. GtkSwitch exists.
  */
 
+/*
+ * includes
+ */
+
 #include "gtk_empty.h"
 #include <gtk/gtk.h>
 
-/* main widget */
-
-GtkWidget *window;
-
-/* menu and toolbar */
-
-static void set_title (void);
-static GtkWidget* create_menu (GtkWidget *window);
-static GSList* load_theme (gchar *directory_name);
-static gint find_theme (gconstpointer theme_a, gconstpointer theme_b);
-static void exclude_system_theme (gpointer user_theme, gpointer unused);
-static void add_menu_item (gpointer theme_name, gpointer menu);
-static void set_theme (gpointer theme, guint callback_action, GtkWidget *widget);
-static void refresh_theme (GtkWidget *widget, gpointer item);
-static void run_awf (GtkWidget *widget, gpointer item);
-
-/* scales and progressbars */
-
-GtkWidget *progressbar1, *progressbar2, *progressbar3, *progressbar4;
-GtkWidget *scale1, *scale2, *scale3, *scale4, *harmony;
-
-static void on_scale_value_changed (GtkRange *range, gpointer user_data);
-
-/* empty widget used as separator */
+/*
+ * defines
+ */
 
 #define EMPTY (gtk_empty_new ())
 
-/* enum for the treeview */
+/*
+ * enums
+ */
 
 enum
 {
@@ -78,12 +63,40 @@ enum
 	NUM_COLS
 } ;
 
-/* list of available themes */
+/*
+ * global local variables :)
+ */
 
 static GSList *list_system_theme = NULL;
 static GSList *list_user_theme = NULL;
 
-/* run baby, run! */
+static GtkWidget *window;
+static GtkWidget *progressbar1, *progressbar2, *progressbar3, *progressbar4;
+static GtkWidget *scale1, *scale2, *scale3, *scale4, *harmony;
+
+/*
+ * local functions
+ */
+
+static GSList* awf_load_theme (gchar *directory);
+static void awf_exclude_theme (gpointer theme, gpointer unused);
+static gint awf_compare_theme (gconstpointer theme1, gconstpointer theme2);
+static void awf_set_theme (gpointer theme, guint callback_action, GtkWidget *unused);
+static void awf_refresh_theme (GtkWidget *widget, gpointer unused);
+
+static void awf_window_set_title (void);
+
+static GtkWidget* awf_build_menu (GtkWidget *widget);
+static void awf_add_menu_item (gpointer theme, gpointer menu);
+
+static void awf_run_me (GtkWidget *widget, gpointer unused);
+static void awf_run_me_set_environment (gpointer display);
+
+static void awf_on_scale_value_changed (GtkRange *range, gpointer unused);
+
+/*
+ * run baby, run!
+ */
 
 int main (int argc, char **argv)
 {
@@ -118,46 +131,46 @@ int main (int argc, char **argv)
 	GtkWidget *tooltip, *spinner;
 	GtkWidget *vpane1, *hpane1, *hpane2;
 	GtkWidget *scrolled_window;
-	GtkWidget *refresh, *awf, *icon1, *icon2, *toggle;
+	GtkWidget *refresh, *awf, *icon1, *icon2, *icon3;
 	GtkCellRenderer *renderer;
 	GtkTreeModel *model;
 	GtkWidget *view;
 	GtkListStore *store;
 	GtkTreeIter iter;
 
-    gtk_init (&argc, &argv);
+	gtk_init (&argc, &argv);
 
-	/* load themes */
+	/* load themes available at system level */
 
-	directory = g_strdup ("/usr/share/themes");
-	list_system_theme = load_theme (directory);
-	list_system_theme = g_slist_reverse (list_system_theme);
-	g_free (directory);
+	list_system_theme = awf_load_theme ("/usr/share/themes");
+
+	/* load themes available at user level */
 
 	directory = g_build_path ("/", g_getenv ("HOME"), ".themes", NULL);
-	list_user_theme = load_theme (directory);
-	list_user_theme = g_slist_reverse (list_user_theme);
+	list_user_theme = awf_load_theme (directory);
 	g_free (directory);
 
-	g_slist_foreach (list_user_theme, exclude_system_theme, NULL);
+	/* exclude themes at system level also available at user level */
 
-	/* window */
+	g_slist_foreach (list_user_theme, awf_exclude_theme, NULL);
+
+	/* window layout */
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	set_title ();
 	g_signal_connect (G_OBJECT (window), "destroy", G_CALLBACK (gtk_main_quit), NULL);
+	awf_window_set_title ();
 
 	vbox_window = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (window), vbox_window);
 
-	menubar = create_menu (window);
+	menubar = awf_build_menu (window);
 	gtk_box_pack_start (GTK_BOX (vbox_window), menubar, FALSE, FALSE, 0);
 
 	toolbar = gtk_toolbar_new ();
-#if GTK_CHECK_VERSION(3,0,0)
-    gtk_style_context_add_class (gtk_widget_get_style_context (toolbar), "primary-toolbar");
-#endif
 	gtk_box_pack_start (GTK_BOX (vbox_window), toolbar, FALSE, FALSE, 0);
+#if GTK_CHECK_VERSION(3,0,0)
+	gtk_style_context_add_class (gtk_widget_get_style_context (toolbar), "primary-toolbar");
+#endif
 
 	vbox_widget = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (vbox_window), vbox_widget);
@@ -249,11 +262,11 @@ int main (int argc, char **argv)
 
 	/* toolbar */
 
-	refresh = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_REFRESH));
 	awf = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_PREFERENCES));
+	refresh = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_REFRESH));
 	icon1 = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_GOTO_FIRST));
 	icon2 = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_GOTO_LAST));
-	toggle = GTK_WIDGET (gtk_toggle_tool_button_new_from_stock (GTK_STOCK_ADD));
+	icon3 = GTK_WIDGET (gtk_toggle_tool_button_new_from_stock (GTK_STOCK_ADD));
 
 	gtk_widget_set_tooltip_text (refresh, "Refresh theme");
 #if GTK_CHECK_VERSION(3,0,0)
@@ -262,9 +275,9 @@ int main (int argc, char **argv)
 	gtk_widget_set_tooltip_text (awf, "Run awf for gtk3");
 #endif
 	gtk_widget_set_sensitive(icon2, FALSE);
-	gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (toggle), TRUE);
-	g_signal_connect (G_OBJECT(refresh), "clicked", G_CALLBACK (refresh_theme), NULL);
-	g_signal_connect (G_OBJECT(awf), "clicked", G_CALLBACK (run_awf), NULL);
+	gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (icon3), TRUE);
+	g_signal_connect (G_OBJECT(refresh), "clicked", G_CALLBACK (awf_refresh_theme), NULL);
+	g_signal_connect (G_OBJECT(awf), "clicked", G_CALLBACK (awf_run_me), NULL);
 
 	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), GTK_TOOL_ITEM (awf), -1);
 	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), GTK_TOOL_ITEM (refresh), -1);
@@ -272,7 +285,7 @@ int main (int argc, char **argv)
 	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), GTK_TOOL_ITEM (icon1), -1);
 	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), GTK_TOOL_ITEM (icon2), -1);
 	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), gtk_separator_tool_item_new (), -1);
-	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), GTK_TOOL_ITEM (toggle), -1);
+	gtk_toolbar_insert (GTK_TOOLBAR(toolbar), GTK_TOOL_ITEM (icon3), -1);
 
 	/* combo boxes and entries */
 
@@ -386,8 +399,8 @@ int main (int argc, char **argv)
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu2), gtk_menu_item_new_with_label ("Item2"));
 
 #if GTK_CHECK_VERSION(3,0,0)
-	button7 = gtk_switch_new  ();
-	button8 = gtk_switch_new  ();
+	button7 = gtk_switch_new ();
+	button8 = gtk_switch_new ();
 
 	gtk_switch_set_active (GTK_SWITCH (button7), TRUE);
 	gtk_widget_set_sensitive (button8, FALSE);
@@ -476,10 +489,10 @@ int main (int argc, char **argv)
 	gtk_range_set_inverted (GTK_RANGE (scale2), TRUE);
 	gtk_range_set_inverted (GTK_RANGE (scale4), TRUE);
 
-	g_signal_connect ((gpointer)scale1, "value_changed", G_CALLBACK (on_scale_value_changed), NULL);
-	g_signal_connect ((gpointer)scale2, "value_changed", G_CALLBACK (on_scale_value_changed), NULL);
-	g_signal_connect ((gpointer)scale3, "value_changed", G_CALLBACK (on_scale_value_changed), NULL);
-	g_signal_connect ((gpointer)scale4, "value_changed", G_CALLBACK (on_scale_value_changed), NULL);
+	g_signal_connect ((gpointer)scale1, "value_changed", G_CALLBACK (awf_on_scale_value_changed), NULL);
+	g_signal_connect ((gpointer)scale2, "value_changed", G_CALLBACK (awf_on_scale_value_changed), NULL);
+	g_signal_connect ((gpointer)scale3, "value_changed", G_CALLBACK (awf_on_scale_value_changed), NULL);
+	g_signal_connect ((gpointer)scale4, "value_changed", G_CALLBACK (awf_on_scale_value_changed), NULL);
 
 	gtk_box_pack_start (GTK_BOX (hbox_scale), scale1, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox_scale), scale2, FALSE, FALSE, 0);
@@ -493,15 +506,12 @@ int main (int argc, char **argv)
 	/* treeview */
 
 	view = gtk_tree_view_new ();
-	renderer = gtk_cell_renderer_text_new ();
-	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view), -1,      
-                                                 "Column1", renderer,
-                                                 "text", COLUMN1, NULL);
 
 	renderer = gtk_cell_renderer_text_new ();
-	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view), -1,      
-                                                 "Column2", renderer,
-                                                 "text", COLUMN2, NULL);
+	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view), -1, "Column1", renderer, "text", COLUMN1, NULL);
+
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view), -1, "Column2", renderer, "text", COLUMN2, NULL);
 
 	store = gtk_list_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_STRING);
 
@@ -517,8 +527,8 @@ int main (int argc, char **argv)
 
 	scrolled_window = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_set_size_request (scrolled_window, 200, -1);
-    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window), GTK_POLICY_ALWAYS, GTK_POLICY_ALWAYS);
-    gtk_container_add (GTK_CONTAINER (scrolled_window), view);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window), GTK_POLICY_ALWAYS, GTK_POLICY_ALWAYS);
+	gtk_container_add (GTK_CONTAINER (scrolled_window), view);
 
 	gtk_box_pack_start (GTK_BOX (vbox_label_treeview), scrolled_window, TRUE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_label_treeview), EMPTY, FALSE, FALSE, 0);
@@ -562,10 +572,10 @@ int main (int argc, char **argv)
 
 	/* notebooks */
 
-	notebook1 = gtk_notebook_new (); 
-	notebook2 = gtk_notebook_new (); 
-	notebook3 = gtk_notebook_new (); 
-	notebook4 = gtk_notebook_new (); 
+	notebook1 = gtk_notebook_new ();
+	notebook2 = gtk_notebook_new ();
+	notebook3 = gtk_notebook_new ();
+	notebook4 = gtk_notebook_new ();
 
 	gtk_notebook_append_page (GTK_NOTEBOOK(notebook1), gtk_label_new (""), gtk_label_new ("tab1"));
 	gtk_notebook_append_page (GTK_NOTEBOOK(notebook1), gtk_label_new (""), gtk_label_new ("tab2"));
@@ -596,35 +606,133 @@ int main (int argc, char **argv)
 
 	gtk_box_pack_start (GTK_BOX (vbox_window), gtk_statusbar_new (), FALSE, FALSE, 0);
 
-	/* set theme */
-
-	if (argc == 2)
-	{
-		if (g_slist_find_custom (list_system_theme, (gconstpointer)argv[1], &find_theme) ||
-		    g_slist_find_custom (list_user_theme, (gconstpointer)argv[1], &find_theme))
-			set_theme (argv[1], 0, NULL);
-	}
-
 	/* go! */
 
-	gtk_widget_show_all (window);
-	gtk_main ();
+	switch (argc)
+	{
+		case 2:
+			if (g_slist_find_custom (list_system_theme, (gconstpointer)argv[1], &awf_compare_theme) ||
+				g_slist_find_custom (list_user_theme, (gconstpointer)argv[1], &awf_compare_theme))
+				awf_set_theme (argv[1], 0, NULL);
 
-    return 0;
+		case 1:
+			gtk_widget_show_all (window);
+			gtk_main ();
+			break;
+
+		default:
+			g_printf("Usage:\n");
+#if GTK_CHECK_VERSION(3,0,0)
+			g_printf("\t%s\t\t\t%s\n", "awf-gtk3", "Run a widget factory");
+			g_printf("\t%s %s\t\t%s\n", "awf-gtk3", "<theme>", "Run a widget factory with the specified theme");
+#else
+			g_printf("\t%s\t\t\t%s\n", "awf-gtk2", "Run a widget factory");
+			g_printf("\t%s %s\t\t%s\n", "awf-gtk2", "<theme>", "Run a widget factory with the specified theme");
+#endif
+			break;
+	}
+
+	return 0;
+}
+
+static GSList*
+awf_load_theme (gchar *directory)
+{
+	GSList *list = NULL;
+
+	g_return_val_if_fail(directory != NULL, NULL);
+
+	if (g_file_test (directory, G_FILE_TEST_EXISTS)) {
+
+		GError *error = NULL;
+		GDir *dir = g_dir_open (directory, 0, &error);
+
+		if (dir) {
+			gchar *theme = g_strdup (g_dir_read_name (dir));
+
+			while (theme) {
+				gchar *theme_path = g_build_path ("/", directory, g_strstrip (theme), NULL);
+
+				if (g_file_test (theme_path, G_FILE_TEST_IS_DIR)) {
+#if GTK_CHECK_VERSION(3,0,0)
+					gchar *theme_subpath = g_build_path ("/", theme_path, "gtk-3.0", NULL);
+#else
+					gchar *theme_subpath = g_build_path ("/", theme_path, "gtk-2.0", NULL);
+#endif
+					if (g_file_test (theme_subpath, G_FILE_TEST_IS_DIR))
+						list = g_slist_prepend (list, theme);
+
+					g_free (theme_subpath);
+				}
+
+				g_free (theme_path);
+				/* don't free 'theme', it's the data part of GSList elements */
+
+				theme = g_strdup (g_dir_read_name (dir));
+			}
+
+			g_dir_close (dir);
+		}
+
+		if (error) {
+			g_fprintf (stderr, "unable to open directory: %s (%s)\n", directory, error->message);
+			g_error_free (error); error = NULL;
+		}
+	}
+
+	if (list)
+		list = g_slist_reverse (list);
+
+	return list;
 }
 
 static void
-set_title (void)
+awf_exclude_theme (gpointer theme, gpointer unused)
+{
+	GSList *found_theme = g_slist_find_custom (list_system_theme, (gconstpointer)theme, &awf_compare_theme);
+
+	if (found_theme) {
+		g_free (found_theme->data);
+		list_system_theme = g_slist_delete_link (list_system_theme, found_theme);
+	}
+}
+
+static gint
+awf_compare_theme (gconstpointer theme1, gconstpointer theme2)
+{
+	return g_strcmp0 ((gchar*)theme1, (gchar*)theme2);
+}
+
+static void
+awf_set_theme (gpointer theme, guint callback_action, GtkWidget *unused)
+{
+	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", (const gchar*)theme, "gtkrc:0");
+	awf_window_set_title ();
+}
+
+static void
+awf_refresh_theme (GtkWidget *widget, gpointer unused)
+{
+	gchar *theme;
+
+	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &theme, NULL);
+	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", "Raleigh", "gtkrc:0");
+	g_usleep (G_USEC_PER_SEC);
+	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", (const gchar*)theme, "gtkrc:0");
+	g_free (theme);
+}
+
+static void
+awf_window_set_title (void)
 {
 	gchar *title, *theme;
 
 	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &theme, NULL);
 
-	title = g_strjoin (" - ", "A widget factory", theme, 
 #if GTK_CHECK_VERSION(3,0,0)
-			   "Gtk3", NULL);
+	title = g_strjoin (" - ", "A widget factory", theme, "Gtk3", NULL);
 #else
-			   "Gtk2", NULL);
+	title = g_strjoin (" - ", "A widget factory", theme, "Gtk2", NULL);
 #endif
 
 	gtk_window_set_title (GTK_WINDOW (window), title);
@@ -634,7 +742,7 @@ set_title (void)
 }
 
 static GtkWidget*
-create_menu (GtkWidget *window)
+awf_build_menu (GtkWidget *widget)
 {
 	GtkAccelGroup *ag;
 	GtkWidget *menubar;
@@ -645,26 +753,26 @@ create_menu (GtkWidget *window)
 	GdkModifierType accelerator_mods;
 	gint i;
 
-	struct _MenuInfo
-	{
+	struct _MenuInfo {
 		gint type;
 		gchar mnemonic[32];
 		gchar accelerator[32];
 		gchar *image;
 		void (*callback)(gpointer, guint, GtkWidget*);
 	} info[9] = {
-	{ 0, "_System theme", "<Control>s", NULL             , NULL             },
-	{ 1, ""             , ""          , NULL             , NULL             },
-	{ 0, "_User theme"  , "<Control>u", NULL             , NULL             },
-	{ 2, ""             , ""          , NULL             , NULL             },
-	{ 0, "_Test menu"   , "<Control>t", NULL             , NULL             },
-	{ 3, "_Item1"       , "<Control>i", GTK_STOCK_OPEN   , NULL             },
-	{ 3, "Item2"        , ""          , GTK_STOCK_SAVE   , NULL             },
-	{ 4, ""             , ""          , NULL             , NULL             },
-	{ 3, "Item3"        , ""          , NULL             , NULL             }};
+		{ 0, "_System theme", "<Control>s", NULL		  , NULL },
+		{ 1, ""			 , ""		  , NULL		  , NULL },
+		{ 0, "_User theme"  , "<Control>u", NULL		  , NULL },
+		{ 2, ""			 , ""		  , NULL		  , NULL },
+		{ 0, "_Test menu"   , "<Control>t", NULL		  , NULL },
+		{ 3, "_Item1"	   , "<Control>i", GTK_STOCK_OPEN, NULL },
+		{ 3, "Item2"		, ""		  , GTK_STOCK_SAVE, NULL },
+		{ 4, ""			 , ""		  , NULL		  , NULL },
+		{ 3, "Item3"		, ""		  , NULL		  , NULL }
+	};
 
 	ag = gtk_accel_group_new ();
-	gtk_window_add_accel_group (GTK_WINDOW (window), ag);
+	gtk_window_add_accel_group (GTK_WINDOW (widget), ag);
 
 	menubar = gtk_menu_bar_new ();
 
@@ -682,11 +790,11 @@ create_menu (GtkWidget *window)
 				break;
 
 			case 1:
-		        g_slist_foreach (list_system_theme, add_menu_item, menu);
+				g_slist_foreach (list_system_theme, awf_add_menu_item, menu);
 				break;
 
 			case 2:
-		        g_slist_foreach (list_user_theme, add_menu_item, menu);
+				g_slist_foreach (list_user_theme, awf_add_menu_item, menu);
 				break;
 
 			case 3:
@@ -708,7 +816,7 @@ create_menu (GtkWidget *window)
 
 				if (info[i].callback)
 					g_signal_connect_swapped (G_OBJECT(menuitem), "activate",
-										G_CALLBACK(info[i].callback), window);
+											  G_CALLBACK(info[i].callback), widget);
 				break;
 
 			case 4:
@@ -722,123 +830,21 @@ create_menu (GtkWidget *window)
 	return menubar;
 }
 
-static GSList* load_theme (gchar *directory_name)
+static void
+awf_add_menu_item (gpointer theme, gpointer menu)
 {
-	GSList *list_theme = NULL;
-
-    g_return_val_if_fail(directory_name != NULL, NULL);
-
-	if (g_file_test (directory_name, G_FILE_TEST_EXISTS))
-	{
-		GError *error = NULL;
-		GDir *directory = g_dir_open (directory_name, 0, &error);
-
-		if (directory) {
-			gchar *theme_name = g_strstrip (g_strdup (g_dir_read_name (directory)));
-
-			while (theme_name) {
-				gchar *theme_path_name = g_build_path ("/", directory_name, theme_name, NULL);
-
-				if (g_file_test (theme_path_name, G_FILE_TEST_IS_DIR)) {
-#if GTK_CHECK_VERSION(3,0,0)
-					gchar *theme_subpath_name = g_build_path ("/", theme_path_name, "gtk-3.0", NULL);
-#else
-					gchar *theme_subpath_name = g_build_path ("/", theme_path_name, "gtk-2.0", NULL);
-#endif
-					if (g_file_test (theme_subpath_name, G_FILE_TEST_IS_DIR))
-						list_theme = g_slist_prepend (list_theme, theme_name);
-
-					g_free (theme_subpath_name);
-				}
-
-				g_free (theme_path_name);
-
-				theme_name = g_strdup (g_dir_read_name (directory));
-			}
-
-			g_dir_close (directory);
-		}
-
-		if (error) {
-			g_fprintf (stderr, "unable to open directory: %s (%s)\n",
-					   directory_name,
-					   error->message);
-
-			g_error_free (error); error = NULL;
-		}
-	}
-
-	return list_theme;
-}
-
-static void add_menu_item (gpointer theme_name, gpointer menu)
-{
-	GtkWidget *menuitem = gtk_menu_item_new_with_mnemonic ((const gchar*)theme_name);
+	GtkWidget *menuitem = gtk_menu_item_new_with_mnemonic ((const gchar*)theme);
 
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
 	gtk_widget_show (menuitem);
 
-	g_signal_connect_swapped (G_OBJECT(menuitem), "activate",
-							  G_CALLBACK(set_theme), theme_name);
-}
-
-static void exclude_system_theme (gpointer user_theme, gpointer unused)
-{
-	GSList *theme = g_slist_find_custom (list_system_theme,
-									     (gconstpointer)user_theme,
-										 &find_theme);
-
-	if (theme) {
-		g_free (theme->data);
-		list_system_theme = g_slist_delete_link (list_system_theme, theme);
-	}
-}
-
-static gint find_theme (gconstpointer theme_a, gconstpointer theme_b)
-{
-    return g_strcmp0 ((gchar*)theme_a, (gchar*)theme_b);
+	g_signal_connect_swapped (G_OBJECT(menuitem), "activate", G_CALLBACK(awf_set_theme), theme);
 }
 
 static void
-set_theme (gpointer theme, guint callback_action, GtkWidget *widget)
+awf_run_me (GtkWidget *widget, gpointer unused)
 {
-	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", 
-									 (const gchar*)theme, "gtkrc:0");
-
-	set_title ();
-}
-
-static void
-refresh_theme (GtkWidget *widget, gpointer item)
-{
-	gchar *theme;
-
-	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &theme, NULL);
-
-	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", 
-									 "Raleigh", "gtkrc:0");
-
-	g_usleep (G_USEC_PER_SEC);
-
-	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", 
-									 (const gchar*)theme, "gtkrc:0");
-
-	g_free (theme);
-}
-
-static void
-run_awf_set_environment (gpointer display)
-{
-	g_setenv("DISPLAY", display, TRUE);
-}
-
-static void
-run_awf (GtkWidget *widget, gpointer item)
-{
-    GError *error = NULL;
-    gchar **argv; gint argp;
-	gchar *awf, *theme, *command;
-    gchar *display;
+	gchar *awf;
 
 #if GTK_CHECK_VERSION(3,0,0)
 	awf = g_find_program_in_path ("awf-gtk2");
@@ -847,22 +853,26 @@ run_awf (GtkWidget *widget, gpointer item)
 #endif
 
 	if (awf) {
+		GError *error = NULL;
+		gchar *theme, *awf_with_theme;
+		gint argp; gchar **argv;
+		gchar *display;
+
 		g_object_get (gtk_settings_get_default (), "gtk-theme-name", &theme, NULL);
-
-		command = g_strjoin (" ", awf, theme, NULL);
-
-		g_shell_parse_argv (command, &argp, &argv, &error);
+		awf_with_theme = g_strjoin (" ", awf, theme, NULL);
+		g_shell_parse_argv (awf_with_theme, &argp, &argv, &error);
 
 		if (error) {
 			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (window),
 									GTK_DIALOG_DESTROY_WITH_PARENT,
 									GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
-									"Unable to parse command: %s (%s)", command, error->message);
+									"Unable to parse command: %s (%s)", awf_with_theme, error->message);
 
 			gtk_dialog_run (GTK_DIALOG (dialog));
 			gtk_widget_destroy (dialog);
 
-			g_free (command); 
+			g_strfreev (argv);
+			g_free (awf_with_theme);
 			g_free (theme);
 			g_free (awf);
 			g_error_free (error); error = NULL;
@@ -873,13 +883,13 @@ run_awf (GtkWidget *widget, gpointer item)
 
 		g_spawn_async (NULL, argv, NULL,
 					   G_SPAWN_SEARCH_PATH | G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
-					   run_awf_set_environment, display, NULL, &error);
+					   awf_run_me_set_environment, display, NULL, &error);
 
 		if (error) {
 			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (window),
 									GTK_DIALOG_DESTROY_WITH_PARENT,
 									GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
-									"Unable to spawn command: %s (%s)", command, error->message);
+									"Unable to spawn command: %s (%s)", awf_with_theme, error->message);
 
 			gtk_dialog_run (GTK_DIALOG (dialog));
 			gtk_widget_destroy (dialog);
@@ -887,9 +897,9 @@ run_awf (GtkWidget *widget, gpointer item)
 			g_error_free (error); error = NULL;
 		}
 
-		g_free(display);
-		g_strfreev(argv);
-		g_free (command);
+		g_free (display);
+		g_strfreev (argv);
+		g_free (awf_with_theme);
 		g_free (theme);
 		g_free (awf);
 	} else {
@@ -897,9 +907,9 @@ run_awf (GtkWidget *widget, gpointer item)
 								GTK_DIALOG_DESTROY_WITH_PARENT,
 								GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
 #if GTK_CHECK_VERSION(3,0,0)
-								"Cannot find awf-gtk2 in path");
+								"Unable to find awf-gtk2 in path");
 #else
-								"Cannot find awf-gtk3 in path");
+								"Unable to find awf-gtk3 in path");
 #endif
 
 		gtk_dialog_run (GTK_DIALOG (dialog));
@@ -908,15 +918,20 @@ run_awf (GtkWidget *widget, gpointer item)
 }
 
 static void
-on_scale_value_changed (GtkRange *range, gpointer user_data)
+awf_run_me_set_environment (gpointer display)
+{
+	g_setenv("DISPLAY", display, TRUE);
+}
+
+static void
+awf_on_scale_value_changed (GtkRange *range, gpointer unused)
 {
 	gdouble value;
-	int i;
-
-	value = gtk_range_get_value (range);
 
 	if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (harmony)))
 		return;
+
+	value = gtk_range_get_value (range);
 
 	if (scale1 != (GtkWidget*)range) gtk_range_set_value (GTK_RANGE (scale1), value);
 	if (scale2 != (GtkWidget*)range) gtk_range_set_value (GTK_RANGE (scale2), value);
