@@ -1,4 +1,9 @@
-bin_PROGRAMS = awf-@GTK_SUFFIX@
-awf_@GTK_SUFFIX@_SOURCES = awf.c gtk_empty.c
-awf_@GTK_SUFFIX@_CPPFLAGS = $(GTK_CFLAGS)
-awf_@GTK_SUFFIX@_LDADD = $(GTK_LIBS)
+bin_PROGRAMS = awf-@GTK3_SUFFIX@ awf-@GTK2_SUFFIX@
+
+awf_@GTK3_SUFFIX@_SOURCES = awf.c gtk_empty.c
+awf_@GTK3_SUFFIX@_CPPFLAGS = $(GTK3_CFLAGS)
+awf_@GTK3_SUFFIX@_LDADD = $(GTK3_LIBS)
+
+awf_@GTK2_SUFFIX@_SOURCES = awf.c gtk_empty.c
+awf_@GTK2_SUFFIX@_CPPFLAGS = $(GTK2_CFLAGS)
+awf_@GTK2_SUFFIX@_LDADD = $(GTK2_LIBS)
