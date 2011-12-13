@@ -18,7 +18,7 @@ Features
 Screenshot
 ----------
 
-![A widget factory](https://github.com/dobedo/awf/blob/gh-pages/awf.jpg "A widget factory")
+![A widget factory](https://github.com/dobedo/awf/raw/gh-pages/awf.jpg)
 
 Installation
 ------------
@@ -38,6 +38,7 @@ License
 -------
 
   A widget factory is provided under the terms of the GNU GPLv3 license.
+  See the COPYING file for details.
 
 Author
 ------
