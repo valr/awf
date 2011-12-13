@@ -1,5 +1,5 @@
-awf
-======
+AWF - A Widget Factory
+======================
 
 Description
 -----------
