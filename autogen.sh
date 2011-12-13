@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Avoid autoreconf error for missing README file
+touch README
+
 # Reconfigure all
 autoreconf -f -i
 
