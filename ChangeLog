@@ -1,9 +1,14 @@
-2011-12-09 : version 1.0.2
+2011-12-13: version 1.0.3
+
+code cleaning
+reworked autotools to build both gtk2 and gtk3 in one run
+
+2011-12-09: version 1.0.2
 
 fixed bug in gtk3 toolbar (missing primary-toolbar style)
 use list when loading available themes
 
-2011-12-05 : version 1.0.1
+2011-12-05: version 1.0.1
 
 fixed bug in refresh theme (didn't work at all)
 icon set in desktop file and changed in toolbar
@@ -12,4 +17,4 @@ GTK_SUFFIX removed from CPP_FLAGS
 src directory created
 awf.c splitted into awf.c and gtk_empty.c,.h
 
-2011-12-04 : first version 1.0.0
+2011-12-04: first version 1.0.0

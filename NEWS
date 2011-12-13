@@ -1,4 +1,4 @@
-2011-12-09 : version 1.0.2
+2011-12-13: version 1.0.3
 
-fixed bug in gtk3 toolbar (missing primary-toolbar style)
-use list when loading available themes
+code cleaning
+reworked autotools to build both gtk2 and gtk3 in one run
