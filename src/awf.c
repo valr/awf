@@ -540,6 +540,7 @@ int main (int argc, char **argv)
 	gtk_widget_set_tooltip_text (tooltip, "Enjoy a widget factory!");
 
 	spinner = gtk_spinner_new ();
+	gtk_widget_set_size_request (spinner, 10, 10);
 	gtk_spinner_start (GTK_SPINNER (spinner));
 
 	gtk_box_pack_start (GTK_BOX (vbox_label_treeview), label1, FALSE, FALSE, 0);
