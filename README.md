@@ -15,10 +15,12 @@ Features
   * Toolbar button to start the other gtk version of the tool
   * Toolbar button to refresh the current theme
 
-Screenshot
-----------
+Screenshots
+-----------
 
-![A widget factory](https://github.com/dobedo/awf/raw/gh-pages/awf.jpg)
+![A widget factory](https://github.com/dobedo/awf/raw/gh-pages/awf-gtk2.jpg)
+
+![A widget factory](https://github.com/dobedo/awf/raw/gh-pages/awf-gtk3.jpg)
 
 Installation
 ------------
