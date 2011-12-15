@@ -70,6 +70,7 @@ static GSList *list_user_theme = NULL;
 static GtkWidget *window;
 static GtkWidget *progressbar1, *progressbar2, *progressbar3, *progressbar4;
 static GtkWidget *scale1, *scale2, *scale3, *scale4, *harmony;
+static GtkWidget *spinner;
 
 /*
  * local functions
@@ -125,7 +126,7 @@ int main (int argc, char **argv)
 	GtkWidget *vseparator1, *vseparator2, *vseparator3;
 	GtkWidget *hseparator1;
 	GtkWidget *label1, *label2;
-	GtkWidget *tooltip, *spinner;
+	GtkWidget *tooltip;
 	GtkWidget *vpane1, *hpane1, *hpane2;
 	GtkWidget *scrolled_window;
 	GtkWidget *refresh, *awf, *icon1, *icon2, *icon3;
@@ -940,4 +941,9 @@ awf_on_scale_value_changed (GtkRange *range, gpointer unused)
 	gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar2), value / 100.0);
 	gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar3), value / 100.0);
 	gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar4), value / 100.0);
+
+	if (value >= 50.0)
+		gtk_spinner_start (GTK_SPINNER (spinner));
+	else
+		gtk_spinner_stop (GTK_SPINNER (spinner));
 }

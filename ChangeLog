@@ -1,3 +1,12 @@
+2011-12-14: version 1.1.0
+
+Stop the spinner when the scale range is below 1/2 and start it when it's above.
+
+2011-12-14: version 1.0.4
+
+Ensure README exists before autoreconf
+Ensure minimum size of spinner otherwise it's not visible in gtk2
+
 2011-12-13: version 1.0.3
 
 code cleaning

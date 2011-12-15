@@ -1,4 +1,3 @@
-2011-12-13: version 1.0.3
+2011-12-14: version 1.1.0
 
-code cleaning
-reworked autotools to build both gtk2 and gtk3 in one run
+Stop the spinner when the scale range is below 1/2 and start it when it's above.
