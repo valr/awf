@@ -24,6 +24,13 @@ AC_SUBST(GTK2_SUFFIX)
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
+icons/Makefile
+icons/16x16/Makefile
+icons/32x32/Makefile
+icons/48x48/Makefile
+icons/64x64/Makefile
+icons/128x128/Makefile
+icons/scalable/Makefile
 ])
 
 AC_OUTPUT

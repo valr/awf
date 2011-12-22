@@ -1,4 +1,5 @@
-SUBDIRS = src
+
+SUBDIRS = src icons
 
 desktopdir = $(datadir)/applications
 desktop_DATA = awf.desktop
