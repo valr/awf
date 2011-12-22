@@ -1,4 +1,4 @@
-AC_INIT([A widget factory], [1.1.0])
+AC_INIT([A widget factory], [1.2.0])
 AC_CONFIG_SRCDIR([src/awf.c])
 
 AM_INIT_AUTOMAKE
