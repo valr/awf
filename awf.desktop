@@ -6,4 +6,4 @@ Terminal=false
 Type=Application
 StartupNotify=true
 Categories=Application;GTK
-Icon=gtk-preferences
+Icon=awf
