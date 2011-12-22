@@ -259,8 +259,7 @@ int main (int argc, char **argv)
 	gtk_container_add (GTK_CONTAINER (vbox_progressbar_scale), hbox_scale);
 
 	/* toolbar */
-
-	awf = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_PREFERENCES));
+	awf = GTK_WIDGET(gtk_tool_button_new (gtk_image_new_from_icon_name ("awf", gtk_toolbar_get_icon_size (GTK_TOOLBAR(toolbar))), NULL));
 	refresh = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_REFRESH));
 	icon1 = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_GOTO_FIRST));
 	icon2 = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_GOTO_LAST));
