@@ -18,9 +18,9 @@ Features
 Screenshots
 -----------
 
-![A widget factory](https://github.com/dobedo/awf/raw/gh-pages/awf-gtk2.jpg)
+![A widget factory](https://github.com/valr/awf/raw/gh-pages/awf-gtk2.jpg)
 
-![A widget factory](https://github.com/dobedo/awf/raw/gh-pages/awf-gtk3.jpg)
+![A widget factory](https://github.com/valr/awf/raw/gh-pages/awf-gtk3.jpg)
 
 Installation
 ------------
