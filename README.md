@@ -25,6 +25,18 @@ Screenshots
 Installation
 ------------
 
+  * Ubuntu Oneiric
+
+    sudo add-apt-repository ppa:valere-monseur/valr
+    sudo apt-get update
+    sudo apt-get install awf
+
+  * Archlinux
+
+    https://aur.archlinux.org/packages.php?ID=54550
+
+  * From source
+
     ./autogen.sh
     ./configure
     make
