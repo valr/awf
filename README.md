@@ -15,38 +15,38 @@ Features
   * Toolbar button to start the other gtk version of the tool
   * Toolbar button to refresh the current theme
 
-Screenshots
------------
-
-![A widget factory](https://github.com/valr/awf/raw/gh-pages/awf-gtk2.jpg)
-
-![A widget factory](https://github.com/valr/awf/raw/gh-pages/awf-gtk3.jpg)
-
 Installation
 ------------
 
   * Ubuntu Oneiric
 
-    sudo add-apt-repository ppa:valere-monseur/valr
-    sudo apt-get update
-    sudo apt-get install awf
+  sudo add-apt-repository ppa:valere-monseur/valr
+  sudo apt-get update
+  sudo apt-get install awf
 
   * Archlinux
 
-    https://aur.archlinux.org/packages.php?ID=54550
+  https://aur.archlinux.org/packages.php?ID=54550
 
   * From source
 
-    ./autogen.sh
-    ./configure
-    make
-    make install
+  ./autogen.sh
+  ./configure
+  make
+  make install
 
 Dependencies
 ------------
 
   * gtk2 version 2.24
   * gtk3
+
+Screenshots
+-----------
+
+![A widget factory](https://github.com/valr/awf/raw/gh-pages/awf-gtk2.jpg)
+
+![A widget factory](https://github.com/valr/awf/raw/gh-pages/awf-gtk3.jpg)
 
 License
 -------
