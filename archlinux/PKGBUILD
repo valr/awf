@@ -1,0 +1,46 @@
+# Maintainer: Valère Monseur <valere dot monseur@ymail dot com>
+
+pkgname=awf-git
+pkgver=20120108
+pkgrel=1
+pkgdesc="A theme preview application for gtk2 and gtk3"
+arch=(i686 x86_64)
+url="https://github.com/valr/awf"
+license=('GPL')
+depends=('gtk2' 'gtk3' 'hicolor-icon-theme')
+makedepends=('git')
+install=awf.install
+
+_gitroot="git://github.com/valr/awf.git"
+_gitname="awf"
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [ -d $_gitname ] ; then
+    cd $_gitname && git pull origin
+    msg "The local files are updated."
+  else
+    git clone $_gitroot $_gitname
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting make..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+
+  cd "$srcdir/$_gitname-build"
+
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+
+  make DESTDIR="$pkgdir" install
+  install -D -m644 "$srcdir/$_gitname-build/COPYING" "$pkgdir/usr/share/licenses/$_gitname/COPYING"
+}
