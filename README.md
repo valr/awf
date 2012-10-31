@@ -18,10 +18,16 @@ Features
 Installation
 ------------
 
-  * Ubuntu Oneiric
+  * Ubuntu - Oneiric Ocelot
 
-    sudo add-apt-repository [ppa:valere-monseur/valr](https://launchpad.net/~valere-monseur/+archive/valr/+packages)  
-    sudo apt-get update  
+    sudo add-apt-repository [ppa:valere-monseur/oneiric](https://launchpad.net/~valere-monseur/+archive/oneiric)  
+    sudo apt-get update
+    sudo apt-get install awf
+
+  * Ubuntu - Quantal Quetzal
+
+    sudo add-apt-repository [ppa:valere-monseur/quantal](https://launchpad.net/~valere-monseur/+archive/quantal)  
+    sudo apt-get update
     sudo apt-get install awf
 
   * Archlinux
