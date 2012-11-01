@@ -18,15 +18,17 @@ Features
 Installation
 ------------
 
-  * Ubuntu - Oneiric Ocelot
+  * Ubuntu
 
-    sudo add-apt-repository [ppa:valere-monseur/oneiric](https://launchpad.net/~valere-monseur/+archive/oneiric)  
-    sudo apt-get update
-    sudo apt-get install awf
+    For Oneiric Ocelot:
+      sudo add-apt-repository [ppa:valere-monseur/oneiric](https://launchpad.net/~valere-monseur/+archive/oneiric)
 
-  * Ubuntu - Quantal Quetzal
+    For Precise Pangolin:
+      sudo add-apt-repository [ppa:valere-monseur/precise](https://launchpad.net/~valere-monseur/+archive/precise)
 
-    sudo add-apt-repository [ppa:valere-monseur/quantal](https://launchpad.net/~valere-monseur/+archive/quantal)  
+    For Quantal Quetzal:
+      sudo add-apt-repository [ppa:valere-monseur/quantal](https://launchpad.net/~valere-monseur/+archive/quantal)
+
     sudo apt-get update
     sudo apt-get install awf
 
