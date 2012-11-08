@@ -183,22 +183,23 @@ int main (int argc, char **argv)
 	gtk_container_add (GTK_CONTAINER (vbox_widget), vpane1);
 
 	hpane1 = gtk_hpaned_new ();
+	gtk_paned_pack1 (GTK_PANED (vpane1), hpane1, TRUE, FALSE);
 	gtk_paned_add1 (GTK_PANED (vpane1), hpane1);
 
 	hpane2 = gtk_hpaned_new ();
-	gtk_paned_add2 (GTK_PANED (vpane1), hpane2);
+	gtk_paned_pack2 (GTK_PANED (vpane1), hpane2, TRUE, FALSE);
 
 	hbox_frame1 = gtk_hbox_new (TRUE, 3);
 	hbox_frame2 = gtk_hbox_new (TRUE, 3);
 	gtk_widget_set_size_request (hbox_frame1, -1, 70);
 	gtk_widget_set_size_request (hbox_frame2, -1, 70);
-	gtk_container_set_border_width(GTK_CONTAINER (hbox_frame1), 10);
-	gtk_container_set_border_width(GTK_CONTAINER (hbox_frame2), 10);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox_frame1), 10);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox_frame2), 10);
 
 	hbox_notebook1 = gtk_hbox_new (TRUE, 3);
 	hbox_notebook2 = gtk_hbox_new (TRUE, 3);
-	gtk_container_set_border_width(GTK_CONTAINER (hbox_notebook1), 10);
-	gtk_container_set_border_width(GTK_CONTAINER (hbox_notebook2), 10);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox_notebook1), 10);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox_notebook2), 10);
 
 	gtk_paned_add1 (GTK_PANED (hpane1), hbox_frame1);
 	gtk_paned_add2 (GTK_PANED (hpane1), hbox_frame2);
@@ -595,10 +596,10 @@ int main (int argc, char **argv)
 	gtk_notebook_append_page (GTK_NOTEBOOK(notebook4), gtk_label_new (""), gtk_label_new ("tab3"));
 	gtk_notebook_set_tab_pos (GTK_NOTEBOOK(notebook4), GTK_POS_RIGHT);
 
-	gtk_box_pack_start (GTK_BOX (hbox_notebook1), notebook1, TRUE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox_notebook1), notebook2, TRUE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox_notebook2), notebook3, TRUE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox_notebook2), notebook4, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox_notebook1), notebook1, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox_notebook1), notebook2, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox_notebook2), notebook3, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox_notebook2), notebook4, FALSE, TRUE, 0);
 
 	/* status bar */
 
