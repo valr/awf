@@ -184,7 +184,6 @@ int main (int argc, char **argv)
 
 	hpane1 = gtk_hpaned_new ();
 	gtk_paned_pack1 (GTK_PANED (vpane1), hpane1, TRUE, FALSE);
-	gtk_paned_add1 (GTK_PANED (vpane1), hpane1);
 
 	hpane2 = gtk_hpaned_new ();
 	gtk_paned_pack2 (GTK_PANED (vpane1), hpane2, TRUE, FALSE);
