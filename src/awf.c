@@ -158,7 +158,13 @@ int main (int argc, char **argv)
 	g_signal_connect (G_OBJECT (window), "destroy", G_CALLBACK (gtk_main_quit), NULL);
 	awf_window_set_title ();
 
+
+#if GTK_CHECK_VERSION(3,2,0)
+	vbox_window = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (vbox_window), FALSE);
+#else
 	vbox_window = gtk_vbox_new (FALSE, 0);
+#endif
 	gtk_container_add (GTK_CONTAINER (window), vbox_window);
 
 	menubar = awf_build_menu (window);
@@ -170,33 +176,73 @@ int main (int argc, char **argv)
 	gtk_style_context_add_class (gtk_widget_get_style_context (toolbar), "primary-toolbar");
 #endif
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vbox_widget = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (vbox_widget), FALSE);
+#else
 	vbox_widget = gtk_vbox_new (FALSE, 0);
+#endif
 	gtk_container_add (GTK_CONTAINER (vbox_window), vbox_widget);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	hbox1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (hbox1), FALSE);
+#else
 	hbox1 = gtk_hbox_new (FALSE, 0);
+#endif
 	gtk_container_add (GTK_CONTAINER (vbox_widget), hbox1);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	hseparator1 = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
+#else
 	hseparator1 = gtk_hseparator_new ();
+#endif
 	gtk_container_add (GTK_CONTAINER (vbox_widget), hseparator1);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vpane1 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
+#else
 	vpane1 = gtk_vpaned_new ();
+#endif
 	gtk_container_add (GTK_CONTAINER (vbox_widget), vpane1);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	hpane1 = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
+#else
 	hpane1 = gtk_hpaned_new ();
+#endif
 	gtk_paned_pack1 (GTK_PANED (vpane1), hpane1, TRUE, FALSE);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	hpane2 = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
+#else
 	hpane2 = gtk_hpaned_new ();
+#endif
 	gtk_paned_pack2 (GTK_PANED (vpane1), hpane2, TRUE, FALSE);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	hbox_frame1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
+	hbox_frame2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
+	gtk_box_set_homogeneous (GTK_BOX (hbox_frame1), TRUE);
+	gtk_box_set_homogeneous (GTK_BOX (hbox_frame2), TRUE);
+#else
 	hbox_frame1 = gtk_hbox_new (TRUE, 3);
 	hbox_frame2 = gtk_hbox_new (TRUE, 3);
+#endif
 	gtk_widget_set_size_request (hbox_frame1, -1, 70);
 	gtk_widget_set_size_request (hbox_frame2, -1, 70);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox_frame1), 10);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox_frame2), 10);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	hbox_notebook1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
+	hbox_notebook2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
+	gtk_box_set_homogeneous (GTK_BOX (hbox_notebook1), TRUE);
+	gtk_box_set_homogeneous (GTK_BOX (hbox_notebook2), TRUE);
+#else
 	hbox_notebook1 = gtk_hbox_new (TRUE, 3);
 	hbox_notebook2 = gtk_hbox_new (TRUE, 3);
+#endif
 	gtk_container_set_border_width (GTK_CONTAINER (hbox_notebook1), 10);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox_notebook2), 10);
 
@@ -206,56 +252,133 @@ int main (int argc, char **argv)
 	gtk_paned_add1 (GTK_PANED (hpane2), hbox_notebook1);
 	gtk_paned_add2 (GTK_PANED (hpane2), hbox_notebook2);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vbox_combo_entry_spin_check_radio_button = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (vbox_combo_entry_spin_check_radio_button), FALSE);
+#else
 	vbox_combo_entry_spin_check_radio_button = gtk_vbox_new (FALSE, 0);
+#endif
 	gtk_container_set_border_width(GTK_CONTAINER (vbox_combo_entry_spin_check_radio_button), 10);
 	gtk_container_add (GTK_CONTAINER (hbox1), vbox_combo_entry_spin_check_radio_button);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vseparator1 = gtk_separator_new (GTK_ORIENTATION_VERTICAL);
+#else
 	vseparator1 = gtk_vseparator_new ();
+#endif
 	gtk_container_add (GTK_CONTAINER (hbox1), vseparator1);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vbox_other_button = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (vbox_other_button), FALSE);
+#else
 	vbox_other_button = gtk_vbox_new (FALSE, 0);
+#endif
 	gtk_container_set_border_width(GTK_CONTAINER (vbox_other_button), 10);
 	gtk_container_add (GTK_CONTAINER (hbox1), vbox_other_button);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vseparator2 = gtk_separator_new (GTK_ORIENTATION_VERTICAL);
+#else
 	vseparator2 = gtk_vseparator_new ();
+#endif
 	gtk_container_add (GTK_CONTAINER (hbox1), vseparator2);
 
-	vbox_progressbar_scale = gtk_vbox_new (FALSE, 0);
+#if GTK_CHECK_VERSION(3,2,0)
+	vbox_progressbar_scale = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
+	gtk_box_set_homogeneous (GTK_BOX (vbox_progressbar_scale), FALSE);
+#else
+	vbox_progressbar_scale = gtk_vbox_new (FALSE, 10);
+#endif
 	gtk_container_set_border_width(GTK_CONTAINER (vbox_progressbar_scale), 10);
 	gtk_container_add (GTK_CONTAINER (hbox1), vbox_progressbar_scale);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vseparator3 = gtk_separator_new (GTK_ORIENTATION_VERTICAL);
+#else
 	vseparator3 = gtk_vseparator_new ();
+#endif
 	gtk_container_add (GTK_CONTAINER (hbox1), vseparator3);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vbox_label_treeview = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (vbox_label_treeview), FALSE);
+#else
 	vbox_label_treeview = gtk_vbox_new (FALSE, 0);
+#endif
 	gtk_container_set_border_width(GTK_CONTAINER (vbox_label_treeview), 10);
 	gtk_container_add (GTK_CONTAINER (hbox1), vbox_label_treeview);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vbox_combo_entry = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (vbox_combo_entry), FALSE);
+#else
 	vbox_combo_entry = gtk_vbox_new (FALSE, 0);
+#endif
 	gtk_container_add (GTK_CONTAINER (vbox_combo_entry_spin_check_radio_button), vbox_combo_entry);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	hbox_spin_button = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (hbox_spin_button), TRUE);
+#else
 	hbox_spin_button = gtk_hbox_new (TRUE, 0);
+#endif
 	gtk_container_add (GTK_CONTAINER (vbox_combo_entry_spin_check_radio_button), hbox_spin_button);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	hbox_check_radio_button = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (hbox_check_radio_button), FALSE);
+#else
 	hbox_check_radio_button = gtk_hbox_new (FALSE, 0);
+#endif
 	gtk_container_add (GTK_CONTAINER (vbox_combo_entry_spin_check_radio_button), hbox_check_radio_button);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vbox_check_button = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (vbox_check_button), FALSE);
+#else
 	vbox_check_button = gtk_vbox_new (FALSE, 0);
+#endif
 	gtk_container_add (GTK_CONTAINER (hbox_check_radio_button), vbox_check_button);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vbox_radio_button = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (vbox_radio_button), FALSE);
+#else
 	vbox_radio_button = gtk_vbox_new (FALSE, 0);
+#endif
 	gtk_container_add (GTK_CONTAINER (hbox_check_radio_button), vbox_radio_button);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vbox_progressbar = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (vbox_progressbar), FALSE);
+#else
 	vbox_progressbar = gtk_vbox_new (FALSE, 0);
+#endif
 	gtk_container_add (GTK_CONTAINER (vbox_progressbar_scale), vbox_progressbar);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	hbox_progressbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (hbox_progressbar), TRUE);
+#else
 	hbox_progressbar = gtk_hbox_new (TRUE, 0);
+#endif
 	gtk_container_add (GTK_CONTAINER (vbox_progressbar_scale), hbox_progressbar);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	vbox_scale = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (vbox_scale), FALSE);
+#else
 	vbox_scale = gtk_vbox_new (FALSE, 0);
+#endif
 	gtk_container_add (GTK_CONTAINER (vbox_progressbar_scale), vbox_scale);
 
+#if GTK_CHECK_VERSION(3,2,0)
+	hbox_scale = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+	gtk_box_set_homogeneous (GTK_BOX (hbox_scale), TRUE);
+#else
 	hbox_scale = gtk_hbox_new (TRUE, 0);
+#endif
 	gtk_container_add (GTK_CONTAINER (vbox_progressbar_scale), hbox_scale);
 
 	/* toolbar */
@@ -463,11 +586,17 @@ int main (int argc, char **argv)
 
 	/* scales */
 
+#if GTK_CHECK_VERSION(3,2,0)
+	scale1 = gtk_scale_new_with_range (GTK_ORIENTATION_VERTICAL, 0, 100, 1);
+	scale2 = gtk_scale_new_with_range (GTK_ORIENTATION_VERTICAL, 0, 100, 1);
+	scale3 = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0, 100, 1);
+	scale4 = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0, 100, 1);
+#else
 	scale1 = gtk_vscale_new_with_range (0, 100, 1);
 	scale2 = gtk_vscale_new_with_range (0, 100, 1);
 	scale3 = gtk_hscale_new_with_range (0, 100, 1);
 	scale4 = gtk_hscale_new_with_range (0, 100, 1);
-
+#endif
 	gtk_widget_set_size_request (scale1, -1, 100);
 	gtk_widget_set_size_request (scale2, -1, 100);
 	gtk_widget_set_size_request (scale3, 100, -1);
