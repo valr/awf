@@ -53,8 +53,7 @@
  * enums
  */
 
-enum
-{
+enum {
 	COLUMN1 = 0,
 	COLUMN2,
 	NUM_COLS
@@ -739,7 +738,7 @@ int main (int argc, char **argv)
 	{
 		case 2:
 			if (g_slist_find_custom (list_system_theme, (gconstpointer)argv[1], &awf_compare_theme) ||
-				g_slist_find_custom (list_user_theme, (gconstpointer)argv[1], &awf_compare_theme))
+			    g_slist_find_custom (list_user_theme, (gconstpointer)argv[1], &awf_compare_theme))
 				awf_set_theme (argv[1], 0, NULL);
 
 		case 1:
@@ -840,13 +839,24 @@ awf_set_theme (gpointer theme, guint callback_action, GtkWidget *unused)
 static void
 awf_refresh_theme (GtkWidget *widget, gpointer unused)
 {
-	gchar *theme;
+	gchar *default_theme = NULL, *current_theme = NULL;
 
-	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &theme, NULL);
-	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", "Raleigh", "gtkrc:0");
-	g_usleep (G_USEC_PER_SEC);
-	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", (const gchar*)theme, "gtkrc:0");
-	g_free (theme);
+	if (g_slist_find_custom (list_system_theme, "Default", &awf_compare_theme))
+		default_theme = g_strdup ("Default");
+	else if (g_slist_find_custom (list_system_theme, "Raleigh", &awf_compare_theme))
+		default_theme = g_strdup ("Raleigh");
+
+	if (default_theme) {
+		g_object_get (gtk_settings_get_default (), "gtk-theme-name", &current_theme, NULL);
+
+		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", default_theme, NULL);
+		g_usleep (G_USEC_PER_SEC);
+		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", (const gchar*)current_theme, NULL);
+
+		g_free (current_theme);
+		g_free (default_theme);
+	} else
+		g_warning ("No default theme found (neither \"Default\" nor \"Raleigh\"), refresh of theme might not work.");
 }
 
 static void
