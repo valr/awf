@@ -20,22 +20,30 @@ Installation
 
   * Ubuntu
 
-    For Oneiric Ocelot: sudo add-apt-repository [ppa:valere-monseur/oneiric](https://launchpad.net/~valere-monseur/+archive/oneiric)  
-    For Precise Pangolin: sudo add-apt-repository [ppa:valere-monseur/precise](https://launchpad.net/~valere-monseur/+archive/precise)  
-    For Quantal Quetzal: sudo add-apt-repository [ppa:valere-monseur/quantal](https://launchpad.net/~valere-monseur/+archive/quantal)  
+    For Oneiric Ocelot: sudo add-apt-repository [ppa:valere-monseur/oneiric](https://launchpad.net/~valere-monseur/+archive/oneiric)
+    For Precise Pangolin: sudo add-apt-repository [ppa:valere-monseur/precise](https://launchpad.net/~valere-monseur/+archive/precise)
+    For Quantal Quetzal: sudo add-apt-repository [ppa:valere-monseur/quantal](https://launchpad.net/~valere-monseur/+archive/quantal)
 
-    sudo apt-get update  
+    sudo apt-get update
     sudo apt-get install awf
 
   * Archlinux
 
     https://aur.archlinux.org/packages.php?ID=54550
 
+  * RPM based distro
+
+    There is no pre-built package (yet) but you can generate RPM like this:
+
+    ./autogen.sh
+    ./configure
+    make rpm
+
   * From source
 
-    ./autogen.sh  
-    ./configure  
-    make  
+    ./autogen.sh
+    ./configure
+    make
     make install
 
 Dependencies
@@ -66,3 +74,4 @@ Thanks to
 ---------
 
   * Ottoman Kent (for testing in ubuntu and bug report)
+  * Dwight Engen (for rpm specification file: awf.spec.in)
