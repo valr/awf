@@ -35,15 +35,15 @@ Installation
 
     There is no pre-built package (yet) but you can generate RPM like this:
 
-    ./autogen.sh
-    ./configure
+    ./autogen.sh 
+    ./configure 
     make rpm
 
   * From source
 
-    ./autogen.sh
-    ./configure
-    make
+    ./autogen.sh 
+    ./configure 
+    make 
     make install
 
 Dependencies
