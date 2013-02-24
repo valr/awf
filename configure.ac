@@ -33,6 +33,7 @@ icons/48x48/Makefile
 icons/64x64/Makefile
 icons/128x128/Makefile
 icons/scalable/Makefile
+awf.spec
 ])
 
 AC_OUTPUT
