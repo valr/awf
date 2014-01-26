@@ -1,37 +1,27 @@
 # Maintainer: Valère Monseur <valere dot monseur@ymail dot com>
 
 pkgname=awf-git
-pkgver=20120108
+_pkgname=awf
+pkgver=v1.3.0
 pkgrel=1
 pkgdesc="A theme preview application for gtk2 and gtk3"
 arch=(i686 x86_64)
 url="https://github.com/valr/awf"
-license=('GPL')
-depends=('gtk2' 'gtk3' 'hicolor-icon-theme')
-makedepends=('git')
+license=("GPL")
+depends=("gtk2" "gtk3" "hicolor-icon-theme")
+makedepends=("git")
+source=("$pkgname"::'git+https://github.com/valr/awf.git')
+md5sums=("SKIP")
 install=awf.install
 
-_gitroot="git://github.com/valr/awf.git"
-_gitname="awf"
+pkgver() {
+  cd "${srcdir}/${pkgname}"
+
+  git describe --long | sed -E 's/([^-]*-g)/r\1/;s/-/./g'
+}
 
 build() {
-  cd "$srcdir"
-  msg "Connecting to GIT server...."
-
-  if [ -d $_gitname ] ; then
-    cd $_gitname && git pull origin
-    msg "The local files are updated."
-  else
-    git clone $_gitroot $_gitname
-  fi
-
-  msg "GIT checkout done or server timeout"
-  msg "Starting make..."
-
-  rm -rf "$srcdir/$_gitname-build"
-  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
-
-  cd "$srcdir/$_gitname-build"
+  cd "${srcdir}/${pkgname}"
 
   ./autogen.sh
   ./configure --prefix=/usr
@@ -39,8 +29,8 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$_gitname-build"
+  cd "${srcdir}/${pkgname}"
 
-  make DESTDIR="$pkgdir" install
-  install -D -m644 "$srcdir/$_gitname-build/COPYING" "$pkgdir/usr/share/licenses/$_gitname/COPYING"
+  make DESTDIR="${pkgdir}" install
+  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${_pkgname}/COPYING"
 }

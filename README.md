@@ -10,10 +10,10 @@ It displays the various widget types provided by gtk2/gtk3 in a single window al
 Features
 --------
 
-  * Display widget types available in gtk2/gtk3 (remark: option menu widget type only exists in gtk2 and switch widget type only exists in gtk3)
+  * Display widget types available in gtk2/gtk3 (remark: option menu widget type only exists in gtk2, switch and level bar widget types only exist in gtk3)
   * Menus to select the themes available either at system level or user level
   * Toolbar button to start the other gtk version of the tool
-  * Toolbar button to refresh the current theme
+  * Toolbar button to refresh the current theme (not working anymore in latest versions of gtk3)
 
 Installation
 ------------
@@ -29,7 +29,7 @@ Installation
 
   * Archlinux
 
-    https://aur.archlinux.org/packages.php?ID=54550
+    https://aur.archlinux.org/packages/awf-git/
 
   * RPM based distro
 
@@ -75,3 +75,4 @@ Thanks to
 
   * Ottoman Kent (for testing in ubuntu and bug report)
   * Dwight Engen (for rpm specification file: awf.spec.in)
+  * Josef Radinger (for sorted menus, text in progress bars, treeviews with(out) scrollbars)

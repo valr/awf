@@ -1,3 +1,13 @@
+2014-01-26: version 1.3.0
+
+System and user themes are sorted alphabetically in menus
+Added a check button to show text of progress bars
+Added font, color and file chooser buttons
+Reworked link and switch buttons
+Added icon in scale button
+Added level bar in gtk3 version
+Duplicated the treeview, one with and another without scrollbars
+
 2011-12-25: version 1.2.1
 
 Missing icons 22x22 and 24x24 added

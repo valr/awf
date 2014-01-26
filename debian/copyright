@@ -3,11 +3,11 @@ Upstream-Name: awf
 Source: https://github.com/valr/awf
 
 Files: *
-Copyright: 2011-2012 Valère Monseur <valere.monseur@ymail.com>
+Copyright: 2011-2014 Valère Monseur <valere.monseur@ymail.com>
 License: GPL-3+
  awf : A Widget Factory
  A theme preview application for gtk2 and gtk3.
- Copyright (C) 2011-2012, Valère Monseur (valere dot monseur at ymail dot com)
+ Copyright (C) 2011-2014, Valère Monseur (valere dot monseur at ymail dot com)
  .
  awf is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

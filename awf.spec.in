@@ -4,7 +4,7 @@ Release: 1%{?dist}
 Summary: %{name} : A tool for previewing GTK2/GTK3 widgets
 Group: Development/Tools
 License: GPLv3+
-URL: http://github.com/valr/awf
+URL: https://github.com/valr/awf
 Source: https://github.com/valr/awf/%{name}-%{version}.tar.gz
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-build
@@ -38,6 +38,15 @@ rm -rf %{buildroot}
 %{_datadir}/*
 
 %changelog
+* Sun Jan 26 2014 Valère Monseur <valere.monseur@ymail.com> - Version 1.3.0
+- System and user themes are sorted alphabetically in menus.
+- Added a check button to show text of progress bars.
+- Added font, color and file chooser buttons.
+- Reworked link and switch buttons.
+- Added icon in scale button.
+- Added level bar in gtk3 version.
+- Duplicated the treeview, one with and another without scrollbars.
+
 * Wed Jan 09 2013 Dwight Engen <dengen@engens.com> - Version 1.2.1
 - Initial RPM release.
 
