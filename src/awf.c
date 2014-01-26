@@ -557,12 +557,12 @@ int main (int argc, char **argv)
 
 #if GTK_CHECK_VERSION(3,6,0)
 	levelbar1 = gtk_level_bar_new ();
-	gtk_level_bar_set_mode (levelbar1, GTK_LEVEL_BAR_MODE_CONTINUOUS);
-	gtk_level_bar_set_value (levelbar1, 0.6);
+	gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar1), GTK_LEVEL_BAR_MODE_CONTINUOUS);
+	gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar1), 0.6);
 
 	levelbar2 = gtk_level_bar_new_for_interval (0, 5);
-	gtk_level_bar_set_mode (levelbar2, GTK_LEVEL_BAR_MODE_DISCRETE);
-	gtk_level_bar_set_value (levelbar2, 2);
+	gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar2), GTK_LEVEL_BAR_MODE_DISCRETE);
+	gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar2), 2);
 
 	gtk_box_pack_start (GTK_BOX (vbox_other_button), levelbar1, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_other_button), levelbar2, FALSE, FALSE, 0);
