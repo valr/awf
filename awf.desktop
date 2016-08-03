@@ -2,8 +2,8 @@
 Name=A widget factory
 Comment=A widget factory - a theme preview application for gtk2 and gtk3
 Exec=awf-gtk2
+Icon=awf
 Terminal=false
 Type=Application
+Categories=Utility;
 StartupNotify=true
-Categories=Application;GTK
-Icon=awf
