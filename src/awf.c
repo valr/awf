@@ -3,7 +3,7 @@
  *
  *  A theme preview application for gtk2 and gtk3.
  *
- *  Copyright (C) 2011-2014 Valère Monseur (valere dot monseur at ymail dot com)
+ *  Copyright (C) 2011-2016 Valère Monseur (valere dot monseur at ymail dot com)
  *
  *  This file is part of awf.
  *
@@ -594,8 +594,8 @@ int main (int argc, char **argv)
 #else
 	gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (progressbar1), GTK_PROGRESS_LEFT_TO_RIGHT);
 	gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (progressbar2), GTK_PROGRESS_RIGHT_TO_LEFT);
-	gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (progressbar3), GTK_PROGRESS_BOTTOM_TO_TOP);
-	gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (progressbar4), GTK_PROGRESS_TOP_TO_BOTTOM);
+	gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (progressbar3), GTK_PROGRESS_TOP_TO_BOTTOM);
+	gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (progressbar4), GTK_PROGRESS_BOTTOM_TO_TOP);
 
 	gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar1), "");
 	gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar3), "");
