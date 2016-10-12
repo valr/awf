@@ -20,12 +20,9 @@ Installation
 
   * Ubuntu
 
-    For Oneiric Ocelot: sudo add-apt-repository [ppa:valere-monseur/oneiric](https://launchpad.net/~valere-monseur/+archive/oneiric)  
-    For Precise Pangolin: sudo add-apt-repository [ppa:valere-monseur/precise](https://launchpad.net/~valere-monseur/+archive/precise)  
-    For Quantal Quetzal: sudo add-apt-repository [ppa:valere-monseur/quantal](https://launchpad.net/~valere-monseur/+archive/quantal)  
-
-    sudo apt-get update  
-    sudo apt-get install awf
+    sudo apt-add-repository ppa:flexiondotorg/awf  
+    sudo apt update  
+    sudo apt install awf
 
   * Archlinux
 
