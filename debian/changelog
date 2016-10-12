@@ -1,3 +1,9 @@
+awf (1.3.1-2) UNRELEASED; urgency=medium
+
+  * Update debian/* packaging.
+
+ -- Martin Wimpress <code@flexion.org>  Wed, 12 Oct 2016 18:42:24 +0100
+
 awf (1.3.1-1) unstable; urgency=low
 
   * fix issue #5: synchro progress bars between gtk2 and gtk3 versions of awf.
