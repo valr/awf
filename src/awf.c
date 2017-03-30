@@ -40,6 +40,7 @@
  * includes
  */
 
+#include <signal.h>
 #include "gtk_empty.h"
 #include <gtk/gtk.h>
 
@@ -71,6 +72,8 @@ static GtkWidget *progressbar1, *progressbar2, *progressbar3, *progressbar4;
 static GtkWidget *scale1, *scale2, *scale3, *scale4, *harmony, *showtext;
 static GtkWidget *spinner;
 
+static gboolean refresh_theme = FALSE;
+
 /*
  * local functions
  */
@@ -92,6 +95,9 @@ static void awf_run_me_set_environment (gpointer display);
 static void awf_on_scale_value_changed (GtkRange *range, gpointer unused);
 
 static void awf_showtext_clicked (GtkWidget *widget, gpointer unused);
+
+static void awf_sighup_handler (int);
+static gboolean awf_check_refresh_signal (gpointer);
 
 /*
  * run baby, run!
@@ -792,6 +798,11 @@ int main (int argc, char **argv)
 
 	gtk_box_pack_start (GTK_BOX (vbox_window), gtk_statusbar_new (), FALSE, FALSE, 0);
 
+        /* refresh on SIGHUP */
+
+        signal (SIGHUP, awf_sighup_handler);
+        g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, awf_check_refresh_signal, NULL, NULL);
+
 	/* go! */
 
 	switch (argc)
@@ -1187,4 +1198,21 @@ awf_showtext_clicked (GtkWidget *widget, gpointer unused)
 			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar3), "");
 		#endif
 	}
+}
+
+static void
+awf_sighup_handler (int signum)
+{
+    refresh_theme = TRUE;
+}
+
+static gboolean
+awf_check_refresh_signal (gpointer unused)
+{
+    if (refresh_theme)
+    {
+        awf_refresh_theme(NULL, NULL);
+        refresh_theme = FALSE;
+    }
+    return G_SOURCE_CONTINUE;
 }
