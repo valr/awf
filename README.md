@@ -14,6 +14,7 @@ Features
   * Menus to select the themes available either at system level or user level
   * Toolbar button to start the other gtk version of the tool
   * Toolbar button to refresh the current theme (not working anymore in latest versions of gtk3)
+  * Refresh the current theme on SIGHUP
 
 Installation
 ------------
