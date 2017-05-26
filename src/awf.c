@@ -192,7 +192,7 @@ int main (int argc, char **argv)
 #else
 	vbox_widget = gtk_vbox_new (FALSE, 0);
 #endif
-	gtk_container_add (GTK_CONTAINER (vbox_window), vbox_widget);
+	gtk_box_pack_start (GTK_BOX (vbox_window), vbox_widget, TRUE, TRUE, 0);
 
 #if GTK_CHECK_VERSION(3,2,0)
 	hbox1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
@@ -214,7 +214,7 @@ int main (int argc, char **argv)
 #else
 	vpane1 = gtk_vpaned_new ();
 #endif
-	gtk_container_add (GTK_CONTAINER (vbox_widget), vpane1);
+	gtk_box_pack_start (GTK_BOX (vbox_widget), vpane1, TRUE, TRUE, 0);
 
 #if GTK_CHECK_VERSION(3,2,0)
 	hpane1 = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
