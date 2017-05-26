@@ -3,7 +3,7 @@
  *
  *  A theme preview application for gtk2 and gtk3.
  *
- *  Copyright (C) 2011-2016 Valère Monseur (valere dot monseur at ymail dot com)
+ *  Copyright (C) 2011-2017 Valère Monseur (valere dot monseur at ymail dot com)
  *
  *  This file is part of awf.
  *
@@ -40,7 +40,8 @@
  * includes
  */
 
-#include <signal.h>
+#include <glib/gprintf.h>
+#include <glib-unix.h>
 #include "gtk_empty.h"
 #include <gtk/gtk.h>
 
@@ -67,12 +68,12 @@ enum {
 static GSList *list_system_theme = NULL;
 static GSList *list_user_theme = NULL;
 
+static gboolean refresh_theme = FALSE;
+
 static GtkWidget *window;
 static GtkWidget *progressbar1, *progressbar2, *progressbar3, *progressbar4;
 static GtkWidget *scale1, *scale2, *scale3, *scale4, *harmony, *showtext;
 static GtkWidget *spinner;
-
-static gboolean refresh_theme = FALSE;
 
 /*
  * local functions
@@ -83,6 +84,8 @@ static void awf_exclude_theme (gpointer theme, gpointer unused);
 static gint awf_compare_theme (gconstpointer theme1, gconstpointer theme2);
 static void awf_set_theme (gpointer theme, guint callback_action, GtkWidget *unused);
 static void awf_refresh_theme (GtkWidget *widget, gpointer unused);
+static gboolean awf_check_refresh_theme (gpointer unused);
+static gboolean awf_sighup_handler (gpointer unused);
 
 static void awf_window_set_title (void);
 
@@ -95,9 +98,6 @@ static void awf_run_me_set_environment (gpointer display);
 static void awf_on_scale_value_changed (GtkRange *range, gpointer unused);
 
 static void awf_showtext_clicked (GtkWidget *widget, gpointer unused);
-
-static void awf_sighup_handler (int);
-static gboolean awf_check_refresh_signal (gpointer);
 
 /*
  * run baby, run!
@@ -173,7 +173,6 @@ int main (int argc, char **argv)
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	g_signal_connect (G_OBJECT (window), "destroy", G_CALLBACK (gtk_main_quit), NULL);
 	awf_window_set_title ();
-
 
 #if GTK_CHECK_VERSION(3,2,0)
 	vbox_window = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -798,10 +797,10 @@ int main (int argc, char **argv)
 
 	gtk_box_pack_start (GTK_BOX (vbox_window), gtk_statusbar_new (), FALSE, FALSE, 0);
 
-        /* refresh on SIGHUP */
+	/* refresh on SIGHUP */
 
-        signal (SIGHUP, awf_sighup_handler);
-        g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, awf_check_refresh_signal, NULL, NULL);
+	g_unix_signal_add (SIGHUP, awf_sighup_handler, NULL);
+    g_timeout_add_seconds (1, awf_check_refresh_theme, NULL);
 
 	/* go! */
 
@@ -928,6 +927,25 @@ awf_refresh_theme (GtkWidget *widget, gpointer unused)
 		g_free (default_theme);
 	} else
 		g_warning ("No default theme found (neither \"Default\" nor \"Raleigh\"), refresh of theme might not work.");
+}
+
+static gboolean
+awf_check_refresh_theme (gpointer unused)
+{
+	if (refresh_theme)
+	{
+		refresh_theme = FALSE;
+		awf_refresh_theme(NULL, NULL);
+	}
+
+    return TRUE;
+}
+
+static gboolean
+awf_sighup_handler (gpointer unused)
+{
+    refresh_theme = TRUE;
+    return G_SOURCE_CONTINUE;
 }
 
 static void
@@ -1160,7 +1178,7 @@ awf_on_scale_value_changed (GtkRange *range, gpointer unused)
 #if !GTK_CHECK_VERSION(3,0,0)
 		gchar *progress_text;
 
-		progress_text = g_strdup_printf ("%i %%", (int)value); 
+		progress_text = g_strdup_printf ("%i %%", (int)value);
 
 		gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar1), progress_text);
 		gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar3), progress_text);
@@ -1182,7 +1200,7 @@ awf_showtext_clicked (GtkWidget *widget, gpointer unused)
 			gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (progressbar3), TRUE);
 		#else
 			progress_value = gtk_range_get_value (GTK_RANGE (scale1));
-			progress_text = g_strdup_printf ("%i %%", (int)progress_value); 
+			progress_text = g_strdup_printf ("%i %%", (int)progress_value);
 
 			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar1), progress_text);
 			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar3), progress_text);
@@ -1198,21 +1216,4 @@ awf_showtext_clicked (GtkWidget *widget, gpointer unused)
 			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar3), "");
 		#endif
 	}
-}
-
-static void
-awf_sighup_handler (int signum)
-{
-    refresh_theme = TRUE;
-}
-
-static gboolean
-awf_check_refresh_signal (gpointer unused)
-{
-    if (refresh_theme)
-    {
-        awf_refresh_theme(NULL, NULL);
-        refresh_theme = FALSE;
-    }
-    return G_SOURCE_CONTINUE;
 }
