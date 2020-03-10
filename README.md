@@ -21,8 +21,8 @@ Installation
 
   * Ubuntu
 
-    sudo apt-add-repository ppa:flexiondotorg/awf  
-    sudo apt update  
+    sudo apt-add-repository ppa:flexiondotorg/awf
+    sudo apt update
     sudo apt install awf
 
   * Archlinux
@@ -33,15 +33,15 @@ Installation
 
     There is no pre-built package (yet) but you can generate RPM like this:
 
-    ./autogen.sh  
-    ./configure  
+    ./autogen.sh
+    ./configure
     make rpm
 
   * From source
 
-    ./autogen.sh  
-    ./configure  
-    make  
+    ./autogen.sh
+    ./configure
+    make
     make install
 
 Dependencies
@@ -56,6 +56,13 @@ Screenshots
 ![A widget factory](https://github.com/valr/awf/raw/gh-pages/awf-gtk2.jpg)
 
 ![A widget factory](https://github.com/valr/awf/raw/gh-pages/awf-gtk3.jpg)
+
+SIGHUP
+------
+
+  To auto reload theme on file change, you can use [entr](https://github.com/clibs/entr).
+
+    ls ~/.themes/yourtheme/gtk-3.0/*.css | entr killall -s SIGHUP awf-gtk3
 
 License
 -------
