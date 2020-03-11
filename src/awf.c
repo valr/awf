@@ -1050,7 +1050,7 @@ awf_build_menu (GtkWidget *widget)
 		gboolean checked;
 		gboolean inconsistent;
 		gboolean disabled;
-	} info[31] = {
+	} info[30] = {
 		{ 0, "_System theme" , "<Control>s" },
 		{ 1, "" },
 		{ 0, "_User theme"   , "<Control>u" },
@@ -1063,18 +1063,12 @@ awf_build_menu (GtkWidget *widget)
 		{ 3, "", "", "gtk-save-as" },
 		{ 9, "More..." },
 		{ 3, "", "<Control>p", "gtk-print" },
-		{ 4, "" },
-		{ 3, "", "<Control>w", "gtk-close", NULL, FALSE, FALSE, TRUE },
-		{ 3, "", "<Control>q", "gtk-quit", NULL, FALSE, FALSE, TRUE },
 #else
 		{ 3, "", "<Control>o", GTK_STOCK_OPEN },
 		{ 3, "", "<Control>s", GTK_STOCK_SAVE },
 		{ 3, "", "", GTK_STOCK_SAVE_AS },
 		{ 9, "More..." },
 		{ 3, "", "<Control>p", GTK_STOCK_PRINT },
-		{ 4, "" },
-		{ 3, "", "<Control>w", GTK_STOCK_CLOSE, NULL, FALSE, FALSE, TRUE },
-		{ 3, "", "<Control>q", GTK_STOCK_QUIT, NULL, FALSE, FALSE, TRUE },
 #endif
 		{ 4, "" },
 		{ 5, "Radio 1 (unchecked)"     , "", NULL, NULL, FALSE, FALSE, FALSE },
@@ -1092,6 +1086,14 @@ awf_build_menu (GtkWidget *widget)
 		{ 6, "Check 1 (unchecked)"     , "", NULL, NULL, FALSE, FALSE, TRUE },
 		{ 6, "Check 2 (checked)"       , "", NULL, NULL, TRUE,  FALSE, TRUE },
 		{ 6, "Check 3 (inconsistent)"  , "", NULL, NULL, FALSE, TRUE,  TRUE },
+		{ 4, "" },
+#if GTK_CHECK_VERSION (3,10,0)
+		{ 3, "", "<Control>w", "gtk-close", NULL, FALSE, FALSE, TRUE },
+		{ 3, "", "<Control>q", "gtk-quit" },
+#else
+		{ 3, "", "<Control>w", GTK_STOCK_CLOSE, NULL, FALSE, FALSE, TRUE },
+		{ 3, "", "<Control>q", GTK_STOCK_QUIT },
+#endif
 	}, subinfo[3] = {
 #if GTK_CHECK_VERSION (3,10,0)
 		{ 3, "", "<Control>x", "gtk-cut" },
@@ -1109,7 +1111,7 @@ awf_build_menu (GtkWidget *widget)
 
 	menubar = gtk_menu_bar_new ();
 
-	for (i = 0; i < 31; i++) {
+	for (i = 0; i < 30; i++) {
 		switch (info[i].type) {
 			case 0:
 				menu = gtk_menu_new ();
