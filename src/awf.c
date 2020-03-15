@@ -454,23 +454,23 @@ int main (int argc, char **argv)
 
 	combo1 = gtk_combo_box_text_new_with_entry ();
 	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo1), "Combo box entry");
-	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo1), "Item2");
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo1), "Second item");
 	gtk_combo_box_set_active (GTK_COMBO_BOX (combo1), 0);
 
 	combo2 = gtk_combo_box_text_new_with_entry ();
 	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo2), "Combo box entry (disabled)");
-	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo2), "Item2");
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo2), "Second item");
 	gtk_combo_box_set_active (GTK_COMBO_BOX (combo2), 0);
 	gtk_widget_set_sensitive (combo2, FALSE);
 
 	combo3 = gtk_combo_box_text_new ();
 	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo3), "Combo box");
-	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo3), "Item2");
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo3), "Second item");
 	gtk_combo_box_set_active (GTK_COMBO_BOX (combo3), 0);
 
 	combo4 = gtk_combo_box_text_new ();
 	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo4), "Combo box (disabled)");
-	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo4), "Item2");
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo4), "Second item");
 	gtk_combo_box_set_active (GTK_COMBO_BOX (combo4), 0);
 	gtk_widget_set_sensitive (combo4, FALSE);
 
@@ -502,12 +502,12 @@ int main (int argc, char **argv)
 
 	/* Check buttons */
 
-	button12 = gtk_check_button_new_with_label ("Check button1");
-	button13 = gtk_check_button_new_with_label ("Check button2");
-	button14 = gtk_check_button_new_with_label ("Check button3");
-	button15 = gtk_check_button_new_with_label ("Check button4");
-	button16 = gtk_check_button_new_with_label ("Check button5");
-	button17 = gtk_check_button_new_with_label ("Check button6");
+	button12 = gtk_check_button_new_with_label ("Check button 1");
+	button13 = gtk_check_button_new_with_label ("Check button 2");
+	button14 = gtk_check_button_new_with_label ("Check button 3");
+	button15 = gtk_check_button_new_with_label ("Check button 4");
+	button16 = gtk_check_button_new_with_label ("Check button 5");
+	button17 = gtk_check_button_new_with_label ("Check button 6");
 
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button13), TRUE);
 	gtk_toggle_button_set_inconsistent (GTK_TOGGLE_BUTTON (button14), TRUE);
@@ -532,12 +532,12 @@ int main (int argc, char **argv)
 	radio3 = gtk_radio_button_new (NULL);
 	radio4 = gtk_radio_button_new (NULL);
 
-	button18 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), "Radio button1");
-	button19 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), "Radio button2");
-	button20 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio2), "Radio button3");
-	button21 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio3), "Radio button4");
-	button22 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio3), "Radio button5");
-	button23 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio4), "Radio button6");
+	button18 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), "Radio button 1");
+	button19 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), "Radio button 2");
+	button20 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio2), "Radio button 3");
+	button21 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio3), "Radio button 4");
+	button22 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio3), "Radio button 5");
+	button23 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio4), "Radio button 6");
 
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button19), TRUE);
 	gtk_toggle_button_set_inconsistent (GTK_TOGGLE_BUTTON (button20), TRUE);
@@ -557,12 +557,12 @@ int main (int argc, char **argv)
 
 	/* other buttons */
 
-	button1 = gtk_button_new_with_label ("Button1");
-	button2 = gtk_button_new_with_label ("Button2");
+	button1 = gtk_button_new_with_label ("Button 1");
+	button2 = gtk_button_new_with_label ("Button 2");
 	gtk_widget_set_sensitive (button2, FALSE);
 
-	button3 = gtk_toggle_button_new_with_label ("Toggle button1");
-	button4 = gtk_toggle_button_new_with_label ("Toggle button2");
+	button3 = gtk_toggle_button_new_with_label ("Toggle button 1");
+	button4 = gtk_toggle_button_new_with_label ("Toggle button 2");
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button3), TRUE);
 	gtk_widget_set_sensitive (button4, FALSE);
 
