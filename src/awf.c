@@ -835,21 +835,25 @@ int main (int argc, char **argv)
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), gtk_label_new (""), gtk_label_new ("tab1"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), gtk_label_new (""), gtk_label_new ("tab2"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), gtk_label_new (""), gtk_label_new ("tab3"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), gtk_label_new (""), gtk_label_new ("tab4"));
 	gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook1), GTK_POS_TOP);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), gtk_label_new (""), gtk_label_new ("tab1"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), gtk_label_new (""), gtk_label_new ("tab2"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), gtk_label_new (""), gtk_label_new ("tab3"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), gtk_label_new (""), gtk_label_new ("tab4"));
 	gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook2), GTK_POS_BOTTOM);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), gtk_label_new (""), gtk_label_new ("tab1"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), gtk_label_new (""), gtk_label_new ("tab2"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), gtk_label_new (""), gtk_label_new ("tab3"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), gtk_label_new (""), gtk_label_new ("tab4"));
 	gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook3), GTK_POS_LEFT);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), gtk_label_new (""), gtk_label_new ("tab1"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), gtk_label_new (""), gtk_label_new ("tab2"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), gtk_label_new (""), gtk_label_new ("tab3"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), gtk_label_new (""), gtk_label_new ("tab4"));
 	gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook4), GTK_POS_RIGHT);
 
 	gtk_box_pack_start (GTK_BOX (hbox_notebook1), notebook1, FALSE, TRUE, 0);
