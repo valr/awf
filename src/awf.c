@@ -80,7 +80,7 @@ static gboolean awf_check_refresh_theme (gpointer unused);
 static gboolean awf_sighup_handler (gpointer unused);
 static void awf_window_set_title (void);
 static GtkWidget* awf_build_menu (GtkWidget *widget);
-static void awf_add_menu_item (gpointer theme, gpointer menu);
+static void awf_add_menu_item (gpointer theme, gpointer menu1);
 static void awf_run_me (GtkWidget *widget, gpointer unused);
 static void awf_run_me_set_environment (gpointer display);
 static void awf_on_scale_value_changed (GtkRange *range, gpointer unused);
@@ -88,6 +88,7 @@ static void awf_showtext_clicked (GtkWidget *widget, gpointer unused);
 static void awf_show_about (GtkWidget *widget, gpointer data);
 static void awf_show_print (GtkWidget *widget, gpointer data);
 static void awf_show_page_setup (GtkWidget *widget, gpointer data);
+static void awf_show_calendar (GtkWidget *widget, gpointer data);
 static void awf_show_properties (GtkWidget *widget, gpointer data);
 static void awf_show_save (GtkWidget *widget, gpointer data);
 static void awf_show_open_recent (GtkWidget *widget, gpointer data);
@@ -111,11 +112,11 @@ int main (int argc, char **argv)
 	GtkWidget *button1, *button2;
 	GtkWidget *button3, *button4;
 	GtkWidget *button5, *button6;
-	GtkWidget *button7, *button8, *button9, *button10;
-	GtkWidget *button11, *button12, *button13, *button14, *button15, *button16;
-	GtkWidget *button17, *button18, *button19, *button20, *button21, *button22;
-	GtkWidget *button23, *button24;
-	GtkWidget *menu;
+	GtkWidget *button7, *button8, *button9, *button10, *button11;
+	GtkWidget *button12, *button13, *button14, *button15, *button16, *button17;
+	GtkWidget *button18, *button19, *button20, *button21, *button22, *button23;
+	GtkWidget *button24, *button25;
+	GtkWidget *menu1, *menu2;
 	GtkWidget *combo1, *combo2;
 	GtkWidget *combo3, *combo4;
 	GtkWidget *entry0, *entry1, *entry2;
@@ -492,37 +493,37 @@ int main (int argc, char **argv)
 
 	/* spin buttons */
 
-	button23 = gtk_spin_button_new_with_range (1, 10, 1);
 	button24 = gtk_spin_button_new_with_range (1, 10, 1);
-	gtk_widget_set_sensitive (button24, FALSE);
+	button25 = gtk_spin_button_new_with_range (1, 10, 1);
+	gtk_widget_set_sensitive (button25, FALSE);
 
-	gtk_box_pack_start (GTK_BOX (hbox_spin_button), button23, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox_spin_button), button24, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox_spin_button), button25, FALSE, FALSE, 0);
 
 	/* Check buttons */
 
-	button11 = gtk_check_button_new_with_label ("Check button1");
-	button12 = gtk_check_button_new_with_label ("Check button2");
-	button13 = gtk_check_button_new_with_label ("Check button3");
-	button14 = gtk_check_button_new_with_label ("Check button4");
-	button15 = gtk_check_button_new_with_label ("Check button5");
-	button16 = gtk_check_button_new_with_label ("Check button6");
+	button12 = gtk_check_button_new_with_label ("Check button1");
+	button13 = gtk_check_button_new_with_label ("Check button2");
+	button14 = gtk_check_button_new_with_label ("Check button3");
+	button15 = gtk_check_button_new_with_label ("Check button4");
+	button16 = gtk_check_button_new_with_label ("Check button5");
+	button17 = gtk_check_button_new_with_label ("Check button6");
 
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button12), TRUE);
-	gtk_toggle_button_set_inconsistent (GTK_TOGGLE_BUTTON (button13), TRUE);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button15), TRUE);
-	gtk_toggle_button_set_inconsistent (GTK_TOGGLE_BUTTON (button16), TRUE);
-	gtk_widget_set_sensitive (button14, FALSE);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button13), TRUE);
+	gtk_toggle_button_set_inconsistent (GTK_TOGGLE_BUTTON (button14), TRUE);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button16), TRUE);
+	gtk_toggle_button_set_inconsistent (GTK_TOGGLE_BUTTON (button17), TRUE);
 	gtk_widget_set_sensitive (button15, FALSE);
 	gtk_widget_set_sensitive (button16, FALSE);
+	gtk_widget_set_sensitive (button17, FALSE);
 
 	gtk_box_pack_start (GTK_BOX (vbox_check_button), EMPTY, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vbox_check_button), button11, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_check_button), button12, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_check_button), button13, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_check_button), button14, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_check_button), button15, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_check_button), button16, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox_check_button), button17, FALSE, FALSE, 0);
 
 	/* radio buttons */
 
@@ -531,28 +532,28 @@ int main (int argc, char **argv)
 	radio3 = gtk_radio_button_new (NULL);
 	radio4 = gtk_radio_button_new (NULL);
 
-	button17 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), "Radio button1");
-	button18 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), "Radio button2");
-	button19 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio2), "Radio button3");
-	button20 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio3), "Radio button4");
-	button21 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio3), "Radio button5");
-	button22 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio4), "Radio button6");
+	button18 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), "Radio button1");
+	button19 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), "Radio button2");
+	button20 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio2), "Radio button3");
+	button21 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio3), "Radio button4");
+	button22 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio3), "Radio button5");
+	button23 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio4), "Radio button6");
 
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button18), TRUE);
-	gtk_toggle_button_set_inconsistent (GTK_TOGGLE_BUTTON (button19), TRUE);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button21), TRUE);
-	gtk_toggle_button_set_inconsistent (GTK_TOGGLE_BUTTON (button22), TRUE);
-	gtk_widget_set_sensitive (button20, FALSE);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button19), TRUE);
+	gtk_toggle_button_set_inconsistent (GTK_TOGGLE_BUTTON (button20), TRUE);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button22), TRUE);
+	gtk_toggle_button_set_inconsistent (GTK_TOGGLE_BUTTON (button23), TRUE);
 	gtk_widget_set_sensitive (button21, FALSE);
 	gtk_widget_set_sensitive (button22, FALSE);
+	gtk_widget_set_sensitive (button23, FALSE);
 
 	gtk_box_pack_start (GTK_BOX (vbox_radio_button), EMPTY, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vbox_radio_button), button17, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_radio_button), button18, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_radio_button), button19, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_radio_button), button20, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_radio_button), button21, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_radio_button), button22, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox_radio_button), button23, FALSE, FALSE, 0);
 
 	/* other buttons */
 
@@ -580,17 +581,30 @@ int main (int argc, char **argv)
 #if GTK_CHECK_VERSION (3,0,0)
 	button8 = gtk_switch_new ();
 	gtk_switch_set_active (GTK_SWITCH (button8), TRUE);
+
+	button9 = gtk_switch_new ();
+	gtk_switch_set_active (GTK_SWITCH (button9), TRUE);
 #else
-	menu = gtk_menu_new ();
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_menu_item_new_with_label ("Option menu"));
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_menu_item_new_with_label ("Item"));
+	menu1 = gtk_menu_new ();
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu1), gtk_menu_item_new_with_label ("Option 1"));
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu1), gtk_menu_item_new_with_label ("Option 2"));
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu1), gtk_menu_item_new_with_label ("Option 3"));
 
 	button8 = gtk_option_menu_new ();
-	gtk_option_menu_set_menu (GTK_OPTION_MENU (button8), menu);
+	gtk_option_menu_set_menu (GTK_OPTION_MENU (button8), menu1);
+
+	menu2 = gtk_menu_new ();
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu2), gtk_menu_item_new_with_label ("Option 1"));
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu2), gtk_menu_item_new_with_label ("Option 2"));
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu2), gtk_menu_item_new_with_label ("Option 3"));
+
+	button9 = gtk_option_menu_new ();
+	gtk_option_menu_set_menu (GTK_OPTION_MENU (button9), menu2);
+	gtk_widget_set_sensitive (button9, FALSE);
 #endif
 
-	button9 = gtk_link_button_new_with_label ("https://github.com/valr/awf", "Link button AWF");
-	button10 = gtk_scale_button_new (GTK_ICON_SIZE_BUTTON, 1, 10, 1, scale_icons);
+	button10 = gtk_link_button_new_with_label ("https://github.com/valr/awf", "Link button AWF");
+	button11 = gtk_scale_button_new (GTK_ICON_SIZE_BUTTON, 1, 10, 1, scale_icons);
 
 	gtk_box_pack_start (GTK_BOX (vbox_other_button), button1, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_other_button), button2, FALSE, FALSE, 0);
@@ -600,12 +614,13 @@ int main (int argc, char **argv)
 	gtk_box_pack_start (GTK_BOX (vbox_other_button), EMPTY, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_other_button), button5, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_other_button), button6, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vbox_other_button), EMPTY, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_other_button), button7, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vbox_other_button), button8, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_other_button), EMPTY, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox_other_button), button8, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_other_button), button9, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox_other_button), EMPTY, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_other_button), button10, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox_other_button), button11, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_other_button), EMPTY, FALSE, FALSE, 0);
 
 #if GTK_CHECK_VERSION (3,6,0)
@@ -1038,7 +1053,7 @@ awf_build_menu (GtkWidget *widget)
 {
 	GtkAccelGroup *ag;
 	GtkWidget *menubar;
-	GtkWidget *menu, *menu2;
+	GtkWidget *menu1, *menu2;
 	GtkWidget *menuitem;
 	GtkWidget *menuimage;
 	GSList *group1 = NULL, *group2 = NULL;
@@ -1055,7 +1070,7 @@ awf_build_menu (GtkWidget *widget)
 		gboolean checked;
 		gboolean inconsistent;
 		gboolean disabled;
-	} info[33] = {
+	} info[34] = {
 		{ 0, "_System theme" , "<Control>s" },
 		{ 1, "" },
 		{ 0, "_User theme"   , "<Control>u" },
@@ -1065,6 +1080,7 @@ awf_build_menu (GtkWidget *widget)
 #if GTK_CHECK_VERSION (3,10,0)
 		{ 3, "", "<Control>o", "gtk-open" },
 		{ 3, "Open recent" },
+		{ 3, "Calendar" },
 		{ 3, "", "<Control>s", "gtk-save" },
 		{ 3, "", ""          , "gtk-properties" },
 		{ 3, "", ""          , "gtk-page-setup" },
@@ -1074,6 +1090,7 @@ awf_build_menu (GtkWidget *widget)
 #else
 		{ 3, "", "<Control>o", GTK_STOCK_OPEN },
 		{ 3, "Open recent" },
+		{ 3, "Calendar" },
 		{ 3, "", "<Control>s", GTK_STOCK_SAVE },
 		{ 3, "", ""          , GTK_STOCK_PROPERTIES },
 		{ 3, "", ""          , GTK_STOCK_PAGE_SETUP },
@@ -1122,14 +1139,14 @@ awf_build_menu (GtkWidget *widget)
 
 	menubar = gtk_menu_bar_new ();
 
-	for (i = 0; i < 33; i++) {
+	for (i = 0; i < 34; i++) {
 		switch (info[i].type) {
 			case 0:
-				menu = gtk_menu_new ();
-				gtk_widget_show (menu);
+				menu1 = gtk_menu_new ();
+				gtk_widget_show (menu1);
 
 				menuitem = gtk_menu_item_new_with_mnemonic (info[i].mnemonic);
-				gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem), menu);
+				gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem), menu1);
 
 				gtk_menu_shell_append (GTK_MENU_SHELL (menubar), menuitem);
 				gtk_widget_show (menuitem);
@@ -1142,7 +1159,7 @@ awf_build_menu (GtkWidget *widget)
 				menuitem = gtk_menu_item_new_with_mnemonic (info[i].mnemonic);
 				gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem), menu2);
 
-				gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+				gtk_menu_shell_append (GTK_MENU_SHELL (menu1), menuitem);
 				gtk_widget_show (menuitem);
 
 				for (j = 0; j < 3; j++) {
@@ -1174,11 +1191,11 @@ awf_build_menu (GtkWidget *widget)
 				break;
 
 			case 1:
-				g_slist_foreach (list_system_theme, awf_add_menu_item, menu);
+				g_slist_foreach (list_system_theme, awf_add_menu_item, menu1);
 				break;
 
 			case 2:
-				g_slist_foreach (list_user_theme, awf_add_menu_item, menu);
+				g_slist_foreach (list_user_theme, awf_add_menu_item, menu1);
 				break;
 
 			case 3:
@@ -1220,10 +1237,12 @@ awf_build_menu (GtkWidget *widget)
 					menuitem = gtk_menu_item_new_with_mnemonic (info[i].mnemonic);
 					if (strcmp (info[i].mnemonic, (gchar*)"Open recent") == 0)
 						g_signal_connect (G_OBJECT (menuitem), "activate", G_CALLBACK (awf_show_open_recent), NULL);
+					if (strcmp (info[i].mnemonic, (gchar*)"Calendar") == 0)
+						g_signal_connect (G_OBJECT (menuitem), "activate", G_CALLBACK (awf_show_calendar), NULL);
 				}
 
 				gtk_widget_set_sensitive (menuitem, !info[i].disabled);
-				gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+				gtk_menu_shell_append (GTK_MENU_SHELL (menu1), menuitem);
 				gtk_widget_show (menuitem);
 
 				gtk_accelerator_parse (info[i].accelerator, &accelerator_key, &accelerator_mods);
@@ -1240,7 +1259,7 @@ awf_build_menu (GtkWidget *widget)
 			case 4:
 				menuitem = gtk_separator_menu_item_new ();
 
-				gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+				gtk_menu_shell_append (GTK_MENU_SHELL (menu1), menuitem);
 				gtk_widget_show (menuitem);
 				break;
 
@@ -1265,7 +1284,7 @@ awf_build_menu (GtkWidget *widget)
 				gtk_check_menu_item_set_inconsistent (GTK_CHECK_MENU_ITEM (menuitem), info[i].inconsistent);
 				gtk_widget_set_sensitive (menuitem, !info[i].disabled);
 
-				gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+				gtk_menu_shell_append (GTK_MENU_SHELL (menu1), menuitem);
 				gtk_widget_show (menuitem);
 				break;
 
@@ -1275,13 +1294,13 @@ awf_build_menu (GtkWidget *widget)
 				gtk_check_menu_item_set_inconsistent (GTK_CHECK_MENU_ITEM (menuitem), info[i].inconsistent);
 				gtk_widget_set_sensitive (menuitem, !info[i].disabled);
 
-				gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+				gtk_menu_shell_append (GTK_MENU_SHELL (menu1), menuitem);
 				gtk_widget_show (menuitem);
 				break;
 
 			case 7:
 				menuitem = gtk_tearoff_menu_item_new ();
-				gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+				gtk_menu_shell_append (GTK_MENU_SHELL (menu1), menuitem);
 		}
 	}
 
@@ -1509,6 +1528,28 @@ awf_show_page_setup (GtkWidget* widget, gpointer data)
 }
 
 static void
+awf_show_calendar (GtkWidget* widget, gpointer data)
+{
+	GtkWidget *dialog, *calendar;
+
+	dialog = gtk_dialog_new ();
+
+	calendar = gtk_calendar_new ();
+	gtk_calendar_set_display_options (GTK_CALENDAR (calendar), GTK_CALENDAR_SHOW_HEADING
+                                        | GTK_CALENDAR_SHOW_DAY_NAMES
+                                        | GTK_CALENDAR_SHOW_WEEK_NUMBERS);
+
+	gtk_widget_show (calendar);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), calendar, FALSE, FALSE, 0);
+
+	gtk_dialog_add_button (GTK_DIALOG (dialog), "Ok", 0);
+	gtk_window_set_icon_name (GTK_WINDOW (dialog), "awf");
+	gtk_window_set_title (GTK_WINDOW (dialog), "GtkMessageDialog with Calendar");
+	gtk_dialog_run (GTK_DIALOG (dialog));
+	gtk_widget_destroy (dialog);
+}
+
+static void
 awf_show_properties (GtkWidget* widget, gpointer data)
 {
 	GtkWidget *dialog;
@@ -1520,7 +1561,7 @@ awf_show_properties (GtkWidget* widget, gpointer data)
 		GTK_BUTTONS_OK,
 		"Hello");
 
-	gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pulvinar ligula ut ante viverra, et fermentum ipsum malesuada. Aliquam erat volutpat. Fusce commodo nibh ultrices semper rutrum. Maecenas facilisis pulvinar libero, ut mollis turpis interdum ultrices.");
+	gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pulvinar ligula ut ante viverra, et fermentum ipsum malesuada. Aliquam erat volutpat. Fusce commodo nibh ultrices semper rutrum.");
 
 	gtk_window_set_icon_name (GTK_WINDOW (dialog), "awf");
 	gtk_window_set_title (GTK_WINDOW (dialog), "GtkMessageDialog");
