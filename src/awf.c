@@ -416,7 +416,7 @@ int main (int argc, char **argv)
 	icon2 = GTK_WIDGET (gtk_tool_button_new_from_stock (GTK_STOCK_GOTO_LAST));
 #endif
 #if GTK_CHECK_VERSION (3,10,0)
-	icon3 = GTK_WIDGET (gtk_tool_button_new (NULL, NULL));
+	icon3 = GTK_WIDGET (gtk_toggle_tool_button_new ());
 	gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (icon3), "gtk-add");
 #else
 	icon3 = GTK_WIDGET (gtk_toggle_tool_button_new_from_stock (GTK_STOCK_ADD));
@@ -430,9 +430,6 @@ int main (int argc, char **argv)
 #endif
 	gtk_widget_set_sensitive (icon2, FALSE);
 	gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (icon3), TRUE);
-/** @todo
- * (awf-gtk3:9085): GLib-GObject-WARNING **: 11:00:01.134: invalid cast from 'GtkToolButton' to 'GtkToggleToolButton'
- * (awf-gtk3:9085): Gtk-CRITICAL **: 11:00:01.134: gtk_toggle_tool_button_set_active: assertion 'GTK_IS_TOGGLE_TOOL_BUTTON (button)' failed */
 
 	g_signal_connect (G_OBJECT (refresh), "clicked", G_CALLBACK (awf_refresh_theme), NULL);
 	g_signal_connect (G_OBJECT (awf), "clicked", G_CALLBACK (awf_run_me), NULL);
