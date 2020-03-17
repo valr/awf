@@ -42,6 +42,7 @@
 #include <glib-unix.h>
 #include <gtk/gtk.h>
 #include <gtk/gtkunixprint.h>
+#include <gdk/gdk.h>
 #include "gtk_empty.h"
 
 // defines
@@ -93,6 +94,7 @@ static void awf_show_properties (GtkWidget *widget, gpointer data);
 static void awf_show_save (GtkWidget *widget, gpointer data);
 static void awf_show_open_recent (GtkWidget *widget, gpointer data);
 static void awf_show_open (GtkWidget *widget, gpointer data);
+static gboolean capplet_dialog_page_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event, GtkWindow *window);
 
 // run baby, run!
 
@@ -122,7 +124,7 @@ int main (int argc, char **argv)
 	GtkWidget *entry0, *entry1, *entry2;
 	GtkWidget *radio1, *radio2, *radio3, *radio4;
 	GtkWidget *frame1, *frame2, *frame3, *frame4;
-	GtkWidget *notebook1, *notebook2, *notebook3, *notebook4;
+	GtkWidget *notebook1, *notebook2, *notebook3, *notebook4, *notebook5;
 	GtkWidget *vseparator1, *vseparator2, *vseparator3;
 	GtkWidget *hseparator1;
 	GtkWidget *label1, *label2;
@@ -580,7 +582,8 @@ int main (int argc, char **argv)
 	gtk_switch_set_active (GTK_SWITCH (button8), TRUE);
 
 	button9 = gtk_switch_new ();
-	gtk_switch_set_active (GTK_SWITCH (button9), TRUE);
+	gtk_switch_set_active (GTK_SWITCH (button9), FALSE);
+	gtk_widget_set_sensitive (button9, FALSE);
 #else
 	menu1 = gtk_menu_new ();
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu1), gtk_menu_item_new_with_label ("Option 1"));
@@ -831,35 +834,75 @@ int main (int argc, char **argv)
 	notebook2 = gtk_notebook_new ();
 	notebook3 = gtk_notebook_new ();
 	notebook4 = gtk_notebook_new ();
+	notebook5 = gtk_notebook_new ();
 
+#if GTK_CHECK_VERSION (3,0,0)
+	gtk_widget_add_events (GTK_WIDGET (notebook1), GDK_SCROLL_MASK);
+	g_signal_connect (GTK_WIDGET (notebook1), "scroll-event",
+					G_CALLBACK (capplet_dialog_page_scroll_event_cb),
+					GTK_WINDOW (window));
+	gtk_widget_add_events (GTK_WIDGET (notebook2), GDK_SCROLL_MASK);
+	g_signal_connect (GTK_WIDGET (notebook2), "scroll-event",
+					G_CALLBACK (capplet_dialog_page_scroll_event_cb),
+					GTK_WINDOW (window));
+	gtk_widget_add_events (GTK_WIDGET (notebook3), GDK_SCROLL_MASK);
+	g_signal_connect (GTK_WIDGET (notebook3), "scroll-event",
+					G_CALLBACK (capplet_dialog_page_scroll_event_cb),
+					GTK_WINDOW (window));
+	gtk_widget_add_events (GTK_WIDGET (notebook4), GDK_SCROLL_MASK);
+	g_signal_connect (GTK_WIDGET (notebook4), "scroll-event",
+					G_CALLBACK (capplet_dialog_page_scroll_event_cb),
+					GTK_WINDOW (window));
+	gtk_widget_add_events (GTK_WIDGET (notebook5), GDK_SCROLL_MASK);
+	g_signal_connect (GTK_WIDGET (notebook5), "scroll-event",
+					G_CALLBACK (capplet_dialog_page_scroll_event_cb),
+					GTK_WINDOW (window));
+#endif
+
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook1), FALSE);
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), gtk_label_new (""), gtk_label_new ("tab1"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), gtk_label_new (""), gtk_label_new ("tab2"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), gtk_label_new (""), gtk_label_new ("tab3"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), gtk_label_new (""), gtk_label_new ("tab4"));
 	gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook1), GTK_POS_TOP);
 
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook2), FALSE);
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), gtk_label_new (""), gtk_label_new ("tab1"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), gtk_label_new (""), gtk_label_new ("tab2"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), gtk_label_new (""), gtk_label_new ("tab3"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), gtk_label_new (""), gtk_label_new ("tab4"));
 	gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook2), GTK_POS_BOTTOM);
 
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook3), FALSE);
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), gtk_label_new (""), gtk_label_new ("tab1"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), gtk_label_new (""), gtk_label_new ("tab2"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), gtk_label_new (""), gtk_label_new ("tab3"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), gtk_label_new (""), gtk_label_new ("tab4"));
 	gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook3), GTK_POS_LEFT);
 
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook4), FALSE);
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), gtk_label_new (""), gtk_label_new ("tab1"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), gtk_label_new (""), gtk_label_new ("tab2"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), gtk_label_new (""), gtk_label_new ("tab3"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), gtk_label_new (""), gtk_label_new ("tab4"));
 	gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook4), GTK_POS_RIGHT);
 
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook5), TRUE);
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab1"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab2"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab3"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab4"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab5"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab6"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab7"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab8"));
+	gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook5), GTK_POS_RIGHT);
+
 	gtk_box_pack_start (GTK_BOX (hbox_notebook1), notebook1, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox_notebook1), notebook2, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox_notebook2), notebook3, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox_notebook2), notebook4, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox_notebook2), notebook5, FALSE, TRUE, 0);
 
 	/* status bar */
 
@@ -1628,4 +1671,70 @@ awf_show_open (GtkWidget* widget, gpointer data)
 	gtk_dialog_run (GTK_DIALOG (dialog));
 	gtk_widget_destroy (dialog);
 }
+
+
+/* https://github.com/mate-desktop/mate-control-center/blob/master/capplets/common/capplet-util.c */
+/* source mate-appearance-properties from mate-control-center, GNU GPL 2 */
+
+#if GTK_CHECK_VERSION (3,0,0)
+static gboolean
+capplet_dialog_page_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event, GtkWindow *window)
+{
+    GtkNotebook *notebook = GTK_NOTEBOOK (widget);
+    GtkWidget *child, *event_widget, *action_widget;
+
+    child = gtk_notebook_get_nth_page (notebook, gtk_notebook_get_current_page (notebook));
+    if (child == NULL)
+        return FALSE;
+
+    event_widget = gtk_get_event_widget ((GdkEvent *) event);
+
+    /* Ignore scroll events from the content of the page */
+    if (event_widget == NULL ||
+        event_widget == child ||
+        gtk_widget_is_ancestor (event_widget, child))
+        return FALSE;
+
+    /* And also from the action widgets */
+    action_widget = gtk_notebook_get_action_widget (notebook, GTK_PACK_START);
+    if (event_widget == action_widget ||
+        (action_widget != NULL && gtk_widget_is_ancestor (event_widget, action_widget)))
+        return FALSE;
+    action_widget = gtk_notebook_get_action_widget (notebook, GTK_PACK_END);
+    if (event_widget == action_widget ||
+        (action_widget != NULL && gtk_widget_is_ancestor (event_widget, action_widget)))
+        return FALSE;
+
+    switch (event->direction) {
+    case GDK_SCROLL_RIGHT:
+    case GDK_SCROLL_DOWN:
+        gtk_notebook_next_page (notebook);
+        break;
+    case GDK_SCROLL_LEFT:
+    case GDK_SCROLL_UP:
+        gtk_notebook_prev_page (notebook);
+        break;
+    case GDK_SCROLL_SMOOTH:
+        switch (gtk_notebook_get_tab_pos (notebook)) {
+            case GTK_POS_LEFT:
+            case GTK_POS_RIGHT:
+                if (event->delta_y > 0)
+                    gtk_notebook_next_page (notebook);
+                else if (event->delta_y < 0)
+                    gtk_notebook_prev_page (notebook);
+                break;
+            case GTK_POS_TOP:
+            case GTK_POS_BOTTOM:
+                if (event->delta_x > 0)
+                    gtk_notebook_next_page (notebook);
+                else if (event->delta_x < 0)
+                    gtk_notebook_prev_page (notebook);
+                break;
+            }
+        break;
+    }
+
+    return TRUE;
+}
+#endif
 
