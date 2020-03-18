@@ -43,6 +43,7 @@
 #include <gtk/gtk.h>
 #include <gtk/gtkunixprint.h>
 #include <gdk/gdk.h>
+#include <time.h>
 #include "gtk_empty.h"
 
 // defines
@@ -1027,6 +1028,9 @@ static void
 awf_refresh_theme (GtkWidget *widget, gpointer unused)
 {
 	gchar *default_theme = NULL, *current_theme = NULL;
+	gchar buffer[80];
+	time_t rawtime;
+	struct tm *timeinfo;
 
 	if (g_slist_find_custom (list_system_theme, "Default", &awf_compare_theme))
 		default_theme = g_strdup ("Default");
@@ -1039,14 +1043,18 @@ awf_refresh_theme (GtkWidget *widget, gpointer unused)
 #if GTK_CHECK_VERSION (3,16,0)
 		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", default_theme, NULL);
 		g_usleep (G_USEC_PER_SEC);
-		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", (gchar*) current_theme, NULL);
+		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", (gchar*)current_theme, NULL);
 #else
 		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", default_theme, NULL);
 		g_usleep (G_USEC_PER_SEC);
-		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", (gchar*) current_theme, NULL);
+		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", (gchar*)current_theme, NULL);
 #endif
 
-		gtk_statusbar_push (GTK_STATUSBAR (statusbar), gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "gné"), "Theme reloaded.");
+		time (&rawtime);
+		timeinfo = localtime (&rawtime);
+		strftime (buffer, 80, "Theme reloaded at %ET.", timeinfo);
+
+		gtk_statusbar_push (GTK_STATUSBAR (statusbar), gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "gné"), (gchar*)buffer);
 
 		g_free (current_theme);
 		g_free (default_theme);
