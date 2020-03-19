@@ -66,7 +66,7 @@ static GSList *list_user_theme = NULL;
 static GSList *theme_group = NULL;
 static GtkWidget *window;
 static GtkWidget *progressbar1, *progressbar2, *progressbar3, *progressbar4;
-static GtkWidget *scale1, *scale2, *scale3, *scale4, *harmony, *showtext;
+static GtkWidget *scale1, *scale2, *scale3, *scale4, *showtext;
 static GtkWidget *spinner;
 static GtkWidget *statusbar;
 
@@ -723,10 +723,6 @@ int main (int argc, char **argv)
 #endif
 		gtk_button_box_set_layout (GTK_BUTTON_BOX (vbox_buttonbox), GTK_BUTTONBOX_START);
 		gtk_box_pack_start (GTK_BOX (vbox_progressbar_scale), vbox_buttonbox, FALSE, FALSE, 0);
-
-		harmony = gtk_check_button_new_with_label ("Move in harmony");
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (harmony), TRUE);
-		gtk_box_pack_start (GTK_BOX (vbox_buttonbox), harmony, FALSE, FALSE, 0);
 
 		showtext = gtk_check_button_new_with_label ("Show text");
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (showtext), FALSE);
@@ -1539,10 +1535,6 @@ static void
 awf_on_scale_value_changed (GtkRange *range, gpointer unused)
 {
 	gdouble value;
-
-	if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (harmony)))
-		return;
-
 	value = gtk_range_get_value (range);
 
 	if (scale1 != (GtkWidget*)range) gtk_range_set_value (GTK_RANGE (scale1), value);
@@ -1555,23 +1547,15 @@ awf_on_scale_value_changed (GtkRange *range, gpointer unused)
 	gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar3), value / 100.0);
 	gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar4), value / 100.0);
 
-	if (value >= 50.0)
-		gtk_spinner_start (GTK_SPINNER (spinner));
-	else
-		gtk_spinner_stop (GTK_SPINNER (spinner));
-
-	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (showtext))) {
 #if !GTK_CHECK_VERSION (3,0,0)
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (showtext))) {
 		gchar *progress_text;
-
 		progress_text = g_strdup_printf ("%i %%", (int)value);
-
 		gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar1), progress_text);
 		gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar3), progress_text);
-
 		g_free (progress_text);
-#endif
 	}
+#endif
 }
 
 static void
