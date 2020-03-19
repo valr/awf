@@ -67,6 +67,7 @@ static GSList *theme_group = NULL;
 static GtkWidget *window;
 static GtkWidget *progressbar1, *progressbar2, *progressbar3, *progressbar4;
 static GtkWidget *scale1, *scale2, *scale3, *scale4, *showtext;
+static GtkWidget *notebook1, *notebook2, *notebook3, *notebook4;
 static GtkWidget *spinner;
 static GtkWidget *statusbar;
 
@@ -86,6 +87,7 @@ static void awf_run_me (GtkWidget *widget, gpointer unused);
 static void awf_run_me_set_environment (gpointer display);
 static void awf_on_scale_value_changed (GtkRange *range, gpointer unused);
 static void awf_showtext_clicked (GtkWidget *widget, gpointer unused);
+static void awf_showscrollable_clicked (GtkWidget *widget, gpointer unused);
 static void awf_show_about (GtkWidget *widget, gpointer data);
 static void awf_show_print (GtkWidget *widget, gpointer data);
 static void awf_show_page_setup (GtkWidget *widget, gpointer data);
@@ -109,7 +111,7 @@ int main (int argc, char **argv)
 	GtkWidget *vbox_progressbar, *vbox_scale;
 	GtkWidget *vbox_buttonbox;
 	GtkWidget *hbox1, *hbox_check_radio_button;
-	GtkWidget *hbox_frame1, *hbox_frame2, *vbox_notebook1, *vbox_notebook2, *hbox_notebook1, *hbox_notebook2, *hbox_notebook3, *hbox_notebook4;
+	GtkWidget *hbox_frame1, *hbox_frame2, *hbox_notebook1, *hbox_notebook2;
 	GtkWidget *hbox_spin_button, *hbox_progressbar, *hbox_scale;
 	GtkWidget *button1, *button2, *button3, *button4, *button5, *button6, *button7, *button8, *button9, *button10;
 	GtkWidget *button11, *button12, *button13, *button14, *button15, *button16, *button17, *button18, *button19, *button20;
@@ -119,9 +121,7 @@ int main (int argc, char **argv)
 	GtkWidget *entry0, *entry1, *entry2;
 	GtkWidget *radio1, *radio2, *radio3, *radio4;
 	GtkWidget *frame1, *frame2, *frame3, *frame4;
-	GtkWidget *notebook1, *notebook2, *notebook3, *notebook4, *notebook5, *notebook6, *notebook7, *notebook8;
-	GtkWidget *vseparator1, *vseparator2, *vseparator3;
-	GtkWidget *hseparator1;
+	GtkWidget *vseparator1, *vseparator2, *vseparator3, *hseparator1;
 	GtkWidget *label1, *label2;
 	GtkWidget *tooltip;
 	GtkWidget *vpane1, *hpane1, *hpane2;
@@ -246,40 +246,21 @@ int main (int argc, char **argv)
 	gtk_container_set_border_width (GTK_CONTAINER (hbox_frame2), 10);
 
 #if GTK_CHECK_VERSION (3,2,0)
-	vbox_notebook1 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-	vbox_notebook2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 	hbox_notebook1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
 	hbox_notebook2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
-	hbox_notebook3 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
-	hbox_notebook4 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
-	gtk_box_set_homogeneous (GTK_BOX (vbox_notebook1), TRUE);
-	gtk_box_set_homogeneous (GTK_BOX (vbox_notebook2), TRUE);
 	gtk_box_set_homogeneous (GTK_BOX (hbox_notebook1), TRUE);
 	gtk_box_set_homogeneous (GTK_BOX (hbox_notebook2), TRUE);
-	gtk_box_set_homogeneous (GTK_BOX (hbox_notebook3), TRUE);
-	gtk_box_set_homogeneous (GTK_BOX (hbox_notebook4), TRUE);
 #else
-	vbox_notebook1 = gtk_vbox_new (TRUE, 0);
-	vbox_notebook2 = gtk_vbox_new (TRUE, 0);
 	hbox_notebook1 = gtk_hbox_new (TRUE, 3);
 	hbox_notebook2 = gtk_hbox_new (TRUE, 3);
-	hbox_notebook3 = gtk_hbox_new (TRUE, 3);
-	hbox_notebook4 = gtk_hbox_new (TRUE, 3);
 #endif
 	gtk_container_set_border_width (GTK_CONTAINER (hbox_notebook1), 10);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox_notebook2), 10);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox_notebook3), 10);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox_notebook4), 10);
-
-	gtk_container_add (GTK_CONTAINER (vbox_notebook1), hbox_notebook1);
-	gtk_container_add (GTK_CONTAINER (vbox_notebook1), hbox_notebook3);
-	gtk_container_add (GTK_CONTAINER (vbox_notebook2), hbox_notebook2);
-	gtk_container_add (GTK_CONTAINER (vbox_notebook2), hbox_notebook4);
 
 	gtk_paned_add1 (GTK_PANED (hpane1), hbox_frame1);
 	gtk_paned_add2 (GTK_PANED (hpane1), hbox_frame2);
-	gtk_paned_add1 (GTK_PANED (hpane2), vbox_notebook1);
-	gtk_paned_add2 (GTK_PANED (hpane2), vbox_notebook2);
+	gtk_paned_add1 (GTK_PANED (hpane2), hbox_notebook1);
+	gtk_paned_add2 (GTK_PANED (hpane2), hbox_notebook2);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	vbox_combo_entry_spin_check_radio_button = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -431,6 +412,7 @@ int main (int argc, char **argv)
 
 		gtk_widget_set_sensitive (icon2, FALSE);
 		gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (icon3), TRUE);
+		g_signal_connect (G_OBJECT (icon3), "clicked", G_CALLBACK (awf_showscrollable_clicked), NULL);
 
 		g_signal_connect (G_OBJECT (refresh), "clicked", G_CALLBACK (awf_refresh_theme), NULL);
 		g_signal_connect (G_OBJECT (awf), "clicked", G_CALLBACK (awf_run_me), NULL);
@@ -890,85 +872,6 @@ int main (int argc, char **argv)
 		gtk_box_pack_start (GTK_BOX (hbox_notebook1), notebook2, FALSE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (hbox_notebook2), notebook3, FALSE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (hbox_notebook2), notebook4, FALSE, TRUE, 0);
-	}
-
-	/* notebooks scrollable */
-	{
-		notebook5 = gtk_notebook_new ();
-		notebook6 = gtk_notebook_new ();
-		notebook7 = gtk_notebook_new ();
-		notebook8 = gtk_notebook_new ();
-
-#if GTK_CHECK_VERSION (3,0,0)
-		gtk_widget_add_events (GTK_WIDGET (notebook5), GDK_SCROLL_MASK);
-		g_signal_connect (GTK_WIDGET (notebook5), "scroll-event",
-						G_CALLBACK (capplet_dialog_page_scroll_event_cb),
-						GTK_WINDOW (window));
-
-		gtk_widget_add_events (GTK_WIDGET (notebook6), GDK_SCROLL_MASK);
-		g_signal_connect (GTK_WIDGET (notebook6), "scroll-event",
-						G_CALLBACK (capplet_dialog_page_scroll_event_cb),
-						GTK_WINDOW (window));
-
-		gtk_widget_add_events (GTK_WIDGET (notebook7), GDK_SCROLL_MASK);
-		g_signal_connect (GTK_WIDGET (notebook7), "scroll-event",
-						G_CALLBACK (capplet_dialog_page_scroll_event_cb),
-						GTK_WINDOW (window));
-
-		gtk_widget_add_events (GTK_WIDGET (notebook8), GDK_SCROLL_MASK);
-		g_signal_connect (GTK_WIDGET (notebook8), "scroll-event",
-						G_CALLBACK (capplet_dialog_page_scroll_event_cb),
-						GTK_WINDOW (window));
-#endif
-
-		gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook5), TRUE);
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab1"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab2"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab3"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab4"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab5"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab6"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab7"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook5), gtk_label_new (""), gtk_label_new ("tab8"));
-		gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook5), GTK_POS_TOP);
-
-		gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook6), TRUE);
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook6), gtk_label_new (""), gtk_label_new ("tab1"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook6), gtk_label_new (""), gtk_label_new ("tab2"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook6), gtk_label_new (""), gtk_label_new ("tab3"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook6), gtk_label_new (""), gtk_label_new ("tab4"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook6), gtk_label_new (""), gtk_label_new ("tab5"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook6), gtk_label_new (""), gtk_label_new ("tab6"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook6), gtk_label_new (""), gtk_label_new ("tab7"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook6), gtk_label_new (""), gtk_label_new ("tab8"));
-		gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook6), GTK_POS_BOTTOM);
-
-		gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook7), TRUE);
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook7), gtk_label_new (""), gtk_label_new ("tab1"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook7), gtk_label_new (""), gtk_label_new ("tab2"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook7), gtk_label_new (""), gtk_label_new ("tab3"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook7), gtk_label_new (""), gtk_label_new ("tab4"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook7), gtk_label_new (""), gtk_label_new ("tab5"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook7), gtk_label_new (""), gtk_label_new ("tab6"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook7), gtk_label_new (""), gtk_label_new ("tab7"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook7), gtk_label_new (""), gtk_label_new ("tab8"));
-		gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook7), GTK_POS_LEFT);
-
-		gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook8), TRUE);
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook8), gtk_label_new (""), gtk_label_new ("tab1"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook8), gtk_label_new (""), gtk_label_new ("tab2"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook8), gtk_label_new (""), gtk_label_new ("tab3"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook8), gtk_label_new (""), gtk_label_new ("tab4"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook8), gtk_label_new (""), gtk_label_new ("tab5"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook8), gtk_label_new (""), gtk_label_new ("tab6"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook8), gtk_label_new (""), gtk_label_new ("tab7"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook8), gtk_label_new (""), gtk_label_new ("tab8"));
-		gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook8), GTK_POS_RIGHT);
-
-		gtk_box_pack_start (GTK_BOX (hbox_notebook3), notebook5, FALSE, TRUE, 0);
-		gtk_box_pack_start (GTK_BOX (hbox_notebook3), notebook6, FALSE, TRUE, 0);
-		gtk_box_pack_start (GTK_BOX (hbox_notebook4), notebook7, FALSE, TRUE, 0);
-		gtk_box_pack_start (GTK_BOX (hbox_notebook4), notebook8, FALSE, TRUE, 0);
 	}
 
 	/* status bar */
@@ -1586,6 +1489,15 @@ awf_showtext_clicked (GtkWidget *widget, gpointer unused)
 			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar3), "");
 		#endif
 	}
+}
+
+static void
+awf_showscrollable_clicked (GtkWidget *widget, gpointer unused)
+{
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook1), !gtk_notebook_get_scrollable (GTK_NOTEBOOK (notebook1)));
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook2), !gtk_notebook_get_scrollable (GTK_NOTEBOOK (notebook2)));
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook3), !gtk_notebook_get_scrollable (GTK_NOTEBOOK (notebook3)));
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook4), !gtk_notebook_get_scrollable (GTK_NOTEBOOK (notebook4)));
 }
 
 
