@@ -42,7 +42,7 @@ make rpm
   * From source
 
 ```
-apt install dh-autoreconf libgtk-3-dev libgtk2.0-dev
+apt install dh-autoreconf libgtk2.0-dev libgtk-3-dev
 ./autogen.sh
 ./configure
 make
@@ -66,8 +66,10 @@ SIGHUP
 ------
 
   To auto reload theme on file change, you can use [entr](https://github.com/clibs/entr).
-
-    ls ~/.themes/yourtheme/gtk-3.0/*.css | entr killall -s SIGHUP awf-gtk3
+```
+apt install entr
+ls ~/.themes/yourtheme/gtk-3.0/*.css | entr killall -s SIGHUP awf-gtk3
+```
 
 License
 -------
