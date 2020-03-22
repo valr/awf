@@ -325,7 +325,7 @@ int main (int argc, char **argv)
 #else
 	vbox_combo_entry = gtk_vbox_new (FALSE, 0);
 #endif
-	gtk_container_add (GTK_CONTAINER (vbox_combo_entry_spin_check_radio_button), vbox_combo_entry);
+	gtk_box_pack_start (GTK_BOX (vbox_combo_entry_spin_check_radio_button), vbox_combo_entry, TRUE, TRUE, 0);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	hbox_spin_button = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
@@ -333,7 +333,7 @@ int main (int argc, char **argv)
 #else
 	hbox_spin_button = gtk_hbox_new (TRUE, 0);
 #endif
-	gtk_container_add (GTK_CONTAINER (vbox_combo_entry_spin_check_radio_button), hbox_spin_button);
+	gtk_box_pack_start (GTK_BOX (vbox_combo_entry_spin_check_radio_button), hbox_spin_button, FALSE, TRUE, 0);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	hbox_check_radio_button = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
@@ -341,7 +341,7 @@ int main (int argc, char **argv)
 #else
 	hbox_check_radio_button = gtk_hbox_new (FALSE, 0);
 #endif
-	gtk_container_add (GTK_CONTAINER (vbox_combo_entry_spin_check_radio_button), hbox_check_radio_button);
+	gtk_box_pack_start (GTK_BOX (vbox_combo_entry_spin_check_radio_button), hbox_check_radio_button, TRUE, TRUE, 0);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	vbox_check_button = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -349,7 +349,7 @@ int main (int argc, char **argv)
 #else
 	vbox_check_button = gtk_vbox_new (FALSE, 0);
 #endif
-	gtk_container_add (GTK_CONTAINER (hbox_check_radio_button), vbox_check_button);
+	gtk_box_pack_start (GTK_BOX (hbox_check_radio_button), vbox_check_button, TRUE, TRUE, 0);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	vbox_radio_button = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -357,7 +357,7 @@ int main (int argc, char **argv)
 #else
 	vbox_radio_button = gtk_vbox_new (FALSE, 0);
 #endif
-	gtk_container_add (GTK_CONTAINER (hbox_check_radio_button), vbox_radio_button);
+	gtk_box_pack_start (GTK_BOX (hbox_check_radio_button), vbox_radio_button, TRUE, TRUE, 0);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	vbox_progressbar = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -365,7 +365,7 @@ int main (int argc, char **argv)
 #else
 	vbox_progressbar = gtk_vbox_new (FALSE, 0);
 #endif
-	gtk_container_add (GTK_CONTAINER (vbox_progressbar_scale), vbox_progressbar);
+	gtk_box_pack_start (GTK_BOX (vbox_progressbar_scale), vbox_progressbar, TRUE, TRUE, 0);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	hbox_progressbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
@@ -373,7 +373,7 @@ int main (int argc, char **argv)
 #else
 	hbox_progressbar = gtk_hbox_new (TRUE, 0);
 #endif
-	gtk_container_add (GTK_CONTAINER (vbox_progressbar_scale), hbox_progressbar);
+	gtk_box_pack_start (GTK_BOX (vbox_progressbar_scale), hbox_progressbar, TRUE, TRUE, 0);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	vbox_scale = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -381,7 +381,7 @@ int main (int argc, char **argv)
 #else
 	vbox_scale = gtk_vbox_new (FALSE, 0);
 #endif
-	gtk_container_add (GTK_CONTAINER (vbox_progressbar_scale), vbox_scale);
+	gtk_box_pack_start (GTK_BOX (vbox_progressbar_scale), vbox_scale, TRUE, TRUE, 0);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	hbox_scale = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
@@ -389,7 +389,7 @@ int main (int argc, char **argv)
 #else
 	hbox_scale = gtk_hbox_new (TRUE, 0);
 #endif
-	gtk_container_add (GTK_CONTAINER (vbox_progressbar_scale), hbox_scale);
+	gtk_box_pack_start (GTK_BOX (vbox_progressbar_scale), hbox_scale, TRUE, TRUE, 0);
 
 	/* toolbar */
 	{
