@@ -547,6 +547,7 @@ int main (int argc, char **argv)
 		gtk_widget_set_sensitive (button4, FALSE);
 
 		button5 = gtk_font_button_new ();
+		gtk_widget_set_size_request (GTK_WIDGET (button5), 170, -1);
 
 #if GTK_CHECK_VERSION (3,14,0)
 		gdk_rgba_parse (&color, "#7796ba");
