@@ -126,7 +126,7 @@ int main (int argc, char **argv)
 	GtkWidget *tooltip;
 	GtkWidget *vpane1, *hpane1, *hpane2;
 	GtkWidget *scrolled_window1, *scrolled_window2;
-	GtkWidget *refresh, *awf, *icon1, *icon2, *icon3;
+	GtkWidget *refresh, *awf, *icon1, *icon2, *icon3, *search;
 	GtkWidget *levelbar1, *levelbar2;
 	GtkCellRenderer *renderer1, *renderer2;
 	GtkTreeModel *model1, *model2;
@@ -208,7 +208,7 @@ int main (int argc, char **argv)
 #else
 	hseparator1 = gtk_hseparator_new ();
 #endif
-	gtk_container_add (GTK_CONTAINER (vbox_widget), hseparator1);
+	gtk_box_pack_start (GTK_BOX (vbox_widget), hseparator1, FALSE, FALSE, 0);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	vpane1 = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
@@ -276,7 +276,7 @@ int main (int argc, char **argv)
 #else
 	vseparator1 = gtk_vseparator_new ();
 #endif
-	gtk_container_add (GTK_CONTAINER (hbox1), vseparator1);
+	gtk_box_pack_start (GTK_BOX (hbox1), vseparator1, FALSE, FALSE, 0);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	vbox_other_button = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -292,7 +292,7 @@ int main (int argc, char **argv)
 #else
 	vseparator2 = gtk_vseparator_new ();
 #endif
-	gtk_container_add (GTK_CONTAINER (hbox1), vseparator2);
+	gtk_box_pack_start (GTK_BOX (hbox1), vseparator2, FALSE, FALSE, 0);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	vbox_progressbar_scale = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
@@ -308,7 +308,7 @@ int main (int argc, char **argv)
 #else
 	vseparator3 = gtk_vseparator_new ();
 #endif
-	gtk_container_add (GTK_CONTAINER (hbox1), vseparator3);
+	gtk_box_pack_start (GTK_BOX (hbox1), vseparator3, FALSE, FALSE, 0);
 
 #if GTK_CHECK_VERSION (3,2,0)
 	vbox_label_treeview = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -412,8 +412,8 @@ int main (int argc, char **argv)
 
 		gtk_widget_set_sensitive (icon2, FALSE);
 		gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (icon3), TRUE);
-		g_signal_connect (G_OBJECT (icon3), "clicked", G_CALLBACK (awf_showscrollable_clicked), NULL);
 
+		g_signal_connect (G_OBJECT (icon3), "clicked", G_CALLBACK (awf_showscrollable_clicked), NULL);
 		g_signal_connect (G_OBJECT (refresh), "clicked", G_CALLBACK (awf_refresh_theme), NULL);
 		g_signal_connect (G_OBJECT (awf), "clicked", G_CALLBACK (awf_run_me), NULL);
 
