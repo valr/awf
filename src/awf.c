@@ -329,9 +329,9 @@ int main (int argc, char **argv)
 
 #if GTK_CHECK_VERSION (3,2,0)
 	hbox_spin_button = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-	gtk_box_set_homogeneous (GTK_BOX (hbox_spin_button), TRUE);
+	gtk_box_set_homogeneous (GTK_BOX (hbox_spin_button), FALSE);
 #else
-	hbox_spin_button = gtk_hbox_new (TRUE, 0);
+	hbox_spin_button = gtk_hbox_new (FALSE, 0);
 #endif
 	gtk_box_pack_start (GTK_BOX (vbox_combo_entry_spin_check_radio_button), hbox_spin_button, FALSE, TRUE, 0);
 
@@ -475,7 +475,9 @@ int main (int argc, char **argv)
 		gtk_widget_set_sensitive (button25, FALSE);
 
 		gtk_box_pack_start (GTK_BOX (hbox_spin_button), button24, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (hbox_spin_button), EMPTY, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (hbox_spin_button), button25, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (hbox_spin_button), EMPTY, TRUE, TRUE, 0);
 	}
 
 	/* checkbox buttons */
