@@ -808,6 +808,13 @@ int main (int argc, char **argv)
 		gtk_frame_set_shadow_type (GTK_FRAME (frame3), GTK_SHADOW_ETCHED_IN);
 		gtk_frame_set_shadow_type (GTK_FRAME (frame4), GTK_SHADOW_ETCHED_OUT);
 
+#if GTK_CHECK_VERSION (3,0,0)
+		gtk_style_context_add_class (gtk_widget_get_style_context (frame1), "border-inset");
+		gtk_style_context_add_class (gtk_widget_get_style_context (frame2), "border-outset");
+		gtk_style_context_add_class (gtk_widget_get_style_context (frame3), "border-groove");
+		gtk_style_context_add_class (gtk_widget_get_style_context (frame4), "border-ridge");
+#endif
+
 		gtk_box_pack_start (GTK_BOX (hbox_frame1), frame1, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (hbox_frame1), frame2, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (hbox_frame2), frame3, TRUE, TRUE, 0);
