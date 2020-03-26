@@ -97,12 +97,15 @@ static void awf_show_save (GtkWidget *widget, gpointer data);
 static void awf_show_open_recent (GtkWidget *widget, gpointer data);
 static void awf_show_open (GtkWidget *widget, gpointer data);
 static gboolean capplet_dialog_page_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event, GtkWindow *window);
+static char *screenshot;
 
 // run baby, run!
 
 int main (int argc, char **argv)
 {
+	int c, idx;
 	gchar *directory;
+	GSList *node;
 	GtkWidget *menubar, *toolbar;
 	GtkWidget *vbox_window, *vbox_widget;
 	GtkWidget *vbox_label_treeview, *vbox_other_button, *vbox_progressbar_scale;
@@ -150,13 +153,13 @@ int main (int argc, char **argv)
 	/* load themes available at system level */
 
 	list_system_theme = awf_load_theme ("/usr/share/themes");
-	list_system_theme = g_slist_sort (list_system_theme, (GCompareFunc) awf_compare_theme);
+	list_system_theme = g_slist_sort (list_system_theme, (GCompareFunc)awf_compare_theme);
 
 	/* load themes available at user level */
 
 	directory = g_build_path ("/", g_getenv ("HOME"), ".themes", NULL);
 	list_user_theme = awf_load_theme (directory);
-	list_user_theme = g_slist_sort (list_user_theme, (GCompareFunc) awf_compare_theme);
+	list_user_theme = g_slist_sort (list_user_theme, (GCompareFunc)awf_compare_theme);
 	g_free (directory);
 
 	/* exclude themes at system level also available at user level */
@@ -902,29 +905,48 @@ int main (int argc, char **argv)
 	}
 
 	/* go! */
-	switch (argc)
+	while ((c = getopt (argc, argv, "s:t:lh")) != -1)
 	{
-		case 2:
-			if (g_slist_find_custom (list_system_theme, (gconstpointer)argv[1], &awf_compare_theme) ||
-				g_slist_find_custom (list_user_theme, (gconstpointer)argv[1], &awf_compare_theme))
-				awf_set_theme (argv[1], 0, NULL);
-
-		case 1:
-			gtk_widget_show_all (window);
-			gtk_main ();
-			break;
-
-		default:
-			g_printf ("Usage:\n");
+		switch (c)
+		{
+			case 's':
+				screenshot = optarg;
+				break;
+			case 't':
+				if (g_slist_find_custom (list_system_theme, optarg, &awf_compare_theme) ||
+					g_slist_find_custom (list_user_theme, optarg, &awf_compare_theme))
+					awf_set_theme (optarg, 0, NULL);
+				break;
+			case 'l':
+				g_printf ("Available themes:\n");
+				for (idx = 0; node = g_slist_nth (list_system_theme, idx); idx++)
+				{
+					g_printf ("\t%s\n", (gchar*)node->data);
+				}
+				for (idx = 0; node = g_slist_nth (list_user_theme, idx); idx++)
+				{
+					g_printf ("\t%s\n", (gchar*)node->data);
+				}
+				abort ();
+			case 'h':
+			default:
+				g_printf ("Usage:\n");
 #if GTK_CHECK_VERSION (3,0,0)
-			g_printf ("\t%s\t\t\t%s\n", "awf-gtk3", "Run a widget factory");
-			g_printf ("\t%s %s\t\t%s\n", "awf-gtk3", "<theme>", "Run a widget factory with the specified theme");
+				g_printf ("\t%s\t\t\t%s %s\n", "awf-gtk3", "Run a widget factory", VERSION);
+				g_printf ("\t%s %s\t\t%s\n", "awf-gtk3", "-l", "List all available themes and quit");
+				g_printf ("\t%s %s\t\t%s\n", "awf-gtk3", "-t <theme>", "Run with specified theme");
+				g_printf ("\t%s %s\t\t%s\n", "awf-gtk3", "-s <filename>", "Take and save a png screenshot on sighup");
 #else
-			g_printf ("\t%s\t\t\t%s\n", "awf-gtk2", "Run a widget factory");
-			g_printf ("\t%s %s\t\t%s\n", "awf-gtk2", "<theme>", "Run a widget factory with the specified theme");
+				g_printf ("\t%s\t\t\t%s %s\n", "awf-gtk2", "Run a widget factory", VERSION);
+				g_printf ("\t%s %s\t\t%s\n", "awf-gtk2", "-l", "List all available themes and quit");
+				g_printf ("\t%s %s\t\t%s\n", "awf-gtk2", "-t <theme>", "Run with specified theme");
 #endif
-			break;
+				abort ();
+		}
 	}
+
+	gtk_widget_show_all (window);
+	gtk_main ();
 
 	return 0;
 }
@@ -1042,6 +1064,21 @@ awf_refresh_theme (GtkWidget *widget, gpointer unused)
 
 		g_free (current_theme);
 		g_free (default_theme);
+
+#if GTK_CHECK_VERSION (3,0,0)
+		// screenshot https://stackoverflow.com/a/55041305
+		if (screenshot) {
+
+			GdkWindow *root;
+			GdkPixbuf *image;
+			gint x, y, width, height;
+
+			root = gtk_widget_get_window ( window);
+			gdk_window_get_geometry (root, &x, &y, &width, &height);
+			image = gdk_pixbuf_get_from_window (root, x, y, width, height);
+			gdk_pixbuf_save (image, screenshot, "png", NULL, "compression", "9", NULL);
+		}
+#endif
 	} else {
 		g_warning ("No default theme found (neither \"Default\" nor \"Raleigh\"), refresh of theme might not work.");
 	}
@@ -1138,15 +1175,15 @@ awf_build_menu (GtkWidget *widget)
 		{ 5, "Radio 1 (unchecked)"     , "", NULL, NULL, FALSE, FALSE, FALSE },
 		{ 5, "Radio 2 (checked)"       , "", NULL, NULL, TRUE,  FALSE, FALSE },
 		{ 5, "Radio 3 (inconsistent)"  , "", NULL, NULL, FALSE, TRUE,  FALSE },
-		{ 4, ""              , ""          , NULL, NULL },
+		{ 4, "" },
 		{ 6, "Check 1 (unchecked)"     , "", NULL, NULL, FALSE, FALSE, FALSE },
 		{ 6, "Check 2 (checked)"       , "", NULL, NULL, TRUE,  FALSE, FALSE },
 		{ 6, "Check 3 (inconsistent)"  , "", NULL, NULL, FALSE, TRUE,  FALSE },
-		{ 4, ""              , ""          , NULL, NULL },
+		{ 4, "" },
 		{ 5, "Radio 1 (unchecked)"     , "", NULL, NULL, FALSE, FALSE, TRUE },
 		{ 5, "Radio 2 (checked)"       , "", NULL, NULL, TRUE,  FALSE, TRUE },
 		{ 5, "Radio 3 (inconsistent)"  , "", NULL, NULL, FALSE, TRUE,  TRUE },
-		{ 4, ""              , ""          , NULL, NULL },
+		{ 4, "" },
 		{ 6, "Check 1 (unchecked)"     , "", NULL, NULL, FALSE, FALSE, TRUE },
 		{ 6, "Check 2 (checked)"       , "", NULL, NULL, TRUE,  FALSE, TRUE },
 		{ 6, "Check 3 (inconsistent)"  , "", NULL, NULL, FALSE, TRUE,  TRUE },
@@ -1569,8 +1606,8 @@ awf_show_calendar (GtkWidget* widget, gpointer data)
 
 	calendar = gtk_calendar_new ();
 	gtk_calendar_set_display_options (GTK_CALENDAR (calendar), GTK_CALENDAR_SHOW_HEADING
-                                        | GTK_CALENDAR_SHOW_DAY_NAMES
-                                        | GTK_CALENDAR_SHOW_WEEK_NUMBERS);
+								| GTK_CALENDAR_SHOW_DAY_NAMES
+								| GTK_CALENDAR_SHOW_WEEK_NUMBERS);
 
 	gtk_widget_show (calendar);
 	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), calendar, FALSE, FALSE, 0);
@@ -1669,61 +1706,60 @@ awf_show_open (GtkWidget* widget, gpointer data)
 static gboolean
 capplet_dialog_page_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event, GtkWindow *window)
 {
-    GtkNotebook *notebook = GTK_NOTEBOOK (widget);
-    GtkWidget *child, *event_widget, *action_widget;
+	GtkNotebook *notebook = GTK_NOTEBOOK (widget);
+	GtkWidget *child, *event_widget, *action_widget;
 
-    child = gtk_notebook_get_nth_page (notebook, gtk_notebook_get_current_page (notebook));
-    if (child == NULL)
-        return FALSE;
+	child = gtk_notebook_get_nth_page (notebook, gtk_notebook_get_current_page (notebook));
+	if (child == NULL)
+		return FALSE;
 
-    event_widget = gtk_get_event_widget ((GdkEvent *) event);
+	event_widget = gtk_get_event_widget ((GdkEvent *) event);
 
-    /* Ignore scroll events from the content of the page */
-    if (event_widget == NULL ||
-        event_widget == child ||
-        gtk_widget_is_ancestor (event_widget, child))
-        return FALSE;
+	/* Ignore scroll events from the content of the page */
+	if (event_widget == NULL || event_widget == child || gtk_widget_is_ancestor (event_widget, child))
+		return FALSE;
 
-    /* And also from the action widgets */
-    action_widget = gtk_notebook_get_action_widget (notebook, GTK_PACK_START);
-    if (event_widget == action_widget ||
-        (action_widget != NULL && gtk_widget_is_ancestor (event_widget, action_widget)))
-        return FALSE;
-    action_widget = gtk_notebook_get_action_widget (notebook, GTK_PACK_END);
-    if (event_widget == action_widget ||
-        (action_widget != NULL && gtk_widget_is_ancestor (event_widget, action_widget)))
-        return FALSE;
+	/* And also from the action widgets */
+	action_widget = gtk_notebook_get_action_widget (notebook, GTK_PACK_START);
+	if (event_widget == action_widget || (action_widget != NULL && gtk_widget_is_ancestor (event_widget, action_widget)))
+		return FALSE;
 
-    switch (event->direction) {
-    case GDK_SCROLL_RIGHT:
-    case GDK_SCROLL_DOWN:
-        gtk_notebook_next_page (notebook);
-        break;
-    case GDK_SCROLL_LEFT:
-    case GDK_SCROLL_UP:
-        gtk_notebook_prev_page (notebook);
-        break;
-    case GDK_SCROLL_SMOOTH:
-        switch (gtk_notebook_get_tab_pos (notebook)) {
-            case GTK_POS_LEFT:
-            case GTK_POS_RIGHT:
-                if (event->delta_y > 0)
-                    gtk_notebook_next_page (notebook);
-                else if (event->delta_y < 0)
-                    gtk_notebook_prev_page (notebook);
-                break;
-            case GTK_POS_TOP:
-            case GTK_POS_BOTTOM:
-                if (event->delta_x > 0)
-                    gtk_notebook_next_page (notebook);
-                else if (event->delta_x < 0)
-                    gtk_notebook_prev_page (notebook);
-                break;
-            }
-        break;
-    }
+	action_widget = gtk_notebook_get_action_widget (notebook, GTK_PACK_END);
+	if (event_widget == action_widget || (action_widget != NULL && gtk_widget_is_ancestor (event_widget, action_widget)))
+		return FALSE;
 
-    return TRUE;
+	switch (event->direction)
+	{
+		case GDK_SCROLL_RIGHT:
+		case GDK_SCROLL_DOWN:
+			gtk_notebook_next_page (notebook);
+			break;
+		case GDK_SCROLL_LEFT:
+		case GDK_SCROLL_UP:
+			gtk_notebook_prev_page (notebook);
+			break;
+		case GDK_SCROLL_SMOOTH:
+			switch (gtk_notebook_get_tab_pos (notebook))
+			{
+				case GTK_POS_LEFT:
+				case GTK_POS_RIGHT:
+					if (event->delta_y > 0)
+						gtk_notebook_next_page (notebook);
+					else if (event->delta_y < 0)
+						gtk_notebook_prev_page (notebook);
+					break;
+				case GTK_POS_TOP:
+				case GTK_POS_BOTTOM:
+					if (event->delta_x > 0)
+						gtk_notebook_next_page (notebook);
+					else if (event->delta_x < 0)
+						gtk_notebook_prev_page (notebook);
+					break;
+			}
+			break;
+	}
+
+	return TRUE;
 }
 #endif
 
