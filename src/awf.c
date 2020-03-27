@@ -1054,7 +1054,6 @@ awf_refresh_theme (GtkWidget *unused1, gpointer unused2)
 
 		if (screenshot)
 			awf2_take_screenshot (buffer);
-
 	}
 	else {
 		g_warning ("No default theme found (neither \"Default\" nor \"Raleigh\"), refresh of theme might not work.");
@@ -1358,7 +1357,7 @@ awf2_take_screenshot (gchar* text)
 #if GTK_CHECK_VERSION (3,0,0)
 	root = gtk_widget_get_window (GTK_WIDGET (window));
 	gtk_window_get_size (GTK_WINDOW (window), &width, &height);
-	image = gdk_pixbuf_get_from_window (root, 0, 0, 500, 500);
+	image = gdk_pixbuf_get_from_window (root, 0, 0, width, height);
 	gdk_pixbuf_save (image, screenshot, "png", NULL, "compression", "9", NULL);
 #else
 	root = gtk_widget_get_window (GTK_WIDGET (window));
