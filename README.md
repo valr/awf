@@ -66,7 +66,7 @@ Screenshots
 SIGHUP
 ------
 
-  To auto reload theme on file change, you can use [entr](https://github.com/clibs/entr).
+  To auto reload theme on files change, you can use [entr](https://github.com/clibs/entr).
 ```
 apt install entr
 ls ~/.themes/yourtheme/gtk-3.0/*.css | entr killall -s SIGHUP awf-gtk3
@@ -81,8 +81,8 @@ License
 Author
 ------
 
-  Valère Monseur (valere dot monseur at ymail dot com)
-  Fabrice Creuzot (code hat luigifab dot fr)
+  * Valère Monseur (valere dot monseur at ymail dot com)
+  * Fabrice Creuzot (code hat luigifab dot fr)
 
 Thanks to
 ---------
