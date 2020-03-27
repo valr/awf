@@ -167,7 +167,12 @@ int main (int argc, char **argv)
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_icon_name (GTK_WINDOW (window), "awf");
-	gtk_window_set_title (GTK_WINDOW (window), "A widget factory");
+#if GTK_CHECK_VERSION (3,0,0)
+	gtk_window_set_title (GTK_WINDOW (window), "A widget factory - Gtk3");
+#else
+	gtk_window_set_title (GTK_WINDOW (window), "A widget factory - Gtk2");
+#endif
+
 	g_signal_connect (G_OBJECT (window), "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
 #if GTK_CHECK_VERSION (3,2,0)
