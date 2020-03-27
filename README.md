@@ -20,10 +20,11 @@ Installation
 ------------
 
   * Ubuntu
-
-    sudo apt-add-repository ppa:flexiondotorg/awf
-    sudo apt update
-    sudo apt install awf
+```
+sudo apt-add-repository ppa:flexiondotorg/awf
+sudo apt update
+sudo apt install awf
+```
 
   * Archlinux
 
@@ -81,6 +82,7 @@ Author
 ------
 
   Valère Monseur (valere dot monseur at ymail dot com)
+  Fabrice Creuzot (code hat luigifab dot fr)
 
 Thanks to
 ---------
