@@ -158,8 +158,8 @@ int main (int argc, char **argv)
 		}
 	}
 
-	awf_create_window ();
 	g_unix_signal_add (SIGHUP, awf_sighup_handler, NULL);
+	awf_create_window ();
 
 	return 0;
 }
