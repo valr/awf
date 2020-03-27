@@ -60,7 +60,6 @@ enum {
 
 // global local variables :)
 
-static gboolean refresh_theme = FALSE;
 static GSList *list_system_theme = NULL;
 static GSList *list_user_theme = NULL;
 static GSList *theme_group = NULL;
@@ -78,9 +77,7 @@ static void awf_exclude_theme (gpointer theme, gpointer unused);
 static gint awf_compare_theme (gconstpointer theme1, gconstpointer theme2);
 static void awf_set_theme (gpointer theme, guint callback_action, GtkWidget *unused);
 static void awf_refresh_theme (GtkWidget *widget, gpointer unused);
-static gboolean awf_check_refresh_theme (gpointer unused);
 static gboolean awf_sighup_handler (gpointer unused);
-static void awf_window_set_title (void);
 static GtkWidget* awf_build_menu (GtkWidget *widget);
 static void awf_add_menu_item (gpointer theme, gpointer menu1);
 static void awf_run_me (GtkWidget *widget, gpointer unused);
@@ -170,8 +167,8 @@ int main (int argc, char **argv)
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_icon_name (GTK_WINDOW (window), "awf");
+	gtk_window_set_title (GTK_WINDOW (window), "A widget factory");
 	g_signal_connect (G_OBJECT (window), "destroy", G_CALLBACK (gtk_main_quit), NULL);
-	awf_window_set_title ();
 
 #if GTK_CHECK_VERSION (3,2,0)
 	vbox_window = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -899,12 +896,9 @@ int main (int argc, char **argv)
 	}
 
 	/* refresh on SIGHUP */
-	{
-		g_unix_signal_add (SIGHUP, awf_sighup_handler, NULL);
-		g_timeout_add_seconds (1, awf_check_refresh_theme, NULL);
-	}
+	g_unix_signal_add (SIGHUP, awf_sighup_handler, NULL);
 
-	/* go! */
+	/* go */
 	while ((c = getopt (argc, argv, "s:t:lh")) != -1)
 	{
 		switch (c)
@@ -1027,7 +1021,6 @@ awf_set_theme (gpointer theme, guint callback_action, GtkWidget *unused)
 #else
 	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", (gchar*) theme, "gtkrc:0");
 #endif
-	awf_window_set_title ();
 }
 
 static void
@@ -1073,7 +1066,7 @@ awf_refresh_theme (GtkWidget *widget, gpointer unused)
 			GdkPixbuf *image;
 			gint x, y, width, height;
 
-			root = gtk_widget_get_window ( window);
+			root = gtk_widget_get_window (window);
 			gdk_window_get_geometry (root, &x, &y, &width, &height);
 			image = gdk_pixbuf_get_from_window (root, x, y, width, height);
 			gdk_pixbuf_save (image, screenshot, "png", NULL, "compression", "9", NULL);
@@ -1085,40 +1078,10 @@ awf_refresh_theme (GtkWidget *widget, gpointer unused)
 }
 
 static gboolean
-awf_check_refresh_theme (gpointer unused)
-{
-	if (refresh_theme) {
-		refresh_theme = FALSE;
-		awf_refresh_theme (NULL, NULL);
-	}
-
-	return TRUE;
-}
-
-static gboolean
 awf_sighup_handler (gpointer unused)
 {
-	refresh_theme = TRUE;
+	awf_refresh_theme (NULL, NULL);
 	return G_SOURCE_CONTINUE;
-}
-
-static void
-awf_window_set_title (void)
-{
-	gchar *title, *theme;
-
-	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &theme, NULL);
-
-#if GTK_CHECK_VERSION (3,0,0)
-	title = g_strjoin (" - ", "A widget factory", theme, "Gtk3", NULL);
-#else
-	title = g_strjoin (" - ", "A widget factory", theme, "Gtk2", NULL);
-#endif
-
-	gtk_window_set_title (GTK_WINDOW (window), title);
-
-	g_free (title);
-	g_free (theme);
 }
 
 static GtkWidget*
