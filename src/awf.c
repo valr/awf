@@ -68,7 +68,8 @@ static GtkWidget *progressbar1, *progressbar2, *progressbar3, *progressbar4;
 static GtkWidget *scale1, *scale2, *scale3, *scale4, *showtext;
 static GtkWidget *notebook1, *notebook2, *notebook3, *notebook4;
 static GtkWidget *spinner;
-static char *screenshot;
+static gchar *statustext[150];
+static gchar *screenshot;
 
 // local functions
 
@@ -76,15 +77,15 @@ static void awf_create_window ();
 static GSList* awf_load_theme (gchar *directory);
 static void awf_exclude_theme (gpointer theme, gpointer unused);
 static gint awf_compare_theme (gconstpointer theme1, gconstpointer theme2);
-static void awf_set_theme (gpointer theme, guint callback_action, GtkWidget *unused);
+static void awf_set_theme (gpointer theme, gpointer unused);
 static void awf_refresh_theme (GtkWidget *widget, gpointer unused);
 static gboolean awf_sighup_handler (gpointer unused);
 static GtkWidget* awf_build_menu (GtkWidget *widget);
-static void awf_add_menu_item (gpointer theme, gpointer menu1);
-static void awf2_take_screenshot (gchar* text);
-static void awf2_set_notebook_scrollable (GtkWidget *widget, gpointer unused);
-static void awf_on_scale_value_changed (GtkRange *range, gpointer unused);
+static void awf_add_menuitem (gpointer theme, gpointer menu1);
+static void awf_update_progressbars (GtkRange *range, gpointer unused);
 static void awf_show_progresstext (GtkWidget *widget, gpointer unused);
+static void awf2_set_notebook_scrollable (GtkWidget *widget, gpointer unused);
+static gboolean awf2_take_screenshot (gpointer unused);
 
 static void awf2_show_about (GtkWidget *widget, gpointer unused);
 static void awf2_show_print (GtkWidget *widget, gpointer unused);
@@ -98,9 +99,9 @@ static void awf2_scroll_notebook_tabs (GtkWidget *widget, GdkEventScroll *event)
 
 // run baby, run!
 
-int main (int argc, char **argv)
-{
-	int c, idx;
+int main (int argc, char **argv) {
+
+	gint c, idx;
 	gchar *directory;
 	GSList *node;
 
@@ -133,7 +134,7 @@ int main (int argc, char **argv)
 			case 't':
 				if (g_slist_find_custom (list_system_theme, optarg, &awf_compare_theme) ||
 					g_slist_find_custom (list_user_theme, optarg, &awf_compare_theme))
-					awf_set_theme (optarg, 0, NULL);
+					awf_set_theme (optarg, NULL);
 				break;
 			case 'l':
 				g_printf ("Available themes:\n");
@@ -164,9 +165,8 @@ int main (int argc, char **argv)
 	return 0;
 }
 
-static void
-awf_create_window ()
-{
+static void awf_create_window () {
+
 	GtkWidget *menubar, *toolbar;
 	GtkWidget *vbox_window, *vbox_widget;
 	GtkWidget *vbox_label_treeview, *vbox_other_button, *vbox_progressbar_scale;
@@ -203,7 +203,7 @@ awf_create_window ()
 	GdkColor color;
 #endif
 
-	const gchar* scale_icons[] =
+	const gchar *scale_icons[] =
 	{
 		"awf",
 		NULL
@@ -739,10 +739,10 @@ awf_create_window ()
 		gtk_range_set_inverted (GTK_RANGE (scale2), TRUE);
 		gtk_range_set_inverted (GTK_RANGE (scale4), TRUE);
 
-		g_signal_connect ((gpointer)scale1, "value_changed", G_CALLBACK (awf_on_scale_value_changed), NULL);
-		g_signal_connect ((gpointer)scale2, "value_changed", G_CALLBACK (awf_on_scale_value_changed), NULL);
-		g_signal_connect ((gpointer)scale3, "value_changed", G_CALLBACK (awf_on_scale_value_changed), NULL);
-		g_signal_connect ((gpointer)scale4, "value_changed", G_CALLBACK (awf_on_scale_value_changed), NULL);
+		g_signal_connect ((gpointer)scale1, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
+		g_signal_connect ((gpointer)scale2, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
+		g_signal_connect ((gpointer)scale3, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
+		g_signal_connect ((gpointer)scale4, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
 
 		gtk_box_pack_start (GTK_BOX (hbox_scale), scale1, FALSE, FALSE, 0);
 		gtk_box_pack_start (GTK_BOX (hbox_scale), scale2, FALSE, FALSE, 0);
@@ -938,9 +938,8 @@ awf_create_window ()
 	gtk_main ();
 }
 
-static GSList*
-awf_load_theme (gchar *directory)
-{
+static GSList* awf_load_theme (gchar *directory) {
+
 	GSList *list = NULL;
 
 	g_return_val_if_fail (directory != NULL, NULL);
@@ -989,9 +988,8 @@ awf_load_theme (gchar *directory)
 	return list;
 }
 
-static void
-awf_exclude_theme (gpointer theme, gpointer unused)
-{
+static void awf_exclude_theme (gpointer theme, gpointer unused) {
+
 	GSList *found_theme = g_slist_find_custom (list_system_theme, (gconstpointer)theme, &awf_compare_theme);
 
 	if (found_theme) {
@@ -1000,15 +998,13 @@ awf_exclude_theme (gpointer theme, gpointer unused)
 	}
 }
 
-static gint
-awf_compare_theme (gconstpointer theme1, gconstpointer theme2)
-{
+static gint awf_compare_theme (gconstpointer theme1, gconstpointer theme2) {
+
 	return g_strcmp0 ((gchar*)theme1, (gchar*)theme2);
 }
 
-static void
-awf_set_theme (gpointer theme, guint callback_action, GtkWidget *unused)
-{
+static void awf_set_theme (gpointer theme, gpointer unused) {
+
 #if GTK_CHECK_VERSION (3,16,0)
 	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", (gchar*)theme, "gtkrc:0");
 #else
@@ -1017,11 +1013,9 @@ awf_set_theme (gpointer theme, guint callback_action, GtkWidget *unused)
 	gtk_window_resize (GTK_WINDOW (window), 50, 50);
 }
 
-static void
-awf_refresh_theme (GtkWidget *unused1, gpointer unused2)
-{
+static void awf_refresh_theme (GtkWidget *unused1, gpointer unused2) {
+
 	gchar *default_theme = NULL, *current_theme = NULL;
-	gchar buffer[80];
 	time_t rawtime;
 	struct tm *timeinfo;
 
@@ -1045,31 +1039,29 @@ awf_refresh_theme (GtkWidget *unused1, gpointer unused2)
 
 		time (&rawtime);
 		timeinfo = localtime (&rawtime);
-		strftime (buffer, 80, "Theme reloaded at %ET.", timeinfo);
+		strftime ((char *)statustext, sizeof statustext, "Theme reloaded at %ET.", timeinfo);
 
-		gtk_statusbar_push (GTK_STATUSBAR (statusbar), gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "gné"), (gchar*)buffer);
+		gtk_statusbar_push (GTK_STATUSBAR (statusbar), gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "gné"), (gchar*)statustext);
 
 		g_free (current_theme);
 		g_free (default_theme);
 
 		if (screenshot)
-			awf2_take_screenshot (buffer);
+			g_timeout_add_seconds (1, awf2_take_screenshot, NULL);
 	}
 	else {
 		g_warning ("No default theme found (neither \"Default\" nor \"Raleigh\"), refresh of theme might not work.");
 	}
 }
 
-static gboolean
-awf_sighup_handler (gpointer unused)
-{
+static gboolean awf_sighup_handler (gpointer unused) {
+
 	awf_refresh_theme (NULL, NULL);
 	return G_SOURCE_CONTINUE;
 }
 
-static GtkWidget*
-awf_build_menu (GtkWidget *widget)
-{
+static GtkWidget* awf_build_menu (GtkWidget *widget) {
+
 	GtkAccelGroup *ag;
 	GtkWidget *menubar;
 	GtkWidget *menu1, *menu2;
@@ -1210,11 +1202,11 @@ awf_build_menu (GtkWidget *widget)
 				break;
 
 			case 1:
-				g_slist_foreach (list_system_theme, awf_add_menu_item, menu1);
+				g_slist_foreach (list_system_theme, awf_add_menuitem, menu1);
 				break;
 
 			case 2:
-				g_slist_foreach (list_user_theme, awf_add_menu_item, menu1);
+				g_slist_foreach (list_user_theme, awf_add_menuitem, menu1);
 				break;
 
 			case 3:
@@ -1255,9 +1247,9 @@ awf_build_menu (GtkWidget *widget)
 				}
 				else {
 					menuitem = gtk_menu_item_new_with_mnemonic (info[i].mnemonic);
-					if (strcmp (info[i].mnemonic, (gchar*)"Open recent") == 0)
+					if (strcmp (info[i].mnemonic, "Open recent") == 0)
 						g_signal_connect (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_open_recent), NULL);
-					if (strcmp (info[i].mnemonic, (gchar*)"Calendar") == 0)
+					if (strcmp (info[i].mnemonic, "Calendar") == 0)
 						g_signal_connect (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_calendar), NULL);
 				}
 
@@ -1320,6 +1312,9 @@ awf_build_menu (GtkWidget *widget)
 
 			case 7:
 				menuitem = gtk_tearoff_menu_item_new ();
+#if GTK_CHECK_VERSION (3,0,0)
+				gtk_style_context_add_class (gtk_widget_get_style_context (menuitem), "tearoff");
+#endif
 				gtk_menu_shell_append (GTK_MENU_SHELL (menu1), menuitem);
 		}
 	}
@@ -1327,9 +1322,8 @@ awf_build_menu (GtkWidget *widget)
 	return menubar;
 }
 
-static void
-awf_add_menu_item (gpointer theme, gpointer menu)
-{
+static void awf_add_menuitem (gpointer theme, gpointer menu) {
+
 	gchar *current_theme;
 	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &current_theme, NULL);
 
@@ -1346,42 +1340,8 @@ awf_add_menu_item (gpointer theme, gpointer menu)
 	g_free (current_theme);
 }
 
-static void
-awf2_take_screenshot (gchar* text)
-{
-	gchar buffer[120];
-	GdkWindow *root;
-	GdkPixbuf *image;
-	gint width, height;
+static void awf_update_progressbars (GtkRange *range, gpointer unused) {
 
-#if GTK_CHECK_VERSION (3,0,0)
-	root = gtk_widget_get_window (GTK_WIDGET (window));
-	gtk_window_get_size (GTK_WINDOW (window), &width, &height);
-	image = gdk_pixbuf_get_from_window (root, 0, 0, width, height);
-	gdk_pixbuf_save (image, screenshot, "png", NULL, "compression", "9", NULL);
-#else
-	root = gtk_widget_get_window (GTK_WIDGET (window));
-	gtk_window_get_size (GTK_WINDOW (window), &width, &height);
-	image = gdk_pixbuf_get_from_drawable (NULL, root, gdk_colormap_get_system (), 0, 0, 0, 0, width, height);
-	gdk_pixbuf_save (image, screenshot, "png", NULL, "compression", "9", NULL);
-#endif
-
-	snprintf(buffer, sizeof buffer, "%s %s (%s).", text, "Screenshot saved", screenshot);
-	gtk_statusbar_push (GTK_STATUSBAR (statusbar), gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "gné"), buffer);
-}
-
-static void
-awf2_set_notebook_scrollable (GtkWidget *widget, gpointer unused)
-{
-	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook1), !gtk_notebook_get_scrollable (GTK_NOTEBOOK (notebook1)));
-	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook2), !gtk_notebook_get_scrollable (GTK_NOTEBOOK (notebook2)));
-	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook3), !gtk_notebook_get_scrollable (GTK_NOTEBOOK (notebook3)));
-	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook4), !gtk_notebook_get_scrollable (GTK_NOTEBOOK (notebook4)));
-}
-
-static void
-awf_on_scale_value_changed (GtkRange *range, gpointer unused)
-{
 	gdouble value;
 	value = gtk_range_get_value (range);
 
@@ -1406,9 +1366,8 @@ awf_on_scale_value_changed (GtkRange *range, gpointer unused)
 #endif
 }
 
-static void
-awf_show_progresstext (GtkWidget *widget, gpointer unused)
-{
+static void awf_show_progresstext (GtkWidget *widget, gpointer unused) {
+
 	gdouble progress_value;
 	gchar *progress_text;
 
@@ -1437,12 +1396,42 @@ awf_show_progresstext (GtkWidget *widget, gpointer unused)
 	}
 }
 
+static void awf2_set_notebook_scrollable (GtkWidget *widget, gpointer unused) {
+
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook1), !gtk_notebook_get_scrollable (GTK_NOTEBOOK (notebook1)));
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook2), !gtk_notebook_get_scrollable (GTK_NOTEBOOK (notebook2)));
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook3), !gtk_notebook_get_scrollable (GTK_NOTEBOOK (notebook3)));
+	gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook4), !gtk_notebook_get_scrollable (GTK_NOTEBOOK (notebook4)));
+}
+
+static gboolean awf2_take_screenshot (gpointer unused) {
+
+	GdkWindow *root;
+	GdkPixbuf *image;
+	gint width, height;
+
+#if GTK_CHECK_VERSION (3,0,0)
+	root = gtk_widget_get_window (GTK_WIDGET (window));
+	gtk_window_get_size (GTK_WINDOW (window), &width, &height);
+	image = gdk_pixbuf_get_from_window (root, 0, 0, width, height);
+#else
+	root = gtk_widget_get_window (GTK_WIDGET (window));
+	gtk_window_get_size (GTK_WINDOW (window), &width, &height);
+	image = gdk_pixbuf_get_from_drawable (NULL, root, gdk_colormap_get_system (), 0, 0, 0, 0, width, height);
+#endif
+
+	if (image) {
+ 		gdk_pixbuf_save (image, screenshot, "png", NULL, "compression", "9", NULL);
+		gtk_statusbar_push (GTK_STATUSBAR (statusbar), gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "gné"), g_strjoin ("", statustext, " Screenshot saved (", screenshot, ").", NULL));
+	}
+
+	return FALSE;
+}
 
 // https://developer.gnome.org/gtk3/stable/GtkDialog.html
 
-static void
-awf2_show_about (GtkWidget *widget, gpointer unused)
-{
+static void awf2_show_about (GtkWidget *widget, gpointer unused) {
+
 	gtk_show_about_dialog (GTK_WINDOW (window),
 		"version", VERSION,
 		"comments", "A widget factory is a theme preview application for gtk2 and gtk3. It displays the various widget types provided by gtk2/gtk3 in a single window allowing to see the visual effect of the applied theme.",
@@ -1455,9 +1444,8 @@ awf2_show_about (GtkWidget *widget, gpointer unused)
 		NULL);
 }
 
-static void
-awf2_show_print (GtkWidget *widget, gpointer unused)
-{
+static void awf2_show_print (GtkWidget *widget, gpointer unused) {
+
 	GtkWidget *dialog;
 
 	dialog = gtk_print_unix_dialog_new (
@@ -1469,9 +1457,8 @@ awf2_show_print (GtkWidget *widget, gpointer unused)
 	gtk_widget_destroy (dialog);
 }
 
-static void
-awf2_show_page_setup (GtkWidget *widget, gpointer unused)
-{
+static void awf2_show_page_setup (GtkWidget *widget, gpointer unused) {
+
 	GtkWidget *dialog;
 
 	dialog = gtk_page_setup_unix_dialog_new (
@@ -1483,13 +1470,11 @@ awf2_show_page_setup (GtkWidget *widget, gpointer unused)
 	gtk_widget_destroy (dialog);
 }
 
-static void
-awf2_show_calendar (GtkWidget *widget, gpointer unused)
-{
+static void awf2_show_calendar (GtkWidget *widget, gpointer unused) {
+
 	GtkWidget *dialog, *calendar;
 
 	dialog = gtk_dialog_new ();
-
 	calendar = gtk_calendar_new ();
 	gtk_calendar_set_display_options (GTK_CALENDAR (calendar), GTK_CALENDAR_SHOW_HEADING
 								| GTK_CALENDAR_SHOW_DAY_NAMES
@@ -1505,9 +1490,8 @@ awf2_show_calendar (GtkWidget *widget, gpointer unused)
 	gtk_widget_destroy (dialog);
 }
 
-static void
-awf2_show_properties (GtkWidget *widget, gpointer unused)
-{
+static void awf2_show_properties (GtkWidget *widget, gpointer unused) {
+
 	GtkWidget *dialog;
 
 	dialog = gtk_message_dialog_new (
@@ -1525,9 +1509,8 @@ awf2_show_properties (GtkWidget *widget, gpointer unused)
 	gtk_widget_destroy (dialog);
 }
 
-static void
-awf2_show_save (GtkWidget *widget, gpointer unused)
-{
+static void awf2_show_save (GtkWidget *widget, gpointer unused) {
+
 	GtkWidget *dialog;
 
 	dialog = gtk_file_chooser_dialog_new (
@@ -1545,9 +1528,8 @@ awf2_show_save (GtkWidget *widget, gpointer unused)
 	gtk_widget_destroy (dialog);
 }
 
-static void
-awf2_show_open_recent (GtkWidget *widget, gpointer unused)
-{
+static void awf2_show_open_recent (GtkWidget *widget, gpointer unused) {
+
 	GtkWidget *dialog;
 
 	dialog = gtk_recent_chooser_dialog_new (
@@ -1564,9 +1546,8 @@ awf2_show_open_recent (GtkWidget *widget, gpointer unused)
 	gtk_widget_destroy (dialog);
 }
 
-static void
-awf2_show_open (GtkWidget *widget, gpointer unused)
-{
+static void awf2_show_open (GtkWidget *widget, gpointer unused) {
+
 	GtkWidget *dialog;
 
 	dialog = gtk_file_chooser_dialog_new (
@@ -1589,9 +1570,8 @@ awf2_show_open (GtkWidget *widget, gpointer unused)
 // source function capplet_dialog_page_scroll_event_cb of mate-appearance-properties from mate-control-center, GNU GPL 2
 
 #if GTK_CHECK_VERSION (3,0,0)
-static void
-awf2_scroll_notebook_tabs (GtkWidget *widget, GdkEventScroll *event)
-{
+static void awf2_scroll_notebook_tabs (GtkWidget *widget, GdkEventScroll *event) {
+
 	GtkNotebook *notebook = GTK_NOTEBOOK (widget);
 	GtkWidget *child, *event_widget, *action_widget;
 
