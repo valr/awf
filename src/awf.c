@@ -1082,11 +1082,11 @@ static GtkWidget* awf_build_menu (GtkWidget *widget) {
 		gboolean inconsistent;
 		gboolean disabled;
 	} info[35] = {
-		{ 0, "_System theme"  , "<Control>s" },
+		{ 0, "_System theme" },
 		{ 1, "" },
-		{ 0, "_User theme"    , "<Control>u" },
+		{ 0, "_User theme" },
 		{ 2, "" },
-		{ 0, "_Test menu"     , "<Control>t" },
+		{ 0, "_Test menu" },
 		{ 7, "" },
 #if GTK_CHECK_VERSION (3,10,0)
 		{ 3, "", "<Control>o" , "gtk-open" },
@@ -1193,10 +1193,8 @@ static GtkWidget* awf_build_menu (GtkWidget *widget) {
 					gtk_widget_show (menuitem);
 
 					gtk_accelerator_parse (subinfo[j].accelerator, &accelerator_key, &accelerator_mods);
-
 					if (accelerator_key && accelerator_mods)
-						gtk_widget_add_accelerator (menuitem, "activate", ag,
-							accelerator_key, accelerator_mods, GTK_ACCEL_VISIBLE);
+						gtk_widget_add_accelerator (menuitem, "activate", ag, accelerator_key, accelerator_mods, GTK_ACCEL_VISIBLE);
 
 					if (subinfo[j].callback)
 						g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (subinfo[j].callback), widget);
@@ -1264,10 +1262,8 @@ static GtkWidget* awf_build_menu (GtkWidget *widget) {
 				gtk_widget_show (menuitem);
 
 				gtk_accelerator_parse (info[i].accelerator, &accelerator_key, &accelerator_mods);
-
 				if (accelerator_key && accelerator_mods)
-					gtk_widget_add_accelerator (menuitem, "activate", ag,
-						accelerator_key, accelerator_mods, GTK_ACCEL_VISIBLE);
+					gtk_widget_add_accelerator (menuitem, "activate", ag, accelerator_key, accelerator_mods, GTK_ACCEL_VISIBLE);
 
 				if (info[i].callback)
 					g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (info[i].callback), widget);
