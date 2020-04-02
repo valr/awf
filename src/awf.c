@@ -929,7 +929,7 @@ static void awf_create_window () {
 	{
 		statusbar = gtk_statusbar_new ();
 		gtk_box_pack_start (GTK_BOX (vbox_window), statusbar, FALSE, FALSE, 0);
-		gtk_statusbar_push (GTK_STATUSBAR (statusbar), gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "gné"), g_strjoin (" ", "Ready - ", VERSION, NULL));
+		gtk_statusbar_push (GTK_STATUSBAR (statusbar), gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "gné"), g_strjoin (" ", "Ready -", VERSION, NULL));
 	}
 
 	// go
@@ -1081,32 +1081,34 @@ static GtkWidget* awf_build_menu (GtkWidget *widget) {
 		gboolean checked;
 		gboolean inconsistent;
 		gboolean disabled;
-	} info[34] = {
-		{ 0, "_System theme" , "<Control>s" },
+	} info[35] = {
+		{ 0, "_System theme"  , "<Control>s" },
 		{ 1, "" },
-		{ 0, "_User theme"   , "<Control>u" },
+		{ 0, "_User theme"    , "<Control>u" },
 		{ 2, "" },
-		{ 0, "_Test menu"    , "<Control>t" },
+		{ 0, "_Test menu"     , "<Control>t" },
 		{ 7, "" },
 #if GTK_CHECK_VERSION (3,10,0)
-		{ 3, "", "<Control>o", "gtk-open" },
+		{ 3, "", "<Control>o" , "gtk-open" },
 		{ 3, "Open recent" },
 		{ 3, "Calendar" },
-		{ 3, "", "<Control>s", "gtk-save" },
-		{ 3, "", ""          , "gtk-properties" },
-		{ 3, "", ""          , "gtk-page-setup" },
-		{ 3, "", "<Control>p", "gtk-print" },
-		{ 3, "", ""          , "gtk-about" },
+		{ 3, "", "<Control>s" , "gtk-save" },
+		{ 3, "Refresh theme", "F5", "gtk-refresh" },
+		{ 3, "", "<Alt>Return", "gtk-properties" },
+		{ 3, "", ""           , "gtk-page-setup" },
+		{ 3, "", "<Control>p" , "gtk-print" },
+		{ 3, "", ""           , "gtk-about" },
 		{ 9, "More..." },
 #else
-		{ 3, "", "<Control>o", GTK_STOCK_OPEN },
+		{ 3, "", "<Control>o" , GTK_STOCK_OPEN },
 		{ 3, "Open recent" },
 		{ 3, "Calendar" },
-		{ 3, "", "<Control>s", GTK_STOCK_SAVE },
-		{ 3, "", ""          , GTK_STOCK_PROPERTIES },
-		{ 3, "", ""          , GTK_STOCK_PAGE_SETUP },
-		{ 3, "", "<Control>p", GTK_STOCK_PRINT },
-		{ 3, "", ""          , GTK_STOCK_ABOUT },
+		{ 3, "", "<Control>s" , GTK_STOCK_SAVE },
+		{ 3, "Refresh theme", "F5", GTK_STOCK_REFRESH },
+		{ 3, "", "<Alt>Return", GTK_STOCK_PROPERTIES },
+		{ 3, "", ""           , GTK_STOCK_PAGE_SETUP },
+		{ 3, "", "<Control>p" , GTK_STOCK_PRINT },
+		{ 3, "", ""           , GTK_STOCK_ABOUT },
 		{ 9, "More..." },
 #endif
 		{ 4, "" },
@@ -1150,7 +1152,7 @@ static GtkWidget* awf_build_menu (GtkWidget *widget) {
 
 	menubar = gtk_menu_bar_new ();
 
-	for (i = 0; i < 34; i++) {
+	for (i = 0; i < 35; i++) {
 		switch (info[i].type) {
 			case 0:
 				menu1 = gtk_menu_new ();
@@ -1223,6 +1225,8 @@ static GtkWidget* awf_build_menu (GtkWidget *widget) {
 						g_signal_connect (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_page_setup), NULL);
 					else if (strcmp (info[i].image, "gtk-properties") == 0)
 						g_signal_connect (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_properties), NULL);
+					else if (strcmp (info[i].image, "gtk-refresh") == 0)
+						g_signal_connect (G_OBJECT (menuitem), "activate", G_CALLBACK (awf_refresh_theme), NULL);
 					else if (strcmp (info[i].image, "gtk-save") == 0)
 						g_signal_connect (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_save), NULL);
 					else if (strcmp (info[i].image, "gtk-open") == 0)
@@ -1239,6 +1243,8 @@ static GtkWidget* awf_build_menu (GtkWidget *widget) {
 						g_signal_connect (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_page_setup), NULL);
 					else if (strcmp (info[i].image, GTK_STOCK_PROPERTIES) == 0)
 						g_signal_connect (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_properties), NULL);
+					else if (strcmp (info[i].image, GTK_STOCK_REFRESH) == 0)
+						g_signal_connect (G_OBJECT (menuitem), "activate", G_CALLBACK (awf_refresh_theme), NULL);
 					else if (strcmp (info[i].image, GTK_STOCK_SAVE) == 0)
 						g_signal_connect (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_save), NULL);
 					else if (strcmp (info[i].image, GTK_STOCK_OPEN) == 0)
