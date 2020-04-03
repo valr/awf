@@ -1013,7 +1013,7 @@ static void awf_set_theme (gpointer theme, gpointer unused) {
 	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &current_theme, NULL);
 
 	if (window)
-		gtk_window_resize (GTK_WINDOW (window), 400, 400);
+		gtk_window_resize (GTK_WINDOW (window), 50, 50);
 
 	if (statusbar)
 		awf2_update_statusbar (g_strjoin ("", "AWF ", VERSION, " / Theme ", current_theme, " loaded.", NULL), FALSE);
@@ -1031,7 +1031,7 @@ static void awf_refresh_theme (GtkWidget *unused1, gpointer unused2) {
 	if (default_theme) {
 
 		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", default_theme, NULL);
-		g_usleep (G_USEC_PER_SEC);
+		g_usleep (G_USEC_PER_SEC / 2);
 		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", current_theme, NULL);
 
 		awf2_update_statusbar (g_strjoin ("", "Theme ", current_theme, " reloaded at", NULL), TRUE);
