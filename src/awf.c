@@ -43,6 +43,7 @@
 #include <gtk/gtkunixprint.h>
 #include <gdk/gdk.h>
 #include <time.h>
+#include <glib/gi18n.h>
 #include "gtk_empty.h"
 
 // defines
@@ -160,6 +161,9 @@ int main (int argc, char **argv) {
 		}
 	}
 
+	//bindtextdomain (PACKAGE, LOCALEDIR);
+	//textdomain (PACKAGE);
+
 	// window
 	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &current_theme, NULL);
 	g_unix_signal_add (SIGHUP, awf_sighup_handler, NULL);
@@ -217,9 +221,9 @@ static void awf_create_window () {
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_icon_name (GTK_WINDOW (window), "awf");
 #if GTK_CHECK_VERSION (3,0,0)
-	gtk_window_set_title (GTK_WINDOW (window), "A widget factory - Gtk3");
+	gtk_window_set_title (GTK_WINDOW (window), _("A widget factory - Gtk3"));
 #else
-	gtk_window_set_title (GTK_WINDOW (window), "A widget factory - Gtk2");
+	gtk_window_set_title (GTK_WINDOW (window), _("A widget factory - Gtk2"));
 #endif
 
 	g_signal_connect (G_OBJECT (window), "destroy", G_CALLBACK (gtk_main_quit), NULL);
@@ -481,23 +485,23 @@ static void awf_create_window () {
 	{
 		combo1 = gtk_combo_box_text_new_with_entry ();
 		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo1), "Combo box entry");
-		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo1), "Second item");
+		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo1), _("Second item"));
 		gtk_combo_box_set_active (GTK_COMBO_BOX (combo1), 0);
 
 		combo2 = gtk_combo_box_text_new_with_entry ();
 		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo2), "Combo box entry (disabled)");
-		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo2), "Second item");
+		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo2), _("Second item"));
 		gtk_combo_box_set_active (GTK_COMBO_BOX (combo2), 0);
 		gtk_widget_set_sensitive (combo2, FALSE);
 
 		combo3 = gtk_combo_box_text_new ();
 		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo3), "Combo box");
-		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo3), "Second item");
+		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo3), _("Second item"));
 		gtk_combo_box_set_active (GTK_COMBO_BOX (combo3), 0);
 
 		combo4 = gtk_combo_box_text_new ();
 		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo4), "Combo box (disabled)");
-		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo4), "Second item");
+		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo4), _("Second item"));
 		gtk_combo_box_set_active (GTK_COMBO_BOX (combo4), 0);
 		gtk_widget_set_sensitive (combo4, FALSE);
 
@@ -638,7 +642,7 @@ static void awf_create_window () {
 		gtk_widget_set_sensitive (button9, FALSE);
 #endif
 
-		button10 = gtk_link_button_new_with_label ("https://github.com/valr/awf", "Link button AWF");
+		button10 = gtk_link_button_new_with_label ("https://github.com/valr/awf", _("Link button"));
 		button11 = gtk_scale_button_new (GTK_ICON_SIZE_BUTTON, 1, 10, 1, scale_icons);
 
 		gtk_box_pack_start (GTK_BOX (vbox_other_button), button1, FALSE, FALSE, 0);
@@ -771,17 +775,17 @@ static void awf_create_window () {
 		view1 = gtk_tree_view_new ();
 
 		renderer1 = gtk_cell_renderer_text_new ();
-		gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view1), -1, "Column1", renderer1, "text", COLUMN1, NULL);
+		gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view1), -1, "Column 1", renderer1, "text", COLUMN1, NULL);
 
 		renderer1 = gtk_cell_renderer_text_new ();
-		gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view1), -1, "Column2", renderer1, "text", COLUMN2, NULL);
+		gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view1), -1, "Column 2", renderer1, "text", COLUMN2, NULL);
 
 		store1 = gtk_list_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_STRING);
 
 		gtk_list_store_append (store1, &iter);
-		gtk_list_store_set (store1, &iter, COLUMN1, "Cell1.1", COLUMN2, "Cell1.2", -1);
+		gtk_list_store_set (store1, &iter, COLUMN1, "Cell 1.1", COLUMN2, "Cell 1.2", -1);
 		gtk_list_store_append (store1, &iter);
-		gtk_list_store_set (store1, &iter, COLUMN1, "Cell2.1", COLUMN2, "Cell2.2", -1);
+		gtk_list_store_set (store1, &iter, COLUMN1, "Cell 2.1", COLUMN2, "Cell 2.2", -1);
 
 		model1 = GTK_TREE_MODEL (store1);
 		gtk_tree_view_set_model (GTK_TREE_VIEW (view1), model1);
@@ -797,21 +801,21 @@ static void awf_create_window () {
 		view2 = gtk_tree_view_new ();
 
 		renderer2 = gtk_cell_renderer_text_new ();
-		gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view2), -1, "Longer column1", renderer2, "text", COLUMN1, NULL);
+		gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view2), -1, "Longer column 1", renderer2, "text", COLUMN1, NULL);
 
 		renderer2 = gtk_cell_renderer_text_new ();
-		gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view2), -1, "Longer column2", renderer2, "text", COLUMN2, NULL);
+		gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view2), -1, "Longer column 2", renderer2, "text", COLUMN2, NULL);
 
 		store2 = gtk_list_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_STRING);
 
 		gtk_list_store_append (store2, &iter);
-		gtk_list_store_set (store2, &iter, COLUMN1, "Longer cell1.1", COLUMN2, "Longer cell1.2", -1);
+		gtk_list_store_set (store2, &iter, COLUMN1, "Longer cell 1.1", COLUMN2, "Longer cell 1.2", -1);
 		gtk_list_store_append (store2, &iter);
-		gtk_list_store_set (store2, &iter, COLUMN1, "Longer cell2.1", COLUMN2, "Longer cell2.2", -1);
+		gtk_list_store_set (store2, &iter, COLUMN1, "Longer cell 2.1", COLUMN2, "Longer cell 2.2", -1);
 		gtk_list_store_append (store2, &iter);
-		gtk_list_store_set (store2, &iter, COLUMN1, "Longer cell3.1", COLUMN2, "Longer cell3.2", -1);
+		gtk_list_store_set (store2, &iter, COLUMN1, "Longer cell 3.1", COLUMN2, "Longer cell 3.2", -1);
 		gtk_list_store_append (store2, &iter);
-		gtk_list_store_set (store2, &iter, COLUMN1, "Longer cell4.1", COLUMN2, "Longer cell4.2", -1);
+		gtk_list_store_set (store2, &iter, COLUMN1, "Longer cell 4.1", COLUMN2, "Longer cell 4.2", -1);
 
 		model2 = GTK_TREE_MODEL (store2);
 		gtk_tree_view_set_model (GTK_TREE_VIEW (view2), model2);
@@ -827,12 +831,12 @@ static void awf_create_window () {
 
 	// labels and tooltip and spinner
 	{
-		label1 = gtk_label_new ("Label1");
-		label2 = gtk_label_new ("Label2");
+		label1 = gtk_label_new ("Label 1");
+		label2 = gtk_label_new ("Label 2");
 		gtk_widget_set_sensitive (label2, FALSE);
 
 		tooltip = gtk_label_new ("Tooltip");
-		gtk_widget_set_tooltip_text (tooltip, "Enjoy a widget factory!");
+		gtk_widget_set_tooltip_text (tooltip, _("Enjoy a tooltip!"));
 
 		spinner = gtk_spinner_new ();
 		gtk_widget_set_size_request (spinner, 10, 10);
@@ -932,8 +936,7 @@ static void awf_create_window () {
 	{
 		statusbar = gtk_statusbar_new ();
 		gtk_box_pack_start (GTK_BOX (vbox_window), statusbar, FALSE, FALSE, 0);
-		gtk_statusbar_push (GTK_STATUSBAR (statusbar), gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "gné"),
-			g_strjoin ("", "AWF ", VERSION, " / Theme ", current_theme, " loaded.", NULL));
+		awf2_update_statusbar (g_strjoin ("", "AWF ", VERSION, " / Theme ", current_theme, " loaded.", NULL), FALSE);
 	}
 
 	// go
@@ -1171,7 +1174,7 @@ static GtkWidget* awf2_create_menu () {
 
 	menubar = gtk_menu_bar_new ();
 
-	menu = awf2_menu_new (menubar, "_System theme");
+	menu = awf2_menu_new (menubar, _("_System theme"));
 	for (iterator = list_system_theme; iterator; iterator = iterator->next) {
 		menuitem = awf2_menu_radio_new (menu, iterator->data, FALSE, FALSE, FALSE, group);
 		group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (menuitem));
@@ -1180,7 +1183,7 @@ static GtkWidget* awf2_create_menu () {
 			gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), TRUE);
 	}
 
-	menu = awf2_menu_new (menubar, "_User theme");
+	menu = awf2_menu_new (menubar, _("_User theme"));
 	for (iterator = list_user_theme; iterator; iterator = iterator->next) {
 		menuitem = awf2_menu_radio_new (menu, iterator->data, FALSE, FALSE, FALSE, group);
 		gtk_radio_menu_item_set_group (GTK_RADIO_MENU_ITEM (menuitem), group);
@@ -1189,28 +1192,28 @@ static GtkWidget* awf2_create_menu () {
 			gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), TRUE);
 	}
 
-	menu = awf2_menu_new (menubar, "_Test menu");
+	menu = awf2_menu_new (menubar, _("_Test menu"));
 		awf2_menu_tearoff_new (menu);
-		menuitem = awf2_menu_item_new (menu, accels, "",              "<Control>o",  GTK_STOCK_OPEN,       FALSE);
+		menuitem = awf2_menu_item_new (menu, accels, "",               "<Control>o",  GTK_STOCK_OPEN,       FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_dialog_open), NULL);
-		menuitem = awf2_menu_item_new (menu, accels, "Open recent",   "",            "",                   FALSE);
+		menuitem = awf2_menu_item_new (menu, accels, _("Open recent"), "",            "",                   FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_dialog_open_recent), NULL);
-		menuitem = awf2_menu_item_new (menu, accels, "Calendar",      "",            "",                   FALSE);
+		menuitem = awf2_menu_item_new (menu, accels, _("Calendar"),    "",            "",                   FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_dialog_calendar), NULL);
-		menuitem = awf2_menu_item_new (menu, accels, "",              "<Control>s",  GTK_STOCK_SAVE,       FALSE);
+		menuitem = awf2_menu_item_new (menu, accels, "",               "<Control>s",  GTK_STOCK_SAVE,       FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_dialog_save), NULL);
-		menuitem = awf2_menu_item_new (menu, accels, "Refresh theme", "F5",          GTK_STOCK_REFRESH,    FALSE);
+		menuitem = awf2_menu_item_new (menu, accels, _("Refresh theme"), "F5",          GTK_STOCK_REFRESH,    FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf_refresh_theme), NULL);
-		menuitem = awf2_menu_item_new (menu, accels, "",              "<Alt>Return", GTK_STOCK_PROPERTIES, FALSE);
+		menuitem = awf2_menu_item_new (menu, accels, "",               "<Alt>Return", GTK_STOCK_PROPERTIES, FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_dialog_properties), NULL);
-		menuitem = awf2_menu_item_new (menu, accels, "",              "",            GTK_STOCK_PAGE_SETUP, FALSE);
+		menuitem = awf2_menu_item_new (menu, accels, "",               "",            GTK_STOCK_PAGE_SETUP, FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_dialog_page_setup), NULL);
-		menuitem = awf2_menu_item_new (menu, accels, "",              "<Control>p",  GTK_STOCK_PRINT,      FALSE);
+		menuitem = awf2_menu_item_new (menu, accels, "",               "<Control>p",  GTK_STOCK_PRINT,      FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_dialog_print), NULL);
-		menuitem = awf2_menu_item_new (menu, accels, "",              "",            GTK_STOCK_ABOUT,      FALSE);
+		menuitem = awf2_menu_item_new (menu, accels, "",               "",            GTK_STOCK_ABOUT,      FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_dialog_about), NULL);
 
-		submenu = awf2_menu_new (menu, "More...");
+		submenu = awf2_menu_new (menu, _("More..."));
 			awf2_menu_item_new (submenu, accels, "", "<Control>x", GTK_STOCK_CUT,   FALSE);
 			awf2_menu_item_new (submenu, accels, "", "<Control>c", GTK_STOCK_COPY,  FALSE);
 			awf2_menu_item_new (submenu, accels, "", "<Control>v", GTK_STOCK_PASTE, FALSE);
@@ -1334,7 +1337,7 @@ static void awf2_show_dialog_about (GtkWidget *widget, gpointer unused) {
 
 	gtk_show_about_dialog (GTK_WINDOW (window),
 		"version", VERSION,
-		"comments", "A widget factory is a theme preview application for gtk2 and gtk3. It displays the various widget types provided by gtk2/gtk3 in a single window allowing to see the visual effect of the applied theme.",
+		"comments", _("A widget factory is a theme preview application for gtk2 and gtk3. It displays the various widget types provided by gtk2/gtk3 in a single window allowing to see the visual effect of the applied theme."),
 		"website", "https://github.com/valr/awf",
 		"copyright", "Copyright © 2011-2017 Valère Monseur\nCopyright © 2020 Fabrice Creuzot",
 		"icon-name", "awf",
@@ -1383,7 +1386,7 @@ static void awf2_show_dialog_calendar (GtkWidget *widget, gpointer unused) {
 	gtk_widget_show (calendar);
 	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), calendar, FALSE, FALSE, 0);
 
-	gtk_dialog_add_button (GTK_DIALOG (dialog), "Ok", 0);
+	gtk_dialog_add_button (GTK_DIALOG (dialog), _("Ok"), 0);
 	gtk_window_set_icon_name (GTK_WINDOW (dialog), "awf");
 	gtk_window_set_title (GTK_WINDOW (dialog), "GtkMessageDialog with Calendar");
 	gtk_dialog_run (GTK_DIALOG (dialog));
@@ -1399,9 +1402,9 @@ static void awf2_show_dialog_properties (GtkWidget *widget, gpointer unused) {
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_MESSAGE_INFO,
 		GTK_BUTTONS_OK,
-		"Hello");
+		_("Hello"));
 
-	gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pulvinar ligula ut ante viverra, et fermentum ipsum malesuada. Aliquam erat volutpat. Fusce commodo nibh ultrices semper rutrum.");
+	gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), _("A widget factory is a theme preview application for gtk2 and gtk3. It displays the various widget types provided by gtk2/gtk3 in a single window allowing to see the visual effect of the applied theme."));
 
 	gtk_window_set_icon_name (GTK_WINDOW (dialog), "awf");
 	gtk_window_set_title (GTK_WINDOW (dialog), "GtkMessageDialog");
