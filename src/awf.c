@@ -1389,7 +1389,9 @@ static void awf2_show_dialog_calendar (GtkWidget *widget, gpointer unused) {
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		NULL);
 
+	gtk_widget_set_size_request (GTK_WIDGET (dialog), 350, -1);
 	area = GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog)));
+	gtk_box_pack_start (area, EMPTY, FALSE, FALSE, 0);
 
 	// info bars
 	bar = gtk_info_bar_new ();
