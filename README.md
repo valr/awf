@@ -10,14 +10,16 @@ It displays the various widget types provided by gtk2/gtk3 in a single window al
 Features
 --------
 
-  * Display widget types available in gtk2/gtk3 (remark: option menu widget type only exists in gtk2, switch and level bar widget types only exist in gtk3)
+  * Display widget types available in gtk2/gtk3
   * Menus to select the themes available either at system level or user level
-  * Toolbar button to start the other gtk version of the tool
-  * Toolbar button to refresh the current theme (not working anymore in latest versions of gtk3)
+  * Toolbar button and menu item to refresh the current theme
+  * Toolbar button to show or hide notebook tabs arrows
   * Refresh the current theme on SIGHUP
 
 Installation
 ------------
+
+It require *gtk2* version 2.24 and *gtk3*.
 
   * Ubuntu
 ```
@@ -50,12 +52,6 @@ make
 make install
 ```
 
-Dependencies
-------------
-
-  * gtk2 version 2.24
-  * gtk3
-
 Screenshots
 -----------
 
@@ -78,8 +74,8 @@ License
   A widget factory is provided under the terms of the GNU GPLv3 license.
   See the COPYING file for details.
 
-Author
-------
+Authors
+-------
 
   * Valère Monseur (valere dot monseur at ymail dot com)
   * Fabrice Creuzot (code hat luigifab dot fr)
