@@ -1,4 +1,0 @@
-2017-05-26: version 1.4.0
-
-Merge PR #8: Refresh theme on SIGHUP
-Merge PR #9: Replace some gtk_container_add()s with gtk_box_pack_start()s

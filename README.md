@@ -59,9 +59,9 @@ Dependencies
 Screenshots
 -----------
 
-![A widget factory](https://github.com/valr/awf/raw/gh-pages/awf-gtk2.jpg)
+![A widget factory - Gtk2](images/gtk2.png?raw=true)
 
-![A widget factory](https://github.com/valr/awf/raw/gh-pages/awf-gtk3.jpg)
+![A widget factory - Gtk2](images/gtk3.png?raw=true)
 
 SIGHUP
 ------
