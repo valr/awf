@@ -1,49 +1,41 @@
-AWF - A Widget Factory
-======================
+# AWF - A Widget Factory
 
-Description
------------
+## Description
 
-A widget factory is a theme preview application for gtk2 and gtk3.
-It displays the various widget types provided by gtk2/gtk3 in a single window allowing to see the visual effect of the applied theme.
+A widget factory is a theme preview application for gtk2 and gtk3. It displays the various widget types provided by gtk2/gtk3 in a single window allowing to see the visual effect of the applied theme.
 
-Features
---------
+## Features
 
-  * Display widget types available in gtk2/gtk3
-  * Menus to select the themes available either at system level or user level
-  * Toolbar button and menu item to refresh the current theme
-  * Toolbar button to show or hide notebook tabs arrows
-  * Refresh the current theme on SIGHUP
+* Display widget types available in gtk2/gtk3
+* Menu items to select the desired theme available either at system level or user level
+* Menu items to test some dialogs
+* Toolbar button and menu item to refresh the current theme
+* Toolbar button to show or hide notebook tabs arrows
+* Refresh the current theme on SIGHUP
 
-Installation
-------------
+## Installation
 
 It require *gtk2* version 2.24 and *gtk3*.
 
-  * Ubuntu
+* With Ubuntu
 ```
 sudo apt-add-repository ppa:flexiondotorg/awf
 sudo apt update
 sudo apt install awf
 ```
 
-  * Archlinux
+* With Archlinux
 
-    https://aur.archlinux.org/packages/awf-git/
+https://aur.archlinux.org/packages/awf-git/
 
-  * RPM based distro
-
-    There is no pre-built package (yet) but you can generate RPM like this:
-
+* RPM based distro
 ```
 ./autogen.sh
 ./configure
 make rpm
 ```
 
-  * From source
-
+* From source
 ```
 apt install dh-autoreconf libgtk2.0-dev libgtk-3-dev
 ./autogen.sh
@@ -52,37 +44,25 @@ make
 make install
 ```
 
-Screenshots
------------
+## Screenshots
 
 ![A widget factory - Gtk2](images/gtk2.png?raw=true)
-
 ![A widget factory - Gtk2](images/gtk3.png?raw=true)
 
-SIGHUP
-------
+## SIGHUP
 
-  To auto reload theme on files change, you can use [entr](https://github.com/clibs/entr).
+To auto reload theme on files change, you can use [entr](https://github.com/clibs/entr).
 ```
 apt install entr
 ls ~/.themes/yourtheme/gtk-3.0/*.css | entr killall -s SIGHUP awf-gtk3
 ```
 
-License
--------
+## Copyright and Credits
 
-  A widget factory is provided under the terms of the GNU GPLv3 license.
-  See the COPYING file for details.
+A widget factory is provided under the terms of the GNU GPLv3 license.
 
-Authors
--------
-
-  * Valère Monseur (valere dot monseur at ymail dot com)
-  * Fabrice Creuzot (code hat luigifab dot fr)
-
-Thanks to
----------
-
-  * Ottoman Kent (for testing in ubuntu and bug report)
-  * Dwight Engen (for rpm specification file: awf.spec.in)
-  * Josef Radinger (for sorted menus, text in progress bars, treeviews with(out) scrollbars)
+* Created by Valère Monseur (valere dot monseur at ymail dot com)
+* Updated by Fabrice Creuzot (code hat luigifab dot fr)
+* Thanks to Ottoman Kent (for testing in ubuntu and bug report)
+* Thanks to Dwight Engen (for rpm specification file: awf.spec.in)
+* Thanks to Josef Radinger (for sorted menus, text in progress bars, treeviews with(out) scrollbars)
