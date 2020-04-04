@@ -1383,7 +1383,12 @@ static void awf2_show_dialog_calendar (GtkWidget *widget, gpointer unused) {
 	GtkBox *area;
 	GtkTextBuffer *buffer;
 
-	dialog = gtk_dialog_new ();
+	dialog = gtk_dialog_new_with_buttons (
+		NULL,
+		GTK_WINDOW (window),
+		GTK_DIALOG_DESTROY_WITH_PARENT,
+		NULL);
+
 	area = GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog)));
 
 	// info bars
