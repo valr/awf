@@ -1401,16 +1401,16 @@ static void awf2_show_dialog_calendar (GtkWidget *widget, gpointer unused) {
 	gtk_box_pack_start (area, bar, FALSE, FALSE, 0);
 	gtk_box_pack_start (area, EMPTY, FALSE, FALSE, 0);
 
-	bar = gtk_info_bar_new_with_buttons (_("Ok"), GTK_RESPONSE_OK, NULL);
-	gtk_info_bar_set_message_type (GTK_INFO_BAR (bar), GTK_MESSAGE_WARNING);
-	label = gtk_label_new (_("This is a warning bar."));
+	bar = gtk_info_bar_new_with_buttons (_("No"), GTK_RESPONSE_OK, _("Yes"), GTK_RESPONSE_OK, NULL);
+	gtk_info_bar_set_message_type (GTK_INFO_BAR (bar), GTK_MESSAGE_QUESTION);
+	label = gtk_label_new (_("This is a question bar."));
 	gtk_box_pack_start (GTK_BOX (gtk_info_bar_get_content_area (GTK_INFO_BAR (bar))), label, FALSE, FALSE, 0);
 	gtk_box_pack_start (area, bar, FALSE, FALSE, 0);
 	gtk_box_pack_start (area, EMPTY, FALSE, FALSE, 0);
 
 	bar = gtk_info_bar_new ();
-	gtk_info_bar_set_message_type (GTK_INFO_BAR (bar), GTK_MESSAGE_QUESTION);
-	label = gtk_label_new (_("This is a question bar."));
+	gtk_info_bar_set_message_type (GTK_INFO_BAR (bar), GTK_MESSAGE_WARNING);
+	label = gtk_label_new (_("This is a warning bar."));
 	gtk_box_pack_start (GTK_BOX (gtk_info_bar_get_content_area (GTK_INFO_BAR (bar))), label, FALSE, FALSE, 0);
 	gtk_box_pack_start (area, bar, FALSE, FALSE, 0);
 	gtk_box_pack_start (area, EMPTY, FALSE, FALSE, 0);
