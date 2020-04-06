@@ -615,8 +615,8 @@ static void awf_create_window () {
 		button6 = gtk_font_button_new ();
 		gtk_widget_set_size_request (GTK_WIDGET (button5), 170, -1);
 
-		button7 = gtk_file_chooser_button_new (_("Select file..."), GTK_FILE_CHOOSER_ACTION_OPEN);
-		button8 = gtk_file_chooser_button_new (_("Select folder..."), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+		button7 = gtk_file_chooser_button_new ("GtkFileChooserDialog", GTK_FILE_CHOOSER_ACTION_OPEN);
+		button8 = gtk_file_chooser_button_new ("GtkFileChooserDialog", GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
 
 
 #if GTK_CHECK_VERSION (3,0,0)
