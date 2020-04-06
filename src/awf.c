@@ -210,7 +210,6 @@ static void awf_create_window () {
 	GtkWidget *frame1, *frame2, *frame3, *frame4;
 	GtkWidget *vseparator1, *vseparator2, *vseparator3, *hseparator1;
 	GtkWidget *label1, *label2;
-	GtkWidget *tooltip;
 	GtkWidget *vpane1, *hpane1, *hpane2;
 	GtkWidget *scrolled_window1, *scrolled_window2;
 	GtkWidget *refresh, *icon1, *icon2, *icon3;
@@ -851,11 +850,11 @@ static void awf_create_window () {
 	// labels and tooltip and spinner
 	{
 		label1 = gtk_label_new ("Label 1");
-		label2 = gtk_label_new ("Label 2");
-		gtk_widget_set_sensitive (label2, FALSE);
+		gtk_widget_set_tooltip_text (label1, _("Enjoy a tooltip."));
 
-		tooltip = gtk_label_new ("Tooltip");
-		gtk_widget_set_tooltip_text (tooltip, _("Enjoy a tooltip!"));
+		label2 = gtk_label_new ("Label 2");
+		gtk_widget_set_tooltip_text (label2, _("Enjoy a tooltip."));
+		gtk_widget_set_sensitive (label2, FALSE);
 
 		spinner = gtk_spinner_new ();
 		gtk_widget_set_size_request (spinner, 10, 10);
@@ -863,8 +862,6 @@ static void awf_create_window () {
 
 		gtk_box_pack_start (GTK_BOX (vbox_label_treeview), label1, FALSE, FALSE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox_label_treeview), label2, FALSE, FALSE, 0);
-		gtk_box_pack_start (GTK_BOX (vbox_label_treeview), EMPTY, FALSE, FALSE, 0);
-		gtk_box_pack_start (GTK_BOX (vbox_label_treeview), tooltip, FALSE, FALSE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox_label_treeview), EMPTY, FALSE, FALSE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox_label_treeview), spinner, FALSE, FALSE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox_label_treeview), EMPTY, FALSE, FALSE, 0);
@@ -1219,7 +1216,7 @@ static GtkWidget* awf2_create_menu () {
 			gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), TRUE);
 	}
 
-	menu = awf2_menu_new (menubar, _("_Test menu"));
+	menu = awf2_menu_new (menubar, _("_Options"));
 		awf2_menu_tearoff_new (menu);
 		menuitem = awf2_menu_item_new (menu, accels, "", "<Control>o", GTK_STOCK_OPEN, FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_dialog_open), NULL);
@@ -1246,26 +1243,26 @@ static GtkWidget* awf2_create_menu () {
 			awf2_menu_item_new (submenu, accels, "", "<Control>v", GTK_STOCK_PASTE, FALSE);
 
 		awf2_menu_separator_new (menu);
-		menuitem = awf2_menu_radio_new (menu, "Radio 1 (unchecked)",    FALSE, FALSE, FALSE, NULL);
+		menuitem = awf2_menu_radio_new (menu, g_strdup_printf ("Radio 1 %s", _("(unchecked)")),    FALSE, FALSE, FALSE, NULL);
 		group    = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (menuitem));
-		menuitem = awf2_menu_radio_new (menu, "Radio 2 (checked)",      TRUE,  FALSE, FALSE, group);
-		           awf2_menu_radio_new (menu, "Radio 3 (inconsistent)", FALSE, TRUE,  FALSE, NULL);
+		menuitem = awf2_menu_radio_new (menu, g_strdup_printf ("Radio 2 %s", _("(checked)")),      TRUE,  FALSE, FALSE, group);
+		           awf2_menu_radio_new (menu, g_strdup_printf ("Radio 3 %s", _("(inconsistent)")), FALSE, TRUE,  FALSE, NULL);
 
 		awf2_menu_separator_new (menu);
-		menuitem = awf2_menu_radio_new (menu, "Radio 1 (unchecked)",    FALSE, FALSE, TRUE, NULL);
+		menuitem = awf2_menu_radio_new (menu, g_strdup_printf ("Radio 1 %s", _("(unchecked)")),    FALSE, FALSE, TRUE, NULL);
 		group    = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (menuitem));
-		menuitem = awf2_menu_radio_new (menu, "Radio 2 (checked)",      TRUE,  FALSE, TRUE, group);
-		           awf2_menu_radio_new (menu, "Radio 3 (inconsistent)", FALSE, TRUE,  TRUE, NULL);
+		menuitem = awf2_menu_radio_new (menu, g_strdup_printf ("Radio 2 %s", _("(checked)")),      TRUE,  FALSE, TRUE, group);
+		           awf2_menu_radio_new (menu, g_strdup_printf ("Radio 3 %s", _("(inconsistent)")), FALSE, TRUE,  TRUE, NULL);
 
 		awf2_menu_separator_new (menu);
-		awf2_menu_checkbox_new (menu, "Check 1 (unchecked)",    FALSE, FALSE, FALSE);
-		awf2_menu_checkbox_new (menu, "Check 2 (checked)",      TRUE,  FALSE, FALSE);
-		awf2_menu_checkbox_new (menu, "Check 3 (inconsistent)", FALSE, TRUE,  FALSE);
+		awf2_menu_checkbox_new (menu, g_strdup_printf ("Check 1 %s", _("(unchecked)")),    FALSE, FALSE, FALSE);
+		awf2_menu_checkbox_new (menu, g_strdup_printf ("Check 2 %s", _("(checked)")),      TRUE,  FALSE, FALSE);
+		awf2_menu_checkbox_new (menu, g_strdup_printf ("Check 3 %s", _("(inconsistent)")), FALSE, TRUE,  FALSE);
 
 		awf2_menu_separator_new (menu);
-		awf2_menu_checkbox_new (menu, "Check 1 (unchecked)",    FALSE, FALSE, TRUE);
-		awf2_menu_checkbox_new (menu, "Check 2 (checked)",      TRUE,  FALSE, TRUE);
-		awf2_menu_checkbox_new (menu, "Check 3 (inconsistent)", FALSE, TRUE,  TRUE);
+		awf2_menu_checkbox_new (menu, g_strdup_printf ("Check 1 %s", _("(unchecked)")),    FALSE, FALSE, TRUE);
+		awf2_menu_checkbox_new (menu, g_strdup_printf ("Check 2 %s", _("(checked)")),      TRUE,  FALSE, TRUE);
+		awf2_menu_checkbox_new (menu, g_strdup_printf ("Check 3 %s", _("(inconsistent)")), FALSE, TRUE,  TRUE);
 
 		awf2_menu_separator_new (menu);
 		awf2_menu_item_new (menu, accels, "", "<Control>w", GTK_STOCK_CLOSE, TRUE);
@@ -1488,7 +1485,12 @@ static void awf2_show_dialog_properties (GtkWidget *widget, gpointer unused) {
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_MESSAGE_INFO,
 		GTK_BUTTONS_YES_NO,
-		_("Hello"));
+#if GTK_CHECK_VERSION (3,0,0)
+		_("A widget factory - Gtk3"),
+#else
+		_("A widget factory - Gtk2"),
+#endif
+		NULL);
 
 	gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), _("A widget factory is a theme preview application for gtk2 and gtk3. It displays the various widget types provided by gtk2/gtk3 in a single window allowing to see the visual effect of the applied theme."));
 
