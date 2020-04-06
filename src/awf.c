@@ -174,6 +174,7 @@ int main (int argc, char **argv) {
 
 static void awf_create_window () {
 
+	int i;
 	GtkWidget *menubar, *toolbar;
 	GtkWidget *vbox_window, *vbox_widget;
 	GtkWidget *vbox_label_treeview, *vbox_other_button, *vbox_progressbar_scale;
@@ -182,7 +183,7 @@ static void awf_create_window () {
 	GtkWidget *vbox_progressbar, *vbox_scale;
 	GtkWidget *vbox_buttonbox;
 	GtkWidget *hbox1, *hbox_check_radio_button;
-	GtkWidget *hbox_frame1, *hbox_frame2, *hbox_notebook1, *hbox_notebook2;
+	GtkWidget *hbox_frame1, *hbox_frame2, *hbox_notebook1, *hbox_notebook2, *tab;
 	GtkWidget *hbox_spin_button, *hbox_progressbar, *hbox_scale;
 	GtkWidget *button1,  *button2,  *button3,  *button4,  *button5,  *button6,  *button7,  *button8,  *button9,  *button10;
 	GtkWidget *button11, *button12, *button13, *button14, *button15, *button16, *button17, *button18, *button19, *button20;
@@ -898,36 +899,44 @@ static void awf_create_window () {
 #endif
 
 		gtk_notebook_popup_enable (GTK_NOTEBOOK (notebook1));
+		gtk_notebook_set_group_name (GTK_NOTEBOOK (notebook1), "notebooks");
 		gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook1), FALSE);
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), gtk_label_new (""), gtk_label_new ("tab1"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), gtk_label_new (""), gtk_label_new ("tab2"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), gtk_label_new (""), gtk_label_new ("tab3"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), gtk_label_new (""), gtk_label_new ("tab4"));
 		gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook1), GTK_POS_TOP);
+		for (i = 1; i <= 4; i++) {
+			tab = gtk_label_new ("");
+			gtk_notebook_append_page (GTK_NOTEBOOK (notebook1), tab, gtk_label_new (g_strdup_printf ("tab%d", i)));
+			gtk_notebook_set_tab_reorderable (GTK_NOTEBOOK (notebook1), tab, TRUE);
+			gtk_notebook_set_tab_detachable (GTK_NOTEBOOK (notebook1), tab, TRUE);
+		}
 
 		gtk_notebook_popup_enable (GTK_NOTEBOOK (notebook2));
+		gtk_notebook_set_group_name (GTK_NOTEBOOK (notebook2), "notebooks");
 		gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook2), FALSE);
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), gtk_label_new (""), gtk_label_new ("tab1"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), gtk_label_new (""), gtk_label_new ("tab2"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), gtk_label_new (""), gtk_label_new ("tab3"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), gtk_label_new (""), gtk_label_new ("tab4"));
 		gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook2), GTK_POS_BOTTOM);
+		for (i = 1; i <= 4; i++) {
+			tab = gtk_label_new ("");
+			gtk_notebook_append_page (GTK_NOTEBOOK (notebook2), tab, gtk_label_new (g_strdup_printf ("tab%d", i)));
+			gtk_notebook_set_tab_reorderable (GTK_NOTEBOOK (notebook2), tab, TRUE);
+			gtk_notebook_set_tab_detachable (GTK_NOTEBOOK (notebook2), tab, TRUE);
+		}
 
 		gtk_notebook_popup_enable (GTK_NOTEBOOK (notebook3));
 		gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook3), FALSE);
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), gtk_label_new (""), gtk_label_new ("tab1"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), gtk_label_new (""), gtk_label_new ("tab2"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), gtk_label_new (""), gtk_label_new ("tab3"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), gtk_label_new (""), gtk_label_new ("tab4"));
 		gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook3), GTK_POS_LEFT);
+		for (i = 1; i <= 4; i++) {
+			tab = gtk_label_new ("");
+			gtk_notebook_append_page (GTK_NOTEBOOK (notebook3), tab, gtk_label_new (g_strdup_printf ("tab%d", i)));
+			gtk_notebook_set_tab_reorderable (GTK_NOTEBOOK (notebook3), tab, TRUE);
+		}
 
 		gtk_notebook_popup_enable (GTK_NOTEBOOK (notebook4));
 		gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook4), FALSE);
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), gtk_label_new (""), gtk_label_new ("tab1"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), gtk_label_new (""), gtk_label_new ("tab2"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), gtk_label_new (""), gtk_label_new ("tab3"));
-		gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), gtk_label_new (""), gtk_label_new ("tab4"));
 		gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook4), GTK_POS_RIGHT);
+		for (i = 1; i <= 4; i++) {
+			tab = gtk_label_new ("");
+			gtk_notebook_append_page (GTK_NOTEBOOK (notebook4), tab, gtk_label_new (g_strdup_printf ("tab%d", i)));
+			gtk_notebook_set_tab_reorderable (GTK_NOTEBOOK (notebook4), tab, TRUE);
+		}
 
 		gtk_box_pack_start (GTK_BOX (hbox_notebook1), notebook1, FALSE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (hbox_notebook1), notebook2, FALSE, TRUE, 0);
@@ -939,7 +948,7 @@ static void awf_create_window () {
 	{
 		statusbar = gtk_statusbar_new ();
 		gtk_box_pack_start (GTK_BOX (vbox_window), statusbar, FALSE, FALSE, 0);
-		awf2_update_statusbar (g_strjoin ("", "AWF ", VERSION, " / Theme ", current_theme, " loaded.", NULL), FALSE);
+		awf2_update_statusbar (g_strdup_printf ("AWF %s / Theme %s loaded.", VERSION, current_theme), FALSE);
 	}
 
 	// go
@@ -1022,7 +1031,7 @@ static void awf_set_theme (gpointer theme, gpointer unused) {
 		gtk_window_resize (GTK_WINDOW (window), 50, 50);
 
 	if (statusbar)
-		awf2_update_statusbar (g_strjoin ("", "AWF ", VERSION, " / Theme ", current_theme, " loaded.", NULL), FALSE);
+		awf2_update_statusbar (g_strdup_printf ("Theme %s loaded.", current_theme), FALSE);
 }
 
 static void awf_refresh_theme (GtkWidget *unused1, gpointer unused2) {
@@ -1040,7 +1049,7 @@ static void awf_refresh_theme (GtkWidget *unused1, gpointer unused2) {
 		g_usleep (G_USEC_PER_SEC / 2);
 		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", current_theme, NULL);
 
-		awf2_update_statusbar (g_strjoin ("", "Theme ", current_theme, " reloaded at", NULL), TRUE);
+		awf2_update_statusbar (g_strdup_printf ("Theme %s reloaded at", current_theme), TRUE);
 
 		if (screenshot)
 			g_timeout_add_seconds (1, awf2_take_screenshot, NULL);
@@ -1138,7 +1147,7 @@ static gboolean awf2_take_screenshot (gpointer unused) {
 
 	if (image) {
  		gdk_pixbuf_save (image, screenshot, "png", NULL, "compression", "9", NULL);
-		awf2_update_statusbar (g_strjoin ("", "Theme reloaded, then screenshot saved (", screenshot, ") at", NULL), TRUE);
+		awf2_update_statusbar (g_strdup_printf ("Theme reloaded, then screenshot saved (%s) at", screenshot), TRUE);
 	}
 
 	return FALSE;
@@ -1156,7 +1165,7 @@ static void awf2_update_statusbar (gchar *text, gboolean withtime) {
 		strftime (buffer, sizeof buffer, " %ET.", timeinfo);
 
 		gtk_statusbar_push (GTK_STATUSBAR (statusbar), gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "gné"),
-			g_strjoin ("", text, buffer, NULL));
+			g_strdup_printf ("%s%s", text, buffer));
 	}
 	else {
 		gtk_statusbar_push (GTK_STATUSBAR (statusbar), gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "gné"), text);
