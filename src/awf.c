@@ -50,6 +50,13 @@
 
 #define EMPTY (gtk_empty_new ())
 
+// xgettext -d awf -o src/po/awf.pot -k_ -s src/awf.c
+// cp src/po/awf.pot src/fr/awf.po
+// msgmerge src/fr/awf.po src/po/awf.pot -o src/fr/awf.po
+// msgfmt src/fr/awf.po -o src/fr/LC_MESSAGES/awf.mo
+#define GETTEXT_PACKAGE "awf"
+#define _(String) gettext (String)
+
 // enums
 
 enum {
@@ -161,8 +168,16 @@ int main (int argc, char **argv) {
 		}
 	}
 
-	//bindtextdomain (PACKAGE, LOCALEDIR);
-	//textdomain (PACKAGE);
+	// locale
+	setlocale (LC_ALL, "");
+	if (g_file_test ("/usr/share/locale", G_FILE_TEST_IS_DIR))
+		bindtextdomain(GETTEXT_PACKAGE, "/usr/share/locale");
+	if (g_file_test ("/var/www/awf/src", G_FILE_TEST_IS_DIR))
+		bindtextdomain(GETTEXT_PACKAGE, "/var/www/awf/src");
+	if (g_file_test ("/home/gtk324/awf/src", G_FILE_TEST_IS_DIR))
+		bindtextdomain(GETTEXT_PACKAGE, "/home/gtk324/awf/src");
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
 
 	// window
 	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &current_theme, NULL);
@@ -948,7 +963,7 @@ static void awf_create_window () {
 	{
 		statusbar = gtk_statusbar_new ();
 		gtk_box_pack_start (GTK_BOX (vbox_window), statusbar, FALSE, FALSE, 0);
-		awf2_update_statusbar (g_strdup_printf ("AWF %s / Theme %s loaded.", VERSION, current_theme), FALSE);
+		awf2_update_statusbar (g_strdup_printf (_("AWF %s / Theme %s loaded."), VERSION, current_theme), FALSE);
 	}
 
 	// go
@@ -963,7 +978,7 @@ static GSList* awf_load_theme (gchar *directory) {
 
 	g_return_val_if_fail (directory != NULL, NULL);
 
-	if (g_file_test (directory, G_FILE_TEST_EXISTS)) {
+	if (g_file_test (directory, G_FILE_TEST_IS_DIR)) {
 
 		GError *error = NULL;
 		GDir *dir = g_dir_open (directory, 0, &error);
@@ -1031,7 +1046,7 @@ static void awf_set_theme (gpointer theme, gpointer unused) {
 		gtk_window_resize (GTK_WINDOW (window), 50, 50);
 
 	if (statusbar)
-		awf2_update_statusbar (g_strdup_printf ("Theme %s loaded.", current_theme), FALSE);
+		awf2_update_statusbar (g_strdup_printf (_("Theme %s loaded."), current_theme), FALSE);
 }
 
 static void awf_refresh_theme (GtkWidget *unused1, gpointer unused2) {
@@ -1049,7 +1064,7 @@ static void awf_refresh_theme (GtkWidget *unused1, gpointer unused2) {
 		g_usleep (G_USEC_PER_SEC / 2);
 		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", current_theme, NULL);
 
-		awf2_update_statusbar (g_strdup_printf ("Theme %s reloaded at", current_theme), TRUE);
+		awf2_update_statusbar (g_strdup_printf (_("Theme %s reloaded at"), current_theme), TRUE);
 
 		if (screenshot)
 			g_timeout_add_seconds (1, awf2_take_screenshot, NULL);
@@ -1147,7 +1162,7 @@ static gboolean awf2_take_screenshot (gpointer unused) {
 
 	if (image) {
  		gdk_pixbuf_save (image, screenshot, "png", NULL, "compression", "9", NULL);
-		awf2_update_statusbar (g_strdup_printf ("Theme reloaded, then screenshot saved (%s) at", screenshot), TRUE);
+		awf2_update_statusbar (g_strdup_printf (_("Theme reloaded, then screenshot saved (%s) at"), screenshot), TRUE);
 	}
 
 	return FALSE;
@@ -1208,7 +1223,7 @@ static GtkWidget* awf2_create_menu () {
 		awf2_menu_tearoff_new (menu);
 		menuitem = awf2_menu_item_new (menu, accels, "", "<Control>o", GTK_STOCK_OPEN, FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_dialog_open), NULL);
-		menuitem = awf2_menu_item_new (menu, accels, _("Open recent"), "", "", FALSE);
+		menuitem = awf2_menu_item_new (menu, accels, _("Open recent file"), "", "", FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_dialog_open_recent), NULL);
 		menuitem = awf2_menu_item_new (menu, accels, "", "<Control>s", GTK_STOCK_SAVE, FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (awf2_show_dialog_save), NULL);
