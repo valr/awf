@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-06 17:38+0200\n"
+"POT-Creation-Date: 2020-04-07 17:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,113 +17,117 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/awf.c:1248 src/awf.c:1254 src/awf.c:1259 src/awf.c:1264
+#: src/awf.c:1339 src/awf.c:1345 src/awf.c:1350 src/awf.c:1355
 msgid "(checked)"
 msgstr ""
 
-#: src/awf.c:1249 src/awf.c:1255 src/awf.c:1260 src/awf.c:1265
+#: src/awf.c:1340 src/awf.c:1346 src/awf.c:1351 src/awf.c:1356
 msgid "(inconsistent)"
 msgstr ""
 
-#: src/awf.c:1246 src/awf.c:1252 src/awf.c:1258 src/awf.c:1263
+#: src/awf.c:1337 src/awf.c:1343 src/awf.c:1349 src/awf.c:1354
 msgid "(unchecked)"
 msgstr ""
 
-#: src/awf.c:241 src/awf.c:1491
+#: src/awf.c:574
 msgid "A widget factory - Gtk2"
 msgstr ""
 
-#: src/awf.c:239 src/awf.c:1489
+#: src/awf.c:571
 msgid "A widget factory - Gtk3"
 msgstr ""
 
-#: src/awf.c:1364 src/awf.c:1464 src/awf.c:1495
+#: src/awf.c:1125 src/awf.c:1457 src/awf.c:1566
 msgid ""
 "A widget factory is a theme preview application for gtk2 and gtk3. It "
 "displays the various widget types provided by gtk2/gtk3 in a single window "
 "allowing to see the visual effect of the applied theme."
 msgstr ""
 
-#: src/awf.c:963
+#: src/awf.c:454
 #, c-format
 msgid "AWF %s / Theme %s loaded."
 msgstr ""
 
-#: src/awf.c:1229
+#: src/awf.c:1320
 msgid "Calendar"
 msgstr ""
 
-#: src/awf.c:1470
+#: src/awf.c:1544
 msgid "Cancel"
 msgstr ""
 
-#: src/awf.c:853 src/awf.c:856
-msgid "Enjoy a tooltip."
-msgstr ""
-
-#: src/awf.c:662
+#: src/awf.c:904
 msgid "Link button"
 msgstr ""
 
-#: src/awf.c:1240 src/awf.c:1455
+#: src/awf.c:1116 src/awf.c:1331
 msgid "More..."
 msgstr ""
 
-#: src/awf.c:1418 src/awf.c:1425 src/awf.c:1471
+#: src/awf.c:1509 src/awf.c:1516 src/awf.c:1545
 msgid "Ok"
 msgstr ""
 
-#: src/awf.c:1223
+#: src/awf.c:1314
 msgid "Open recent file"
 msgstr ""
 
-#: src/awf.c:1227
+#: src/awf.c:1318
 msgid "Refresh theme"
 msgstr ""
 
-#: src/awf.c:503 src/awf.c:508 src/awf.c:514 src/awf.c:519
-msgid "Second item"
-msgstr ""
-
-#: src/awf.c:1046
+#: src/awf.c:281
 #, c-format
 msgid "Theme %s loaded."
 msgstr ""
 
-#: src/awf.c:1064
+#: src/awf.c:299
 #, c-format
 msgid "Theme %s reloaded at"
 msgstr ""
 
-#: src/awf.c:1162
+#: src/awf.c:397
 #, c-format
 msgid "Theme reloaded, then screenshot saved (%s) at"
 msgstr ""
 
-#: src/awf.c:1427
+#: src/awf.c:1518
 msgid "This is a question bar."
 msgstr ""
 
-#: src/awf.c:1434
+#: src/awf.c:1525
 msgid "This is a warning bar."
 msgstr ""
 
-#: src/awf.c:1441
+#: src/awf.c:1532
 msgid "This is an error bar."
 msgstr ""
 
-#: src/awf.c:1420
+#: src/awf.c:1511
 msgid "This is an info bar."
 msgstr ""
 
-#: src/awf.c:1219
+#: src/awf.c:1582 src/awf.c:1600 src/awf.c:1619
+msgid "_Cancel"
+msgstr ""
+
+#: src/awf.c:1602 src/awf.c:1621
+msgid "_Open"
+msgstr ""
+
+#: src/awf.c:1310
 msgid "_Options"
 msgstr ""
 
-#: src/awf.c:1201
+#: src/awf.c:1584
+msgid "_Save"
+msgstr ""
+
+#: src/awf.c:1292
 msgid "_System theme"
 msgstr ""
 
-#: src/awf.c:1210
+#: src/awf.c:1301
 msgid "_User theme"
 msgstr ""
