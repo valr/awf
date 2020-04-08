@@ -2,35 +2,35 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-07 17:37+0200\n"
-"PO-Revision-Date: 2020-04-06 17:35+0200\n"
+"POT-Creation-Date: 2020-04-08 12:41+0200\n"
+"PO-Revision-Date: 2020-04-08 12:41+0200\n"
 "Last-Translator: Fabrice Creuzot <code~luigifab~fr>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/awf.c:1339 src/awf.c:1345 src/awf.c:1350 src/awf.c:1355
+#: src/awf.c:657 src/awf.c:663 src/awf.c:668 src/awf.c:673
 msgid "(checked)"
 msgstr "(coché)"
 
-#: src/awf.c:1340 src/awf.c:1346 src/awf.c:1351 src/awf.c:1356
+#: src/awf.c:658 src/awf.c:664 src/awf.c:669 src/awf.c:674
 msgid "(inconsistent)"
 msgstr "(inconsistant)"
 
-#: src/awf.c:1337 src/awf.c:1343 src/awf.c:1349 src/awf.c:1354
+#: src/awf.c:655 src/awf.c:661 src/awf.c:667 src/awf.c:672
 msgid "(unchecked)"
 msgstr "(décoché)"
 
-#: src/awf.c:574
+#: src/awf.c:585
 msgid "A widget factory - Gtk2"
 msgstr "La fabrique à widgets - Gtk2"
 
-#: src/awf.c:571
+#: src/awf.c:582
 msgid "A widget factory - Gtk3"
 msgstr "La fabrique à widgets - Gtk3"
 
-#: src/awf.c:1125 src/awf.c:1457 src/awf.c:1566
+#: src/awf.c:1189 src/awf.c:1525 src/awf.c:1569
 msgid ""
 "A widget factory is a theme preview application for gtk2 and gtk3. It "
 "displays the various widget types provided by gtk2/gtk3 in a single window "
@@ -40,91 +40,70 @@ msgstr ""
 "gtk3. Elle affiche les différents types de widgets fournis par gtk2/gtk3 "
 "dans une seule fenêtre permettant de voir l'effet visuel du thème appliqué."
 
-#: src/awf.c:454
+#: src/awf.c:483
 #, c-format
 msgid "AWF %s / Theme %s loaded."
 msgstr "AWF %s / Thème %s chargé."
 
-#: src/awf.c:1320
+#: src/awf.c:628
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: src/awf.c:1544
-msgid "Cancel"
-msgstr "Annuler"
-
-#: src/awf.c:904
+#: src/awf.c:944
 msgid "Link button"
 msgstr ""
 
-#: src/awf.c:1116 src/awf.c:1331
+#: src/awf.c:649 src/awf.c:1179
 msgid "More..."
 msgstr "Plus..."
 
-#: src/awf.c:1509 src/awf.c:1516 src/awf.c:1545
-msgid "Ok"
-msgstr "Ok"
-
-#: src/awf.c:1314
+#: src/awf.c:625
 msgid "Open recent file"
 msgstr "Ouvrir un fichier récent"
 
-#: src/awf.c:1318
+#: src/awf.c:634
 msgid "Refresh theme"
 msgstr "Actualiser le thème"
 
-#: src/awf.c:281
+#: src/awf.c:284
 #, c-format
 msgid "Theme %s loaded."
 msgstr "Thème %s chargé."
 
-#: src/awf.c:299
+#: src/awf.c:302
 #, c-format
 msgid "Theme %s reloaded at"
 msgstr "Thème %s rechargé à"
 
-#: src/awf.c:397
+#: src/awf.c:443
 #, c-format
 msgid "Theme reloaded, then screenshot saved (%s) at"
 msgstr "Thème rechargé, puis capture d'écran enregistrée (%s) à"
 
-#: src/awf.c:1518
+#: src/awf.c:1608
 msgid "This is a question bar."
 msgstr "Ceci est une barre de question."
 
-#: src/awf.c:1525
+#: src/awf.c:1615
 msgid "This is a warning bar."
 msgstr "Ceci est une barre d'avertissement."
 
-#: src/awf.c:1532
+#: src/awf.c:1622
 msgid "This is an error bar."
 msgstr "Ceci est une barre d'erreur."
 
-#: src/awf.c:1511
+#: src/awf.c:1601
 msgid "This is an info bar."
 msgstr "Ceci est une barre d'information."
 
-#: src/awf.c:1582 src/awf.c:1600 src/awf.c:1619
-#, fuzzy
-msgid "_Cancel"
-msgstr "Annuler"
-
-#: src/awf.c:1602 src/awf.c:1621
-msgid "_Open"
-msgstr "_Ouvrir"
-
-#: src/awf.c:1310
+#: src/awf.c:619
 msgid "_Options"
 msgstr "_Options"
 
-#: src/awf.c:1584
-msgid "_Save"
-msgstr "_Enregistrer"
-
-#: src/awf.c:1292
+#: src/awf.c:601
 msgid "_System theme"
-msgstr "Thème système"
+msgstr "Thème _système"
 
-#: src/awf.c:1301
+#: src/awf.c:610
 msgid "_User theme"
-msgstr "Thème utilisateur"
+msgstr "Thème _utilisateur"
