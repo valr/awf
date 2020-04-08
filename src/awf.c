@@ -30,6 +30,20 @@
  * cp src/po/awf.pot src/fr/awf.po
  * msgmerge src/fr/awf.po src/po/awf.pot -o src/fr/awf.po
  * msgfmt src/fr/awf.po -o src/fr/LC_MESSAGES/awf.mo
+ *
+ * GTK versions tested for compiler
+ * Ubuntu 11.04 (live) GTK 3.0
+ * Ubuntu 11.10 (live) GTK 3.2
+ * Ubuntu 12.04 (live) GTK 3.4
+ * Ubuntu 13.04 (live) GTK 3.6
+ * Ubuntu 13.10 (live) GTK 3.8
+ * Ubuntu 14.04 (live) GTK 3.10
+ * Ubuntu 14.10 (live) GTK 3.12
+ * Ubuntu 15.04 (live) GTK 3.14
+ * Ubuntu 15.10 (live) GTK 3.16
+ * Ubuntu 16.04 (live) GTK 3.18
+ * Ubuntu 16.10 (live) GTK 3.20
+ * Debian Tsting GTK 2.24 and 3.24
  */
 
 // includes
@@ -342,13 +356,13 @@ static void awf_update_progressbars (GtkRange *range, gpointer unused) {
 	#endif
 
 	#if !GTK_CHECK_VERSION (3,0,0)
-	//	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (showtext))) {
-	//		gchar *progress_text;
-	//		progress_text = g_strdup_printf ("%i %%", (int)value);
-	//		gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar1), progress_text);
-	//		gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar3), progress_text);
-	//		g_free (progress_text);
-	//	}
+		if (gtk_progress_bar_get_text (GTK_PROGRESS_BAR (progressbar1)) != "") {
+			gchar *progress_text;
+			progress_text = g_strdup_printf ("%i %%", (int)value);
+			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar1), progress_text);
+			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar3), progress_text);
+			g_free (progress_text);
+		}
 	#endif
 }
 
@@ -591,6 +605,9 @@ static void awf2_create_window () {
 
 static void awf2_create_menubar (GtkWidget *menubar) {
 
+	// https://developer.gnome.org/gtk3/stable/GtkMenu.html
+	// https://developer.gnome.org/gtk3/stable/GtkMenuItem.html
+
 	GtkWidget *menu, *submenu, *menuitem;
 	GSList *iterator, *group = NULL;
 	GtkAccelGroup *accels;
@@ -655,13 +672,13 @@ static void awf2_create_menubar (GtkWidget *menubar) {
 		menuitem = awf2_new_menu_radio (menu, g_strdup_printf ("Radio 1 %s", _("(unchecked)")), FALSE, FALSE, FALSE, NULL);
 		group    = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (menuitem));
 		menuitem = awf2_new_menu_radio (menu, g_strdup_printf ("Radio 2 %s", _("(checked)")), TRUE, FALSE, FALSE, group);
-		           awf2_new_menu_radio (menu, g_strdup_printf ("Radio 3 %s", _("(inconsistent)")), FALSE, TRUE, FALSE, NULL);
+				 awf2_new_menu_radio (menu, g_strdup_printf ("Radio 3 %s", _("(inconsistent)")), FALSE, TRUE, FALSE, NULL);
 
 		awf2_new_menu_separator (menu);
 		menuitem = awf2_new_menu_radio (menu, g_strdup_printf ("Radio 1 %s", _("(unchecked)")), FALSE, FALSE, TRUE, NULL);
 		group    = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (menuitem));
 		menuitem = awf2_new_menu_radio (menu, g_strdup_printf ("Radio 2 %s", _("(checked)")), TRUE, FALSE, TRUE, group);
-		           awf2_new_menu_radio (menu, g_strdup_printf ("Radio 3 %s", _("(inconsistent)")), FALSE, TRUE, TRUE, NULL);
+				 awf2_new_menu_radio (menu, g_strdup_printf ("Radio 3 %s", _("(inconsistent)")), FALSE, TRUE, TRUE, NULL);
 
 		awf2_new_menu_separator (menu);
 		awf2_new_menu_check (menu, g_strdup_printf ("Check 1 %s", _("(unchecked)")), FALSE, FALSE, FALSE);
@@ -681,34 +698,33 @@ static void awf2_create_menubar (GtkWidget *menubar) {
 
 static void awf2_create_toolbar (GtkWidget *root) {
 
-	GtkWidget *icon1, *icon2, *icon3, *icon4, *icon5, *icon6, *icon7, *icon8, *icon9;
+	// https://developer.gnome.org/gtk3/stable/GtkToolbar.html
+	// https://developer.gnome.org/gtk3/stable/GtkToolButton.html
+	// https://developer.gnome.org/gtk3/stable/GtkMenuToolButton.html
+	// https://developer.gnome.org/gtk3/stable/GtkMenu.html
+	// https://developer.gnome.org/gtk3/stable/GtkSeparatorToolItem.html
 
-	#if GTK_CHECK_VERSION (3,10,0)
-		icon1 = GTK_WIDGET (gtk_tool_button_new (NULL, NULL));
-		gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (icon1), "gtk-open");
-		g_signal_connect (G_OBJECT (icon1), "clicked", G_CALLBACK (awf2_show_dialog_open), NULL);
-	#else
-		icon1 = GTK_WIDGET (gtk_tool_button_new_from_stock ("gtk-open"));
-		g_signal_connect (G_OBJECT (icon1), "clicked", G_CALLBACK (awf2_show_dialog_open), NULL);
-	#endif
+	GtkWidget *icon1, *icon2, *icon3, *icon4, *icon5, *icon6, *icon7, *icon8, *icon9, *menu;
 
-	#if GTK_CHECK_VERSION (3,10,0)
-		icon2 = GTK_WIDGET (gtk_tool_button_new (NULL, NULL));
-		gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (icon2), "gtk-save");
-		g_signal_connect (G_OBJECT (icon2), "clicked", G_CALLBACK (awf2_show_dialog_save), NULL);
-	#else
-		icon2 = GTK_WIDGET (gtk_tool_button_new_from_stock ("gtk-save"));
-		g_signal_connect (G_OBJECT (icon2), "clicked", G_CALLBACK (awf2_show_dialog_save), NULL);
-	#endif
+	icon1 = GTK_WIDGET (gtk_menu_tool_button_new (NULL, NULL));
+	gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (icon1), "gtk-open");
+	g_signal_connect (G_OBJECT (icon1), "clicked", G_CALLBACK (awf2_show_dialog_open), NULL);
 
-	#if GTK_CHECK_VERSION (3,10,0)
-		icon3 = GTK_WIDGET (gtk_tool_button_new (NULL, NULL));
-		gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (icon3), "gtk-refresh");
-		g_signal_connect (G_OBJECT (icon3), "clicked", G_CALLBACK (awf_refresh_theme), NULL);
-	#else
-		icon3 = GTK_WIDGET (gtk_tool_button_new_from_stock ("gtk-refresh"));
-		g_signal_connect (G_OBJECT (icon3), "clicked", G_CALLBACK (awf_refresh_theme), NULL);
-	#endif
+	icon2 = GTK_WIDGET (gtk_menu_tool_button_new (NULL, NULL));
+	gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (icon2), "gtk-open");
+	menu = gtk_menu_new ();
+	awf2_new_menu_item (menu, NULL, "Menu item", "", "", FALSE);
+	gtk_widget_show_all (menu); // very important
+	gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (icon2), menu);
+	g_signal_connect (G_OBJECT (icon2), "clicked", G_CALLBACK (awf2_show_dialog_open_recent), NULL);
+
+	icon3 = GTK_WIDGET (gtk_tool_button_new (NULL, NULL));
+	gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (icon3), "gtk-save");
+	g_signal_connect (G_OBJECT (icon3), "clicked", G_CALLBACK (awf2_show_dialog_save), NULL);
+
+	icon4 = GTK_WIDGET (gtk_tool_button_new (NULL, NULL));
+	gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (icon4), "gtk-refresh");
+	g_signal_connect (G_OBJECT (icon4), "clicked", G_CALLBACK (awf_refresh_theme), NULL);
 
 	#if GTK_CHECK_VERSION (3,10,0)
 		icon5 = GTK_WIDGET (gtk_tool_button_new (NULL, NULL));
@@ -726,20 +742,15 @@ static void awf2_create_toolbar (GtkWidget *root) {
 		gtk_widget_set_sensitive (icon6, FALSE);
 	#endif
 
-	#if GTK_CHECK_VERSION (3,10,0)
-		icon7 = GTK_WIDGET (gtk_toggle_tool_button_new ());
-		gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (icon7), "gtk-add");
-		gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (icon7), TRUE);
-		g_signal_connect (G_OBJECT (icon7), "clicked", G_CALLBACK (awf2_update_widgets), NULL);
-	#else
-		icon7 = GTK_WIDGET (gtk_toggle_tool_button_new_from_stock ("gtk-add"));
-		gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (icon7), TRUE);
-		g_signal_connect (G_OBJECT (icon7), "clicked", G_CALLBACK (awf2_update_widgets), NULL);
-	#endif
+	icon7 = GTK_WIDGET (gtk_toggle_tool_button_new ());
+	gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (icon7), "gtk-add");
+	gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (icon7), TRUE);
+	g_signal_connect (G_OBJECT (icon7), "clicked", G_CALLBACK (awf2_update_widgets), NULL);
 
 	gtk_toolbar_insert (GTK_TOOLBAR (root), GTK_TOOL_ITEM (icon1), -1);
 	gtk_toolbar_insert (GTK_TOOLBAR (root), GTK_TOOL_ITEM (icon2), -1);
 	gtk_toolbar_insert (GTK_TOOLBAR (root), GTK_TOOL_ITEM (icon3), -1);
+	gtk_toolbar_insert (GTK_TOOLBAR (root), GTK_TOOL_ITEM (icon4), -1);
 	gtk_toolbar_insert (GTK_TOOLBAR (root), gtk_separator_tool_item_new (), -1);
 	gtk_toolbar_insert (GTK_TOOLBAR (root), GTK_TOOL_ITEM (icon5), -1);
 	gtk_toolbar_insert (GTK_TOOLBAR (root), GTK_TOOL_ITEM (icon6), -1);
