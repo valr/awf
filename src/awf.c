@@ -186,9 +186,9 @@ int main (int argc, char **argv) {
 			case 'l':
 				g_printf ("Available themes:\n");
 				for (iterator = list_system_theme; iterator; iterator = iterator->next)
-					g_printf (" %s\n", iterator->data);
+					g_printf (" %s\n", (gchar*)iterator->data);
 				for (iterator = list_user_theme; iterator; iterator = iterator->next)
-					g_printf (" %s\n", iterator->data);
+					g_printf (" %s\n", (gchar*)iterator->data);
 				return 0;
 			case 'h':
 			default:
