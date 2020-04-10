@@ -51,6 +51,10 @@
 #include <time.h>
 #include "gtk_empty.h"
 
+#if GLIB_CHECK_VERSION (2,30,0)
+	#include <glib-unix.h>
+#endif
+
 // defines
 
 #define _(String) gettext (String)
@@ -187,14 +191,14 @@ int main (int argc, char **argv) {
 				return 0;
 			case 'h':
 			default:
-				g_printf ("This is a widget factory %s (theme is reloaded on sighup)\n", VERSION);
-				g_printf ("Compiled with gtk %d.%d.%d and glib %d.%d.%d\n",
+				g_printf ("This is 'A widget factory' %s (theme is reloaded on sighup)\n", VERSION);
+				g_printf (" compiled with gtk %d.%d.%d and glib %d.%d.%d\n",
 					GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION,
 					GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
-				g_printf ("Runned with gtk %d.%d.%d and glib %d.%d.%d\n\n",
+				g_printf ("   runned with gtk %d.%d.%d and glib %d.%d.%d\n\n",
 					gtk_major_version, gtk_minor_version, gtk_micro_version,
 					glib_major_version, glib_minor_version, glib_micro_version);
-				g_printf ("Usage: awf-gtk2 (for gtk 2.24+) or awf-gtk3 (gtk 3.0+)\n");
+				g_printf ("Usage: awf-gtk2 (for gtk 2.24+) or awf-gtk3 (for gtk 3.0+)\n");
 				g_printf (" %s %s\n", "-v ", "Show version number (and quit)");
 				g_printf (" %s %s\n", "-l ", "List available themes (and quit)");
 				g_printf (" %s %s\n", "-t <theme> ", "Run with the specified theme");
@@ -219,8 +223,9 @@ int main (int argc, char **argv) {
 
 	// window
 	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &current_theme, NULL);
-	if (GLIB_CHECK_VERSION (2,30,0))
+	#if GLIB_CHECK_VERSION (2,30,0)
 		g_unix_signal_add (SIGHUP, awf_sighup_handler, NULL); // glib >= 2.30
+	#endif
 	awf2_create_window ();
 
 	return 0;
@@ -293,7 +298,7 @@ static gint awf_compare_theme (gconstpointer theme1, gconstpointer theme2) {
 
 static void awf_set_theme (gpointer theme, gpointer unused) {
 
-	gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", (gchar*)theme, "gtkrc:0");
+	g_object_set (gtk_settings_get_default (), "gtk-theme-name", (gchar*)theme,  NULL);
 	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &current_theme, NULL);
 
 	if (window)
@@ -314,9 +319,9 @@ static void awf_refresh_theme (GtkWidget *unused1, gpointer unused2) {
 
 	if (default_theme) {
 
-		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", default_theme, NULL);
+		g_object_set (gtk_settings_get_default (), "gtk-theme-name", default_theme, NULL);
 		g_usleep (G_USEC_PER_SEC / 2);
-		gtk_settings_set_string_property (gtk_settings_get_default (), "gtk-theme-name", current_theme, NULL);
+		g_object_set (gtk_settings_get_default (), "gtk-theme-name", current_theme, NULL);
 
 		awf2_update_statusbar (g_strdup_printf (_("Theme %s reloaded at"), current_theme), TRUE);
 
@@ -1605,6 +1610,7 @@ static void awf2_show_dialog_calendar (GtkWidget *widget, gpointer unused) {
 		NULL,
 		GTK_WINDOW (window),
 		GTK_DIALOG_DESTROY_WITH_PARENT,
+		NULL,
 		NULL);
 
 	gtk_widget_set_size_request (GTK_WIDGET (dialog), 350, -1);
