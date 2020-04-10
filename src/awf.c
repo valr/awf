@@ -153,8 +153,6 @@ int main (int argc, char **argv) {
 	gchar *directory;
 	GSList *iterator;
 
-	gtk_init (&argc, &argv);
-
 	// load themes
 	list_system_theme = awf_load_theme ("/usr/share/themes");
 	list_system_theme = g_slist_sort (list_system_theme, (GCompareFunc)awf_compare_theme);
@@ -190,7 +188,7 @@ int main (int argc, char **argv) {
 			case 'h':
 			default:
 				g_printf ("This is a widget factory %s (theme is auto reloaded on sighup)\n", VERSION);
-				g_printf ("Compiled with gtk %d.%d.%d and glib %d.%d.%d",
+				g_printf ("Compiled with gtk %d.%d.%d and glib %d.%d.%d\n",
 					GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION,
 					GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
 				g_printf ("Usage: awf-gtk2 (for gtk 2.24+) or awf-gtk3 (gtk 3.0+)\n");
@@ -202,6 +200,8 @@ int main (int argc, char **argv) {
 				return 0;
 		}
 	}
+
+	gtk_init (&argc, &argv);
 
 	// locale
 	setlocale (LC_ALL, "");
