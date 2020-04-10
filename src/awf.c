@@ -187,10 +187,13 @@ int main (int argc, char **argv) {
 				return 0;
 			case 'h':
 			default:
-				g_printf ("This is a widget factory %s (theme is auto reloaded on sighup)\n", VERSION);
+				g_printf ("This is a widget factory %s (theme is reloaded on sighup)\n", VERSION);
 				g_printf ("Compiled with gtk %d.%d.%d and glib %d.%d.%d\n",
 					GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION,
 					GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
+				g_printf ("Runned with gtk %d.%d.%d and glib %d.%d.%d\n\n",
+					gtk_major_version, gtk_minor_version, gtk_micro_version,
+					glib_major_version, glib_minor_version, glib_micro_version);
 				g_printf ("Usage: awf-gtk2 (for gtk 2.24+) or awf-gtk3 (gtk 3.0+)\n");
 				g_printf (" %s %s\n", "-v ", "Show version number (and quit)");
 				g_printf (" %s %s\n", "-l ", "List available themes (and quit)");
