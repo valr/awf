@@ -27,18 +27,18 @@
  *  msgfmt src/fr/awf.po -o src/fr/LC_MESSAGES/awf.mo
  *
  * GTK versions tested:
- *  Ubuntu 11.04 (live) GTK 3.0
- *  Ubuntu 11.10 (live) GTK 3.2
- *  Ubuntu 12.04 (live) GTK 3.4
- *  Ubuntu 13.04 (live) GTK 3.6
- *  Ubuntu 13.10 (live) GTK 3.8
+ *  Ubuntu 11.04 (live) GTK 3.0  (GTK 2.24 GLIB 2.28)
+ *  Ubuntu 11.10 (live) GTK 3.2  (GTK 2.24 GLIB 2.30)
+ *  Ubuntu 12.04 (live) GTK 3.4  (GTK 2.24 GLIB 2.32)
+ *  Ubuntu 13.04 (live) GTK 3.6  (GTK 2.24 GLIB 2.36)
+ *  Ubuntu 13.10 (live) GTK 3.8  (GTK 2.24 GLIB 2.38)
  *  Ubuntu 14.04 (live) GTK 3.10
  *  Ubuntu 14.10 (live) GTK 3.12
  *  Ubuntu 15.04 (live) GTK 3.14
  *  Ubuntu 15.10 (live) GTK 3.16
  *  Ubuntu 16.04 (live) GTK 3.18
  *  Ubuntu 16.10 (live) GTK 3.20
- * D ebian Tsting GTK 2.24 and 3.24
+ *  Ubuntu 19.10 (live) GTK 3.24
  */
 
 // includes
@@ -56,6 +56,9 @@
 #define _(String) gettext (String)
 #define GETTEXT_PACKAGE "awf"
 
+#if !defined(G_SOURCE_CONTINUE)
+	#define G_SOURCE_CONTINUE TRUE // glib >= 2.32
+#endif
 #if GTK_CHECK_VERSION (3,2,0)
 	#define EMPTY (gtk_empty_new ())
 	#define BOXH (gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0))
@@ -187,11 +190,15 @@ int main (int argc, char **argv) {
 			case 'h':
 			default:
 				g_printf ("This is a widget factory %s (theme is auto reloaded on sighup)\n", VERSION);
-				g_printf ("Usage: awf-gtk2 or awf-gtk3\n");
+				g_printf ("Compiled with gtk %d.%d.%d and glib %d.%d.%d",
+					GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION,
+					GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
+				g_printf ("Usage: awf-gtk2 (for gtk 2.24+) or awf-gtk3 (gtk 3.0+)\n");
 				g_printf (" %s %s\n", "-v ", "Show version number (and quit)");
 				g_printf (" %s %s\n", "-l ", "List available themes (and quit)");
 				g_printf (" %s %s\n", "-t <theme> ", "Run with the specified theme");
 				g_printf (" %s %s\n", "-s <filename>", "Run and take/save a png screenshot on sighup");
+				g_printf ("\n");
 				return 0;
 		}
 	}
@@ -209,7 +216,8 @@ int main (int argc, char **argv) {
 
 	// window
 	g_object_get (gtk_settings_get_default (), "gtk-theme-name", &current_theme, NULL);
-	g_unix_signal_add (SIGHUP, awf_sighup_handler, NULL);
+	if (GLIB_CHECK_VERSION (2,30,0))
+		g_unix_signal_add (SIGHUP, awf_sighup_handler, NULL); // glib >= 2.30
 	awf2_create_window ();
 
 	return 0;
