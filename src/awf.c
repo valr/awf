@@ -43,7 +43,6 @@
 
 // includes
 
-#include <glib-unix.h>
 #include <glib/gi18n.h>
 #include <glib/gprintf.h>
 #include <gtk/gtk.h>
