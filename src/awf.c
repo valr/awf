@@ -1259,7 +1259,7 @@ static void awf2_create_notebooks (GtkWidget *lroot, GtkWidget *rroot) {
 	notebook3 = gtk_notebook_new ();
 	notebook4 = gtk_notebook_new ();
 
-	#if GTK_CHECK_VERSION (3,0,0)
+	#if GTK_CHECK_VERSION (3,4,0)
 		gtk_widget_add_events (GTK_WIDGET (notebook1), GDK_SCROLL_MASK);
 		g_signal_connect (GTK_WIDGET (notebook1), "scroll-event", G_CALLBACK (awf2_scroll_notebook_tabs), NULL);
 		gtk_widget_add_events (GTK_WIDGET (notebook2), GDK_SCROLL_MASK);
@@ -1649,7 +1649,7 @@ static void awf2_show_dialog_calendar (GtkWidget *widget, gpointer unused) {
 // https://github.com/mate-desktop/mate-control-center/blob/master/capplets/common/capplet-util.c
 // source function capplet_dialog_page_scroll_event_cb of mate-appearance-properties from mate-control-center, GNU GPL 2
 
-#if GTK_CHECK_VERSION (3,0,0)
+#if GTK_CHECK_VERSION (3,4,0)
 static void awf2_scroll_notebook_tabs (GtkWidget *widget, GdkEventScroll *event) {
 
 	GtkNotebook *notebook = GTK_NOTEBOOK (widget);
