@@ -370,7 +370,7 @@ static void awf2_update_statusbar (gchar *text, gboolean withtime) {
 	if (withtime) {
 		time (&rawtime);
 		timeinfo = localtime (&rawtime);
-		strftime (buffer, sizeof buffer, " %ET.", timeinfo);
+		strftime (buffer, sizeof buffer, " %T.", timeinfo);
 
 		gtk_statusbar_push (GTK_STATUSBAR (statusbar), gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "gné"),
 			g_strdup_printf ("%s%s", text, buffer));
