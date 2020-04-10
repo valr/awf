@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=A widget factory
+Comment=A widget factory - a theme preview application for gtk2 and gtk3
+Exec=awf-gtk3
+Icon=awf
+Terminal=false
+Type=Application
+Categories=GTK;Development;
+StartupNotify=true

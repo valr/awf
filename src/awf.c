@@ -1,49 +1,44 @@
 /**
- * AWF : A Widget Factory
+ * Copyright 2020      | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://github.com/luigifab/awf
  *
- * A theme preview application for gtk2 and gtk3.
+ * Copyright 2011-2017 | Valère Monseur <valere~monseur~ymail~com>
+ * https://github.com/valr/awf
  *
- * Copyright (C) 2011-2017 Valère Monseur (valere dot monseur at ymail dot com)
- * Copyright (C) 2020 Fabrice Creuzot (code hat luigifab dot fr)
+ * AWF is originally based on the code from The Widget Factory created by Richard Stellingwerff <remenic~gmail~com>
  *
- * This file is part of awf.
- *
- * awf is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * This program is free software, you can redistribute it or modify
+ * it under the terms of the GNU General Public License (GPL) as published
+ * by the free software foundation, either version 3 of the license, or
  * (at your option) any later version.
  *
- * awf is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but without any warranty, without even the implied warranty of
+ * merchantability or fitness for a particular purpose. See the
+ * GNU General Public License (GPL) for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with awf. If not, see <http://www.gnu.org/licenses/>.
- */
-
-/**
- * The Widget Factory is a program designed to show a wide range of widgets
- * on a single window. Created by Richard Stellingwerff <remenic@gmail.com>.
  *
- * xgettext -d awf -o src/po/awf.pot -k_ -s src/awf.c
- * cp src/po/awf.pot src/fr/awf.po
- * msgmerge src/fr/awf.po src/po/awf.pot -o src/fr/awf.po
- * msgfmt src/fr/awf.po -o src/fr/LC_MESSAGES/awf.mo
+ * The Widget Factory is a program designed to show a wide range of widgets on a single window.
  *
- * GTK versions tested for compiler
- * Ubuntu 11.04 (live) GTK 3.0
- * Ubuntu 11.10 (live) GTK 3.2
- * Ubuntu 12.04 (live) GTK 3.4
- * Ubuntu 13.04 (live) GTK 3.6
- * Ubuntu 13.10 (live) GTK 3.8
- * Ubuntu 14.04 (live) GTK 3.10
- * Ubuntu 14.10 (live) GTK 3.12
- * Ubuntu 15.04 (live) GTK 3.14
- * Ubuntu 15.10 (live) GTK 3.16
- * Ubuntu 16.04 (live) GTK 3.18
- * Ubuntu 16.10 (live) GTK 3.20
- * Debian Tsting GTK 2.24 and 3.24
+ * Translations update:
+ *  xgettext -d awf -o src/awf.pot -k_ -s src/awf.c
+ *  cp src/awf.pot src/fr/awf.po
+ *  msgmerge src/fr/awf.po src/awf.pot -o src/fr/awf.po
+ *  msgfmt src/fr/awf.po -o src/fr/LC_MESSAGES/awf.mo
+ *
+ * GTK versions tested:
+ *  Ubuntu 11.04 (live) GTK 3.0
+ *  Ubuntu 11.10 (live) GTK 3.2
+ *  Ubuntu 12.04 (live) GTK 3.4
+ *  Ubuntu 13.04 (live) GTK 3.6
+ *  Ubuntu 13.10 (live) GTK 3.8
+ *  Ubuntu 14.04 (live) GTK 3.10
+ *  Ubuntu 14.10 (live) GTK 3.12
+ *  Ubuntu 15.04 (live) GTK 3.14
+ *  Ubuntu 15.10 (live) GTK 3.16
+ *  Ubuntu 16.04 (live) GTK 3.18
+ *  Ubuntu 16.10 (live) GTK 3.20
+ * D ebian Tsting GTK 2.24 and 3.24
  */
 
 // includes
