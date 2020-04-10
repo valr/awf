@@ -191,6 +191,7 @@ int main (int argc, char **argv) {
 				return 0;
 			case 'h':
 			default:
+				g_printf ("\n");
 				g_printf ("This is 'A widget factory' %s (theme is reloaded on sighup)\n", VERSION);
 				g_printf (" compiled with gtk %d.%d.%d and glib %d.%d.%d\n",
 					GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION,
@@ -1540,8 +1541,7 @@ static void awf2_show_dialog_properties (GtkWidget *widget, gpointer unused) {
 		GTK_DIALOG_DESTROY_WITH_PARENT,
 		GTK_MESSAGE_INFO,
 		GTK_BUTTONS_YES_NO,
-		"GtkMessageDialog",
-		NULL);
+		"GtkMessageDialog");
 
 	gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), _("A widget factory is a theme preview application for gtk2 and gtk3. It displays the various widget types provided by gtk2/gtk3 in a single window allowing to see the visual effect of the applied theme."));
 
@@ -1587,7 +1587,14 @@ static void awf2_show_dialog_about (GtkWidget *widget, gpointer unused) {
 
 	gtk_show_about_dialog (GTK_WINDOW (window),
 		"version", VERSION,
-		"comments", _("A widget factory is a theme preview application for gtk2 and gtk3. It displays the various widget types provided by gtk2/gtk3 in a single window allowing to see the visual effect of the applied theme."),
+		"comments", g_strdup_printf ("%s\n\n%s%s",
+			_("A widget factory is a theme preview application for gtk2 and gtk3. It displays the various widget types provided by gtk2/gtk3 in a single window allowing to see the visual effect of the applied theme."),
+			g_strdup_printf (" compiled with gtk %d.%d.%d and glib %d.%d.%d\n",
+				GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION,
+				GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION),
+			g_strdup_printf ("   runned with gtk %d.%d.%d and glib %d.%d.%d",
+				gtk_major_version, gtk_minor_version, gtk_micro_version,
+				glib_major_version, glib_minor_version, glib_micro_version)),
 		"website", "https://github.com/valr/awf",
 		"copyright", "Copyright © 2011-2017 Valère Monseur\nCopyright © 2020 Fabrice Creuzot",
 		"icon-name", "awf",
