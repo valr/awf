@@ -904,7 +904,7 @@ static void awf2_create_otherbuttons (GtkWidget *root) {
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button3), TRUE);
 	gtk_widget_set_sensitive (button4, FALSE);
 
-	#if GTK_CHECK_VERSION (3,14,0)
+	#if GTK_CHECK_VERSION (3,0,0)
 		GdkRGBA color;
 		gdk_rgba_parse (&color, "#7796ba");
 		button5 = gtk_color_button_new_with_rgba (&color);
