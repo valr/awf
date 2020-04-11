@@ -680,6 +680,16 @@ static void awf2_create_menubar (GtkWidget *menubar) {
 			awf2_new_menu_item (submenu, accels, "", "<Control>v", "gtk-paste", FALSE);
 
 		awf2_new_menu_separator (menu);
+		awf2_new_menu_check (menu, g_strdup_printf ("Check 1 %s", _("(unchecked)")), FALSE, FALSE, FALSE);
+		awf2_new_menu_check (menu, g_strdup_printf ("Check 2 %s", _("(checked)")), TRUE, FALSE, FALSE);
+		awf2_new_menu_check (menu, g_strdup_printf ("Check 3 %s", _("(inconsistent)")), FALSE, TRUE, FALSE);
+
+		awf2_new_menu_separator (menu);
+		awf2_new_menu_check (menu, g_strdup_printf ("Check 1 %s", _("(unchecked)")), FALSE, FALSE, TRUE);
+		awf2_new_menu_check (menu, g_strdup_printf ("Check 2 %s", _("(checked)")), TRUE, FALSE, TRUE);
+		awf2_new_menu_check (menu, g_strdup_printf ("Check 3 %s", _("(inconsistent)")), FALSE, TRUE, TRUE);
+
+		awf2_new_menu_separator (menu);
 		menuitem = awf2_new_menu_radio (menu, g_strdup_printf ("Radio 1 %s", _("(unchecked)")), FALSE, FALSE, FALSE, NULL);
 		group    = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (menuitem));
 		menuitem = awf2_new_menu_radio (menu, g_strdup_printf ("Radio 2 %s", _("(checked)")), TRUE, FALSE, FALSE, group);
@@ -692,16 +702,6 @@ static void awf2_create_menubar (GtkWidget *menubar) {
 				 awf2_new_menu_radio (menu, g_strdup_printf ("Radio 3 %s", _("(inconsistent)")), FALSE, TRUE, TRUE, NULL);
 
 		awf2_new_menu_separator (menu);
-		awf2_new_menu_check (menu, g_strdup_printf ("Check 1 %s", _("(unchecked)")), FALSE, FALSE, FALSE);
-		awf2_new_menu_check (menu, g_strdup_printf ("Check 2 %s", _("(checked)")), TRUE, FALSE, FALSE);
-		awf2_new_menu_check (menu, g_strdup_printf ("Check 3 %s", _("(inconsistent)")), FALSE, TRUE, FALSE);
-
-		awf2_new_menu_separator (menu);
-		awf2_new_menu_check (menu, g_strdup_printf ("Check 1 %s", _("(unchecked)")), FALSE, FALSE, TRUE);
-		awf2_new_menu_check (menu, g_strdup_printf ("Check 2 %s", _("(checked)")), TRUE, FALSE, TRUE);
-		awf2_new_menu_check (menu, g_strdup_printf ("Check 3 %s", _("(inconsistent)")), FALSE, TRUE, TRUE);
-
-		awf2_new_menu_separator (menu);
 		awf2_new_menu_item (menu, accels, "", "<Control>w", "gtk-close", TRUE);
 		menuitem = awf2_new_menu_item (menu, accels, "", "<Control>q", "gtk-quit", FALSE);
 		g_signal_connect_swapped (G_OBJECT (menuitem), "activate", G_CALLBACK (gtk_main_quit), NULL);
@@ -710,10 +710,11 @@ static void awf2_create_menubar (GtkWidget *menubar) {
 static void awf2_create_toolbar (GtkWidget *root) {
 
 	// https://developer.gnome.org/gtk3/stable/GtkToolbar.html
-	// https://developer.gnome.org/gtk3/stable/GtkToolButton.html
 	// https://developer.gnome.org/gtk3/stable/GtkMenuToolButton.html
 	// https://developer.gnome.org/gtk3/stable/GtkMenu.html
+	// https://developer.gnome.org/gtk3/stable/GtkToolButton.html
 	// https://developer.gnome.org/gtk3/stable/GtkSeparatorToolItem.html
+	// https://developer.gnome.org/gtk3/stable/GtkToggleToolButton.html
 
 	GtkWidget *icon1, *icon2, *icon3, *icon4, *icon5, *icon6, *icon7, *icon8, *icon9, *menu;
 
@@ -772,6 +773,7 @@ static void awf2_create_toolbar (GtkWidget *root) {
 static void awf2_create_combos_entries (GtkWidget *root) {
 
 	// https://developer.gnome.org/gtk3/stable/GtkComboBoxText.html
+	// https://developer.gnome.org/gtk3/stable/GtkComboBox.html
 	// https://developer.gnome.org/gtk3/stable/GtkEntry.html
 
 	GtkWidget *combo1, *combo2, *combo3, *combo4, *entry1, *entry2, *entry3, *entry4;
@@ -815,6 +817,11 @@ static void awf2_create_combos_entries (GtkWidget *root) {
 	gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry4), GTK_ENTRY_ICON_PRIMARY, "gtk-clear");
 	gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry4), GTK_ENTRY_ICON_SECONDARY, "gtk-find");
 	gtk_widget_set_sensitive (entry4, FALSE);
+
+	#if GTK_CHECK_VERSION (3,2,0)
+		gtk_entry_set_placeholder_text (GTK_ENTRY (entry1), "Placeholder");
+		gtk_entry_set_placeholder_text (GTK_ENTRY (entry3), "Placeholder");
+	#endif
 
 	gtk_box_pack_start (GTK_BOX (root), combo1, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (root), combo2, FALSE, FALSE, 0);
