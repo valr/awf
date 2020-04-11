@@ -6,12 +6,12 @@ A widget factory is a theme preview application for gtk2 and gtk3. It displays t
 
 ## Installation
 
-It require *gtk2* (2.24+) and *gtk3* (3.0+ including 3.24+).
+It require *gtk2* (2.24+) and *gtk3* (3.0+ including 3.24).
 
 * From source:
 ```
 apt install dh-autoreconf libgtk2.0-dev libgtk-3-dev
-bash build.sh
+./build.sh
 ```
 * From Debian/Ubuntu: (not yet available)
 ```
@@ -19,6 +19,11 @@ apt install awf
 ```
 
 ## Screenshots
+
+* The options menu allow to run some standard dialogs.
+* The plus toolbar button show/hide: arrows on notebooks, text on progress bars and scales, marks on scales.
+* The refresh toolbar button and the refresh menuitem allow to reload the current theme.
+* Some options are available from command line (read -h).
 
 ![A widget factory - Gtk2](images/gtk2.png?raw=true)
 ![A widget factory - Gtk2](images/gtk3.png?raw=true)
