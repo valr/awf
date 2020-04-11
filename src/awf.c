@@ -27,18 +27,18 @@
  *  msgfmt src/fr/awf.po -o src/fr/LC_MESSAGES/awf.mo
  *
  * GTK versions tested:
- *  Ubuntu 11.04 (live) GTK 3.0  (GTK 2.24 GLIB 2.28)
- *  Ubuntu 11.10 (live) GTK 3.2  (GTK 2.24 GLIB 2.30)
- *  Ubuntu 12.04 (live) GTK 3.4  (GTK 2.24 GLIB 2.32)
- *  Ubuntu 13.04 (live) GTK 3.6  (GTK 2.24 GLIB 2.36)
- *  Ubuntu 13.10 (live) GTK 3.8  (GTK 2.24 GLIB 2.38)
+ *  Ubuntu 11.04 (live) GTK 3.0  + GTK 2.24 + GLIB 2.28
+ *  Ubuntu 11.10 (live) GTK 3.2  + GTK 2.24 + GLIB 2.30
+ *  Ubuntu 12.04 (live) GTK 3.4  + GTK 2.24 + GLIB 2.32
+ *  Ubuntu 13.04 (live) GTK 3.6  + GTK 2.24 + GLIB 2.36
+ *  Ubuntu 13.10 (live) GTK 3.8  + GTK 2.24 + GLIB 2.38
  *  Ubuntu 14.04 (live) GTK 3.10
  *  Ubuntu 14.10 (live) GTK 3.12
  *  Ubuntu 15.04 (live) GTK 3.14
  *  Ubuntu 15.10 (live) GTK 3.16
  *  Ubuntu 16.04 (live) GTK 3.18
  *  Ubuntu 16.10 (live) GTK 3.20
- *  Ubuntu 19.10 (live) GTK 3.24
+ *  Debian Testing      GTK 3.24
  */
 
 // includes
@@ -192,11 +192,11 @@ int main (int argc, char **argv) {
 			case 'h':
 			default:
 				g_printf ("\n");
-				g_printf ("This is 'A widget factory' %s (theme is reloaded on sighup)\n", VERSION);
+				g_printf ("A widget factory %s (theme is reloaded on sighup)\n", VERSION);
 				g_printf (" compiled with gtk %d.%d.%d and glib %d.%d.%d\n",
 					GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION,
 					GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
-				g_printf ("   runned with gtk %d.%d.%d and glib %d.%d.%d\n\n",
+				g_printf ("  started with gtk %d.%d.%d and glib %d.%d.%d\n\n",
 					gtk_major_version, gtk_minor_version, gtk_micro_version,
 					glib_major_version, glib_minor_version, glib_micro_version);
 				g_printf ("Usage: awf-gtk2 (for gtk 2.24+) or awf-gtk3 (for gtk 3.0+)\n");
@@ -1446,6 +1446,7 @@ static GtkWidget* awf2_new_menu_radio (GtkWidget *menu, gchar *text, gboolean ch
 static GtkWidget* awf2_new_menu_item (GtkWidget *menu, GtkAccelGroup *accels, gchar *text, gchar *accel, gchar *image, gboolean disabled) {
 
 	// https://developer.gnome.org/gtk3/stable/GtkMenuItem.html
+	// https://developer.gnome.org/gtk3/stable/GtkImageMenuItem.html
 
 	GtkWidget *menuitem;
 	GdkModifierType accelerator_mods;
@@ -1592,7 +1593,7 @@ static void awf2_show_dialog_about (GtkWidget *widget, gpointer unused) {
 			g_strdup_printf (" compiled with gtk %d.%d.%d and glib %d.%d.%d\n",
 				GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION,
 				GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION),
-			g_strdup_printf ("   runned with gtk %d.%d.%d and glib %d.%d.%d",
+			g_strdup_printf ("  started with gtk %d.%d.%d and glib %d.%d.%d",
 				gtk_major_version, gtk_minor_version, gtk_micro_version,
 				glib_major_version, glib_minor_version, glib_micro_version)),
 		"website", "https://github.com/valr/awf",
