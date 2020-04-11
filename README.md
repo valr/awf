@@ -1,22 +1,16 @@
 # AWF - A Widget Factory (Extended)
 
-## Description
+Work in progress.
+
+## About
 
 A widget factory is a theme preview application for gtk2 and gtk3. It displays the various widget types provided by gtk2/gtk3 in a single window allowing to see the visual effect of the applied theme.
 
 ## Installation
 
-It require *gtk2* (2.24+) and *gtk3* (3.0+ including 3.24).
+It require *gtk2 (2.24+)* and *gtk3 (3.0+ including 3.24)* and *glib (2.28+)*.
 
-* From source:
-```
-apt install dh-autoreconf libgtk2.0-dev libgtk-3-dev
-./build.sh
-```
-* From Debian/Ubuntu: (not yet available)
-```
-apt install awf
-```
+* From source: `apt install dh-autoreconf libgtk2.0-dev libgtk-3-dev` then: `./build.sh`
 
 ## Screenshots
 
