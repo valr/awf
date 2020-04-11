@@ -771,7 +771,10 @@ static void awf2_create_toolbar (GtkWidget *root) {
 
 static void awf2_create_combos_entries (GtkWidget *root) {
 
-	GtkWidget *combo1, *combo2, *combo3, *combo4, *entry1, *entry2;
+	// https://developer.gnome.org/gtk3/stable/GtkComboBoxText.html
+	// https://developer.gnome.org/gtk3/stable/GtkEntry.html
+
+	GtkWidget *combo1, *combo2, *combo3, *combo4, *entry1, *entry2, *entry3, *entry4;
 
 	combo1 = gtk_combo_box_text_new_with_entry ();
 	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo1), "Combo box entry 1");
@@ -802,6 +805,17 @@ static void awf2_create_combos_entries (GtkWidget *root) {
 	gtk_entry_set_text (GTK_ENTRY (entry2), "Entry (disabled)");
 	gtk_widget_set_sensitive (entry2, FALSE);
 
+	entry3 = gtk_entry_new ();
+	gtk_entry_set_text (GTK_ENTRY (entry3), "Entry");
+	gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry3), GTK_ENTRY_ICON_PRIMARY, "gtk-clear");
+	gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry3), GTK_ENTRY_ICON_SECONDARY, "gtk-find");
+
+	entry4 = gtk_entry_new ();
+	gtk_entry_set_text (GTK_ENTRY (entry4), "Entry (disabled)");
+	gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry4), GTK_ENTRY_ICON_PRIMARY, "gtk-clear");
+	gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry4), GTK_ENTRY_ICON_SECONDARY, "gtk-find");
+	gtk_widget_set_sensitive (entry4, FALSE);
+
 	gtk_box_pack_start (GTK_BOX (root), combo1, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (root), combo2, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (root), EMPTY, FALSE, FALSE, 0);
@@ -810,6 +824,9 @@ static void awf2_create_combos_entries (GtkWidget *root) {
 	gtk_box_pack_start (GTK_BOX (root), EMPTY, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (root), entry1, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (root), entry2, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (root), EMPTY, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (root), entry3, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (root), entry4, FALSE, FALSE, 0);
 }
 
 static void awf2_create_spinbuttons (GtkWidget *root) {
