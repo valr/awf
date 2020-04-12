@@ -712,10 +712,11 @@ static void awf2_create_toolbar (GtkWidget *root) {
 
 	// https://developer.gnome.org/gtk3/stable/GtkToolbar.html
 	// https://developer.gnome.org/gtk3/stable/GtkMenuToolButton.html
-	// https://developer.gnome.org/gtk3/stable/GtkMenu.html
 	// https://developer.gnome.org/gtk3/stable/GtkToolButton.html
 	// https://developer.gnome.org/gtk3/stable/GtkSeparatorToolItem.html
 	// https://developer.gnome.org/gtk3/stable/GtkToggleToolButton.html
+	// https://developer.gnome.org/gtk3/stable/GtkMenu.html
+	// https://developer.gnome.org/gtk3/stable/GtkMenuItem.html
 
 	GtkWidget *icon1, *icon2, *icon3, *icon4, *icon5, *icon6, *icon7, *icon8, *icon9, *menu;
 
@@ -1221,6 +1222,7 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		gtk_box_pack_start (GTK_BOX (hroot1), levelbar8, FALSE, FALSE, 0);
 	#endif
 	gtk_box_pack_start (GTK_BOX (hroot2), scale3, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hroot2), EMPTY, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hroot2), scale4, FALSE, FALSE, 0);
 	#if GTK_CHECK_VERSION (3,6,0)
 		gtk_box_pack_start (GTK_BOX (vroot2), levelbar1, FALSE, FALSE, 0);
