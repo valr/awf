@@ -988,7 +988,7 @@ static void awf2_create_otherbuttons (GtkWidget *root) {
 		gtk_widget_set_sensitive (button10, FALSE);
 	#endif
 
-	button11 = gtk_link_button_new_with_label ("https://github.com/valr/awf", _("Link button"));
+	button11 = gtk_link_button_new_with_label ("https://github.com/luigifab/awf", _("Link button"));
 
 	button12 = gtk_scale_button_new (GTK_ICON_SIZE_BUTTON, 1, 10, 1, scale_icons);
 
@@ -1680,7 +1680,7 @@ static void awf2_show_dialog_about (GtkWidget *widget, gpointer unused) {
 			g_strdup_printf ("  started with gtk %d.%d.%d and glib %d.%d.%d",
 				gtk_major_version, gtk_minor_version, gtk_micro_version,
 				glib_major_version, glib_minor_version, glib_micro_version)),
-		"website", "https://github.com/valr/awf",
+		"website", "https://github.com/luigifab/awf",
 		"copyright", "Copyright © 2011-2017 Valère Monseur\nCopyright © 2020 Fabrice Creuzot",
 		"icon-name", "awf",
 		"logo-icon-name", "awf",
