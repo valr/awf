@@ -1021,11 +1021,13 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		gtk_widget_set_size_request (progressbar1, 170, -1);
 		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar1), 0.5);
 		gtk_orientable_set_orientation (GTK_ORIENTABLE (progressbar1), GTK_ORIENTATION_HORIZONTAL);
+		gtk_widget_set_tooltip_text (progressbar1, "progressbar");
 	#else
 		progressbar1 = gtk_progress_bar_new ();
 		gtk_widget_set_size_request (progressbar1, 170, -1);
 		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar1), 0.5);
 		gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (progressbar1), GTK_PROGRESS_LEFT_TO_RIGHT);
+		gtk_widget_set_tooltip_text (progressbar1, "progressbar");
 	#endif
 
 	#if GTK_CHECK_VERSION (3,0,0)
@@ -1034,11 +1036,13 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar2), 0.5);
 		gtk_progress_bar_set_inverted (GTK_PROGRESS_BAR (progressbar2), TRUE);
 		gtk_orientable_set_orientation (GTK_ORIENTABLE (progressbar2), GTK_ORIENTATION_HORIZONTAL);
+		gtk_widget_set_tooltip_text (progressbar2, "progressbar");
 	#else
 		progressbar2 = gtk_progress_bar_new ();
 		gtk_widget_set_size_request (progressbar2, 170, -1);
 		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar2), 0.5);
 		gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (progressbar2), GTK_PROGRESS_RIGHT_TO_LEFT);
+		gtk_widget_set_tooltip_text (progressbar2, "progressbar");
 	#endif
 
 	#if GTK_CHECK_VERSION (3,2,0)
@@ -1046,12 +1050,14 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		gtk_widget_set_size_request (scale1, 170, -1);
 		gtk_range_set_value (GTK_RANGE (scale1), 50);
 		gtk_scale_set_draw_value (GTK_SCALE (scale1), FALSE);
+		gtk_widget_set_tooltip_text (scale1, "scale");
 		g_signal_connect ((gpointer)scale1, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
 	#else
 		scale1 = gtk_hscale_new_with_range (0, 100, 1);
 		gtk_widget_set_size_request (scale1, 170, -1);
 		gtk_range_set_value (GTK_RANGE (scale1), 50);
 		gtk_scale_set_draw_value (GTK_SCALE (scale1), FALSE);
+		gtk_widget_set_tooltip_text (scale1, "scale");
 		g_signal_connect ((gpointer)scale1, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
 	#endif
 
@@ -1061,6 +1067,7 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		gtk_range_set_value (GTK_RANGE (scale2), 50);
 		gtk_scale_set_draw_value (GTK_SCALE (scale2), FALSE);
 		gtk_range_set_inverted (GTK_RANGE (scale2), TRUE);
+		gtk_widget_set_tooltip_text (scale2, "scale");
 		g_signal_connect ((gpointer)scale2, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
 	#else
 		scale2 = gtk_hscale_new_with_range (0, 100, 1);
@@ -1068,6 +1075,7 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		gtk_range_set_value (GTK_RANGE (scale2), 50);
 		gtk_scale_set_draw_value (GTK_SCALE (scale2), FALSE);
 		gtk_range_set_inverted (GTK_RANGE (scale2), TRUE);
+		gtk_widget_set_tooltip_text (scale2, "scale");
 		g_signal_connect ((gpointer)scale2, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
 	#endif
 
@@ -1076,11 +1084,13 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		gtk_widget_set_size_request (progressbar3, -1, 100);
 		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar3), 0.5);
 		gtk_orientable_set_orientation (GTK_ORIENTABLE (progressbar3), GTK_ORIENTATION_VERTICAL);
+		gtk_widget_set_tooltip_text (progressbar3, "progressbar");
 	#else
 		progressbar3 = gtk_progress_bar_new ();
 		gtk_widget_set_size_request (progressbar3, -1, 100);
 		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar3), 0.5);
 		gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (progressbar3), GTK_PROGRESS_TOP_TO_BOTTOM);
+		gtk_widget_set_tooltip_text (progressbar3, "progressbar");
 	#endif
 
 	#if GTK_CHECK_VERSION (3,0,0)
@@ -1089,11 +1099,13 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar4), 0.5);
 		gtk_progress_bar_set_inverted (GTK_PROGRESS_BAR (progressbar4), TRUE);
 		gtk_orientable_set_orientation (GTK_ORIENTABLE (progressbar4), GTK_ORIENTATION_VERTICAL);
+		gtk_widget_set_tooltip_text (progressbar4, "progressbar");
 	#else
 		progressbar4 = gtk_progress_bar_new ();
 		gtk_widget_set_size_request (progressbar4, -1, 100);
 		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progressbar4), 0.5);
 		gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (progressbar4), GTK_PROGRESS_BOTTOM_TO_TOP);
+		gtk_widget_set_tooltip_text (progressbar4, "progressbar");
 	#endif
 
 	#if GTK_CHECK_VERSION (3,2,0)
@@ -1101,12 +1113,14 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		gtk_widget_set_size_request (scale3, -1, 100);
 		gtk_range_set_value (GTK_RANGE (scale3), 50);
 		gtk_scale_set_draw_value (GTK_SCALE (scale3), FALSE);
+		gtk_widget_set_tooltip_text (scale3, "scale");
 		g_signal_connect ((gpointer)scale3, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
 	#else
 		scale3 = gtk_vscale_new_with_range (0, 100, 1);
 		gtk_widget_set_size_request (scale3, -1, 100);
 		gtk_range_set_value (GTK_RANGE (scale3), 50);
 		gtk_scale_set_draw_value (GTK_SCALE (scale3), FALSE);
+		gtk_widget_set_tooltip_text (scale3, "scale");
 		g_signal_connect ((gpointer)scale3, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
 	#endif
 
@@ -1116,6 +1130,7 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		gtk_range_set_value (GTK_RANGE (scale4), 50);
 		gtk_scale_set_draw_value (GTK_SCALE (scale4), FALSE);
 		gtk_range_set_inverted (GTK_RANGE (scale4), TRUE);
+		gtk_widget_set_tooltip_text (scale4, "scale");
 		g_signal_connect ((gpointer)scale4, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
 	#else
 		scale4 = gtk_vscale_new_with_range (0, 100, 1);
@@ -1123,6 +1138,7 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		gtk_range_set_value (GTK_RANGE (scale4), 50);
 		gtk_scale_set_draw_value (GTK_SCALE (scale4), FALSE);
 		gtk_range_set_inverted (GTK_RANGE (scale4), TRUE);
+		gtk_widget_set_tooltip_text (scale4, "scale");
 		g_signal_connect ((gpointer)scale4, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
 	#endif
 
@@ -1130,6 +1146,7 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		levelbar1 = gtk_level_bar_new ();
 		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar1), GTK_LEVEL_BAR_MODE_CONTINUOUS);
 		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar1), 0.5);
+		gtk_widget_set_tooltip_text (levelbar1, "levelbar");
 
 		levelbar2 = gtk_level_bar_new ();
 		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar2), GTK_LEVEL_BAR_MODE_CONTINUOUS);
@@ -1137,10 +1154,12 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		#if GTK_CHECK_VERSION (3,8,0)
 			gtk_level_bar_set_inverted (GTK_LEVEL_BAR (levelbar2), TRUE);
 		#endif
+		gtk_widget_set_tooltip_text (levelbar2, "levelbar");
 
 		levelbar3 = gtk_level_bar_new_for_interval (0, 5);
 		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar3), GTK_LEVEL_BAR_MODE_DISCRETE);
 		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar3), 2);
+		gtk_widget_set_tooltip_text (levelbar3, "levelbar");
 
 		levelbar4 = gtk_level_bar_new_for_interval (0, 5);
 		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar4), GTK_LEVEL_BAR_MODE_DISCRETE);
@@ -1148,11 +1167,13 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		#if GTK_CHECK_VERSION (3,8,0)
 			gtk_level_bar_set_inverted (GTK_LEVEL_BAR (levelbar4), TRUE);
 		#endif
+		gtk_widget_set_tooltip_text (levelbar4, "levelbar");
 
 		levelbar5 = gtk_level_bar_new ();
 		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar5), GTK_LEVEL_BAR_MODE_CONTINUOUS);
 		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar5), 0.5);
 		gtk_orientable_set_orientation (GTK_ORIENTABLE (levelbar5), GTK_ORIENTATION_VERTICAL);
+		gtk_widget_set_tooltip_text (levelbar5, "levelbar");
 
 		levelbar6 = gtk_level_bar_new ();
 		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar6), GTK_LEVEL_BAR_MODE_CONTINUOUS);
@@ -1161,11 +1182,13 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 			gtk_level_bar_set_inverted (GTK_LEVEL_BAR (levelbar6), TRUE);
 		#endif
 		gtk_orientable_set_orientation (GTK_ORIENTABLE (levelbar6), GTK_ORIENTATION_VERTICAL);
+		gtk_widget_set_tooltip_text (levelbar6, "levelbar");
 
 		levelbar7 = gtk_level_bar_new_for_interval (0, 5);
 		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar7), GTK_LEVEL_BAR_MODE_DISCRETE);
 		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar7), 2);
 		gtk_orientable_set_orientation (GTK_ORIENTABLE (levelbar7), GTK_ORIENTATION_VERTICAL);
+		gtk_widget_set_tooltip_text (levelbar7, "levelbar");
 
 		levelbar8 = gtk_level_bar_new_for_interval (0, 5);
 		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar8), GTK_LEVEL_BAR_MODE_DISCRETE);
@@ -1174,6 +1197,7 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 			gtk_level_bar_set_inverted (GTK_LEVEL_BAR (levelbar8), TRUE);
 		#endif
 		gtk_orientable_set_orientation (GTK_ORIENTABLE (levelbar8), GTK_ORIENTATION_VERTICAL);
+		gtk_widget_set_tooltip_text (levelbar8, "levelbar");
 	#endif
 
 	gtk_box_pack_start (GTK_BOX (vroot1), progressbar1, FALSE, FALSE, 0);
@@ -1216,10 +1240,10 @@ static void awf2_create_labels (GtkWidget *root) {
 	GtkWidget *label1, *label2;
 
 	label1 = gtk_label_new ("Label 1");
-	gtk_widget_set_tooltip_text (label1, "Tooltip.");
+	gtk_widget_set_tooltip_text (label1, "label");
 
 	label2 = gtk_label_new ("Label 2");
-	gtk_widget_set_tooltip_text (label2, "Tooltip.");
+	gtk_widget_set_tooltip_text (label2, "label");
 	gtk_widget_set_sensitive (label2, FALSE);
 
 	gtk_box_pack_start (GTK_BOX (root), label1, FALSE, FALSE, 0);
@@ -1236,12 +1260,14 @@ static void awf2_create_spinners (GtkWidget *root) {
 
 	spinner1 = gtk_spinner_new ();
 	gtk_widget_set_size_request (spinner1, 20, 20);
+	gtk_widget_set_tooltip_text (spinner1, "spinner");
 	gtk_spinner_start (GTK_SPINNER (spinner1));
 
 	spinner2 = gtk_spinner_new ();
 	gtk_widget_set_size_request (spinner2, 20, 20);
-	gtk_spinner_start (GTK_SPINNER (spinner2));
+	gtk_widget_set_tooltip_text (spinner2, "spinner");
 	gtk_widget_set_sensitive (spinner2, FALSE);
+	gtk_spinner_start (GTK_SPINNER (spinner2));
 
 	gtk_box_pack_start (GTK_BOX (root), spinner1, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (root), EMPTY, TRUE, TRUE, 0);
