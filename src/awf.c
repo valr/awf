@@ -433,7 +433,7 @@ static void awf2_update_widgets (GtkWidget *widget, gpointer unused) {
 			gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (progressbar1), TRUE);
 			gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (progressbar3), TRUE);
 		#else
-			progress_text = g_strdup_printf ("%i%%", (int)gtk_range_get_value (GTK_RANGE (scale1)));
+			progress_text = g_strdup_printf ("%i %%", (int)gtk_range_get_value (GTK_RANGE (scale1)));
 			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar1), progress_text);
 			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar3), progress_text);
 			g_free (progress_text);
