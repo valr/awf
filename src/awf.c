@@ -96,7 +96,7 @@ static GSList *list_system_theme;
 static GSList *list_user_theme;
 static GtkWidget *window, *statusbar;
 static GtkWidget *progressbar1, *progressbar2, *progressbar3, *progressbar4;
-static GtkWidget *scale1, *scale2, *scale3, *scale4;
+static GtkWidget *scale1, *scale2, *scale3, *scale4, *scale5, *scale6;
 static GtkWidget *levelbar1, *levelbar2, *levelbar3, *levelbar4, *levelbar5, *levelbar6, *levelbar7, *levelbar8;
 static GtkWidget *notebook1, *notebook2, *notebook3, *notebook4;
 static gchar *screenshot;
@@ -355,6 +355,8 @@ static void awf_update_progressbars (GtkRange *range, gpointer unused) {
 	if (scale2 != (GtkWidget*)range) gtk_range_set_value (GTK_RANGE (scale2), value);
 	if (scale3 != (GtkWidget*)range) gtk_range_set_value (GTK_RANGE (scale3), value);
 	if (scale4 != (GtkWidget*)range) gtk_range_set_value (GTK_RANGE (scale4), value);
+	if (scale5 != (GtkWidget*)range) gtk_range_set_value (GTK_RANGE (scale5), value);
+	if (scale6 != (GtkWidget*)range) gtk_range_set_value (GTK_RANGE (scale6), value);
 
 	#if GTK_CHECK_VERSION (3,6,0)
 		// range(0..1)
@@ -421,7 +423,9 @@ static void awf2_update_widgets (GtkWidget *widget, gpointer unused) {
 		gtk_scale_set_draw_value (GTK_SCALE (scale1), FALSE);
 		gtk_scale_clear_marks (GTK_SCALE (scale2));
 		gtk_scale_set_draw_value (GTK_SCALE (scale3), FALSE);
-		gtk_scale_clear_marks (GTK_SCALE (scale4));
+		gtk_scale_set_draw_value (GTK_SCALE (scale4), FALSE);
+		gtk_scale_clear_marks (GTK_SCALE (scale5));
+		gtk_scale_clear_marks (GTK_SCALE (scale6));
 	}
 	else {
 		gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook1), TRUE);
@@ -444,9 +448,13 @@ static void awf2_update_widgets (GtkWidget *widget, gpointer unused) {
 		gtk_scale_add_mark (GTK_SCALE (scale2), 50, GTK_POS_TOP, NULL);
 		gtk_scale_add_mark (GTK_SCALE (scale2), 75, GTK_POS_TOP, NULL);
 		gtk_scale_set_draw_value (GTK_SCALE (scale3), TRUE);
-		gtk_scale_add_mark (GTK_SCALE (scale4), 25, GTK_POS_LEFT, NULL);
-		gtk_scale_add_mark (GTK_SCALE (scale4), 50, GTK_POS_LEFT, NULL);
-		gtk_scale_add_mark (GTK_SCALE (scale4), 75, GTK_POS_LEFT, NULL);
+		gtk_scale_set_draw_value (GTK_SCALE (scale4), TRUE);
+		gtk_scale_add_mark (GTK_SCALE (scale5), 25, GTK_POS_LEFT, NULL);
+		gtk_scale_add_mark (GTK_SCALE (scale5), 50, GTK_POS_LEFT, NULL);
+		gtk_scale_add_mark (GTK_SCALE (scale5), 75, GTK_POS_LEFT, NULL);
+		gtk_scale_add_mark (GTK_SCALE (scale6), 25, GTK_POS_RIGHT, NULL);
+		gtk_scale_add_mark (GTK_SCALE (scale6), 50, GTK_POS_RIGHT, NULL);
+		gtk_scale_add_mark (GTK_SCALE (scale6), 75, GTK_POS_RIGHT, NULL);
 	}
 }
 
@@ -1143,6 +1151,40 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 		g_signal_connect ((gpointer)scale4, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
 	#endif
 
+	#if GTK_CHECK_VERSION (3,2,0)
+		scale5 = gtk_scale_new_with_range (GTK_ORIENTATION_VERTICAL, 0, 100, 1);
+		gtk_widget_set_size_request (scale5, -1, 100);
+		gtk_range_set_value (GTK_RANGE (scale5), 50);
+		gtk_scale_set_draw_value (GTK_SCALE (scale5), FALSE);
+		gtk_widget_set_tooltip_text (scale5, "scale");
+		g_signal_connect ((gpointer)scale5, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
+	#else
+		scale5 = gtk_vscale_new_with_range (0, 100, 1);
+		gtk_widget_set_size_request (scale5, -1, 100);
+		gtk_range_set_value (GTK_RANGE (scale5), 50);
+		gtk_scale_set_draw_value (GTK_SCALE (scale5), FALSE);
+		gtk_widget_set_tooltip_text (scale5, "scale");
+		g_signal_connect ((gpointer)scale5, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
+	#endif
+
+	#if GTK_CHECK_VERSION (3,2,0)
+		scale6 = gtk_scale_new_with_range (GTK_ORIENTATION_VERTICAL, 0, 100, 1);
+		gtk_widget_set_size_request (scale6, -1, 100);
+		gtk_range_set_value (GTK_RANGE (scale6), 50);
+		gtk_scale_set_draw_value (GTK_SCALE (scale6), FALSE);
+		gtk_range_set_inverted (GTK_RANGE (scale6), TRUE);
+		gtk_widget_set_tooltip_text (scale6, "scale");
+		g_signal_connect ((gpointer)scale6, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
+	#else
+		scale6 = gtk_vscale_new_with_range (0, 100, 1);
+		gtk_widget_set_size_request (scale6, -1, 100);
+		gtk_range_set_value (GTK_RANGE (scale6), 50);
+		gtk_scale_set_draw_value (GTK_SCALE (scale6), FALSE);
+		gtk_range_set_inverted (GTK_RANGE (scale6), TRUE);
+		gtk_widget_set_tooltip_text (scale6, "scale");
+		g_signal_connect ((gpointer)scale6, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
+	#endif
+
 	#if GTK_CHECK_VERSION (3,6,0)
 		levelbar1 = gtk_level_bar_new ();
 		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar1), GTK_LEVEL_BAR_MODE_CONTINUOUS);
@@ -1224,6 +1266,10 @@ static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkW
 	gtk_box_pack_start (GTK_BOX (hroot2), scale3, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hroot2), EMPTY, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hroot2), scale4, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hroot2), EMPTY, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hroot2), scale5, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hroot2), EMPTY, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hroot2), scale6, FALSE, FALSE, 0);
 	#if GTK_CHECK_VERSION (3,6,0)
 		gtk_box_pack_start (GTK_BOX (vroot2), levelbar1, FALSE, FALSE, 0);
 		gtk_box_pack_start (GTK_BOX (vroot2), EMPTY, FALSE, FALSE, 0);
