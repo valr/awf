@@ -97,7 +97,7 @@ static GSList *list_user_theme;
 static GtkWidget *window, *statusbar;
 static GtkWidget *progressbar1, *progressbar2, *progressbar3, *progressbar4;
 static GtkWidget *scale1, *scale2, *scale3, *scale4;
-static GtkWidget *levelbar1, *levelbar2, *levelbar3, *levelbar4;
+static GtkWidget *levelbar1, *levelbar2, *levelbar3, *levelbar4, *levelbar5, *levelbar6, *levelbar7, *levelbar8;
 static GtkWidget *notebook1, *notebook2, *notebook3, *notebook4;
 static gchar *screenshot;
 
@@ -122,8 +122,7 @@ static void awf2_create_spinbuttons (GtkWidget *root);
 static void awf2_create_checkbuttons (GtkWidget *root);
 static void awf2_create_radiobuttons (GtkWidget *root);
 static void awf2_create_otherbuttons (GtkWidget *root);
-static void awf2_create_progressbars (GtkWidget *vroot, GtkWidget *hroot1, GtkWidget *hroot2);
-static void awf2_create_levelbars (GtkWidget *root);
+static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkWidget *hroot1, GtkWidget *hroot2);
 static void awf2_create_labels (GtkWidget *root);
 static void awf2_create_spinners (GtkWidget *root);
 static void awf2_create_expander (GtkWidget *root);
@@ -361,13 +360,17 @@ static void awf_update_progressbars (GtkRange *range, gpointer unused) {
 		// range(0..1)
 		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar1), value / 100.0);
 		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar2), value / 100.0);
+		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar5), value / 100.0);
+		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar6), value / 100.0);
 		// range(0..5)
 		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar3), value / 100.0 * gtk_level_bar_get_max_value (GTK_LEVEL_BAR (levelbar3)));
 		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar4), value / 100.0 * gtk_level_bar_get_max_value (GTK_LEVEL_BAR (levelbar4)));
+		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar7), value / 100.0 * gtk_level_bar_get_max_value (GTK_LEVEL_BAR (levelbar7)));
+		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar8), value / 100.0 * gtk_level_bar_get_max_value (GTK_LEVEL_BAR (levelbar8)));
 	#endif
 
 	#if !GTK_CHECK_VERSION (3,0,0)
-		if (gtk_progress_bar_get_text (GTK_PROGRESS_BAR (progressbar1)) != "") {
+		if (gtk_progress_bar_get_text (GTK_PROGRESS_BAR (progressbar1))) {
 			gchar *progress_text;
 			progress_text = g_strdup_printf ("%i %%", (int)value);
 			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar1), progress_text);
@@ -411,8 +414,8 @@ static void awf2_update_widgets (GtkWidget *widget, gpointer unused) {
 			gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (progressbar1), FALSE);
 			gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (progressbar3), FALSE);
 		#else
-			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar1), "");
-			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar3), "");
+			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar1), NULL);
+			gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progressbar3), NULL);
 		#endif
 
 		gtk_scale_set_draw_value (GTK_SCALE (scale1), FALSE);
@@ -479,7 +482,7 @@ static void awf2_create_window () {
 	GtkWidget *hbox_columns = BOXH, *vseparator1 = BOXVSEP, *vseparator2 = BOXVSEP, *vseparator3 = BOXVSEP, *hseparator1 = BOXHSEP;
 	GtkWidget *vbox_column1 = BOXV, *vbox_combo_entry = BOXV, *hbox_spin = BOXH, *hbox_check_radio = BOXH, *vbox_check = BOXV, *vbox_radio = BOXV;
 	GtkWidget *vbox_column2 = BOXV;
-	GtkWidget *vbox_column3 = BOXV, *vbox_progressbar = BOXV, *hbox_progressbar1 = BOXH, *hbox_progressbar2 = BOXH, *vbox_levelbar = BOXV;
+	GtkWidget *vbox_column3 = BOXV, *vbox_progressbar1 = BOXV, *vbox_progressbar2 = BOXV, *hbox_progressbar1 = BOXH, *hbox_progressbar2 = BOXH;
 	GtkWidget *vbox_column4 = BOXV, *hbox_label = BOXH, *hbox_spinner = BOXH;
 	GtkWidget *vpane = BOXVPANE, *hpane1 = BOXHPANE, *hpane2 = BOXHPANE;
 	GtkWidget *hbox_frame1 = BOXH, *hbox_frame2 = BOXH, *hbox_notebook1 = BOXH, *hbox_notebook2 = BOXH;
@@ -540,16 +543,14 @@ static void awf2_create_window () {
 		gtk_container_set_border_width (GTK_CONTAINER (vbox_column3), 10);
 		gtk_box_pack_start (GTK_BOX (hbox_columns), vbox_column3, TRUE, TRUE, 0);
 
-			gtk_box_pack_start (GTK_BOX (vbox_column3), vbox_progressbar, FALSE, TRUE, 0);
-			gtk_box_set_homogeneous (GTK_BOX (hbox_progressbar1), TRUE);
+			gtk_box_pack_start (GTK_BOX (vbox_column3), vbox_progressbar1, FALSE, TRUE, 0);
+			gtk_box_pack_start (GTK_BOX (vbox_column3), EMPTY, FALSE, FALSE, 0);
 			gtk_box_pack_start (GTK_BOX (vbox_column3), hbox_progressbar1, FALSE, TRUE, 0);
 			gtk_box_pack_start (GTK_BOX (vbox_column3), EMPTY, FALSE, FALSE, 0);
-			gtk_box_set_homogeneous (GTK_BOX (hbox_progressbar2), TRUE);
 			gtk_box_pack_start (GTK_BOX (vbox_column3), hbox_progressbar2, FALSE, TRUE, 0);
-			awf2_create_progressbars (vbox_progressbar, hbox_progressbar1, hbox_progressbar2);
 			gtk_box_pack_start (GTK_BOX (vbox_column3), EMPTY, FALSE, FALSE, 0);
-			gtk_box_pack_start (GTK_BOX (vbox_column3), vbox_levelbar, FALSE, TRUE, 0);
-			awf2_create_levelbars (vbox_levelbar);
+			gtk_box_pack_start (GTK_BOX (vbox_column3), vbox_progressbar2, FALSE, TRUE, 0);
+			awf2_create_progressbars (vbox_progressbar1, vbox_progressbar2, hbox_progressbar1, hbox_progressbar2);
 
 		gtk_box_pack_start (GTK_BOX (hbox_columns), vseparator3, FALSE, FALSE, 0);
 
@@ -1009,10 +1010,11 @@ static void awf2_create_otherbuttons (GtkWidget *root) {
 	gtk_box_pack_start (GTK_BOX (root), button12, FALSE, FALSE, 0);
 }
 
-static void awf2_create_progressbars (GtkWidget *vroot, GtkWidget *hroot1, GtkWidget *hroot2) {
+static void awf2_create_progressbars (GtkWidget *vroot1, GtkWidget *vroot2, GtkWidget *hroot1, GtkWidget *hroot2) {
 
 	// https://developer.gnome.org/gtk3/stable/GtkProgressBar.html
 	// https://developer.gnome.org/gtk3/stable/GtkScale.html
+	// https://developer.gnome.org/gtk3/stable/GtkLevelBar.html
 
 	#if GTK_CHECK_VERSION (3,0,0)
 		progressbar1 = gtk_progress_bar_new ();
@@ -1124,24 +1126,6 @@ static void awf2_create_progressbars (GtkWidget *vroot, GtkWidget *hroot1, GtkWi
 		g_signal_connect ((gpointer)scale4, "value_changed", G_CALLBACK (awf_update_progressbars), NULL);
 	#endif
 
-	gtk_box_pack_start (GTK_BOX (vroot), progressbar1, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vroot), EMPTY, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vroot), progressbar2, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vroot), EMPTY, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vroot), scale1, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vroot), EMPTY, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vroot), scale2, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vroot), EMPTY, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hroot1), progressbar3, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hroot1), progressbar4, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hroot2), scale3, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hroot2), scale4, FALSE, FALSE, 0);
-}
-
-static void awf2_create_levelbars (GtkWidget *root) {
-
-	// https://developer.gnome.org/gtk3/stable/GtkLevelBar.html
-
 	#if GTK_CHECK_VERSION (3,6,0)
 		levelbar1 = gtk_level_bar_new ();
 		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar1), GTK_LEVEL_BAR_MODE_CONTINUOUS);
@@ -1165,13 +1149,63 @@ static void awf2_create_levelbars (GtkWidget *root) {
 			gtk_level_bar_set_inverted (GTK_LEVEL_BAR (levelbar4), TRUE);
 		#endif
 
-		gtk_box_pack_start (GTK_BOX (root), levelbar1, FALSE, FALSE, 0);
-		gtk_box_pack_start (GTK_BOX (root), EMPTY, FALSE, FALSE, 0);
-		gtk_box_pack_start (GTK_BOX (root), levelbar2, FALSE, FALSE, 0);
-		gtk_box_pack_start (GTK_BOX (root), EMPTY, FALSE, FALSE, 0);
-		gtk_box_pack_start (GTK_BOX (root), levelbar3, FALSE, FALSE, 0);
-		gtk_box_pack_start (GTK_BOX (root), EMPTY, FALSE, FALSE, 0);
-		gtk_box_pack_start (GTK_BOX (root), levelbar4, FALSE, FALSE, 0);
+		levelbar5 = gtk_level_bar_new ();
+		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar5), GTK_LEVEL_BAR_MODE_CONTINUOUS);
+		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar5), 0.5);
+		gtk_orientable_set_orientation (GTK_ORIENTABLE (levelbar5), GTK_ORIENTATION_VERTICAL);
+
+		levelbar6 = gtk_level_bar_new ();
+		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar6), GTK_LEVEL_BAR_MODE_CONTINUOUS);
+		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar6), 0.5);
+		#if GTK_CHECK_VERSION (3,8,0)
+			gtk_level_bar_set_inverted (GTK_LEVEL_BAR (levelbar6), TRUE);
+		#endif
+		gtk_orientable_set_orientation (GTK_ORIENTABLE (levelbar6), GTK_ORIENTATION_VERTICAL);
+
+		levelbar7 = gtk_level_bar_new_for_interval (0, 5);
+		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar7), GTK_LEVEL_BAR_MODE_DISCRETE);
+		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar7), 2);
+		gtk_orientable_set_orientation (GTK_ORIENTABLE (levelbar7), GTK_ORIENTATION_VERTICAL);
+
+		levelbar8 = gtk_level_bar_new_for_interval (0, 5);
+		gtk_level_bar_set_mode (GTK_LEVEL_BAR (levelbar8), GTK_LEVEL_BAR_MODE_DISCRETE);
+		gtk_level_bar_set_value (GTK_LEVEL_BAR (levelbar8), 2);
+		#if GTK_CHECK_VERSION (3,8,0)
+			gtk_level_bar_set_inverted (GTK_LEVEL_BAR (levelbar8), TRUE);
+		#endif
+		gtk_orientable_set_orientation (GTK_ORIENTABLE (levelbar8), GTK_ORIENTATION_VERTICAL);
+	#endif
+
+	gtk_box_pack_start (GTK_BOX (vroot1), progressbar1, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vroot1), EMPTY, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vroot1), progressbar2, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vroot1), EMPTY, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vroot1), scale1, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vroot1), EMPTY, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vroot1), scale2, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hroot1), progressbar3, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hroot1), EMPTY, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hroot1), progressbar4, FALSE, FALSE, 0);
+	#if GTK_CHECK_VERSION (3,6,0)
+		gtk_box_pack_start (GTK_BOX (hroot1), EMPTY, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (hroot1), levelbar5, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (hroot1), EMPTY, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (hroot1), levelbar6, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (hroot1), EMPTY, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (hroot1), levelbar7, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (hroot1), EMPTY, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (hroot1), levelbar8, FALSE, FALSE, 0);
+	#endif
+	gtk_box_pack_start (GTK_BOX (hroot2), scale3, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hroot2), scale4, FALSE, FALSE, 0);
+	#if GTK_CHECK_VERSION (3,6,0)
+		gtk_box_pack_start (GTK_BOX (vroot2), levelbar1, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vroot2), EMPTY, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vroot2), levelbar2, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vroot2), EMPTY, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vroot2), levelbar3, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vroot2), EMPTY, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vroot2), levelbar4, FALSE, FALSE, 0);
 	#endif
 }
 
