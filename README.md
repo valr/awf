@@ -4,13 +4,13 @@ Work in progress.
 
 ## About
 
-A widget factory is a theme preview application for gtk2 and gtk3. It displays the various widget types provided by gtk2/gtk3 in a single window allowing to see the visual effect of the applied theme.
+A widget factory is a theme preview application for gtk2, gtk3 and gtk4. It displays the various widget types provided by gtk2/gtk3/gtk4 in a single window allowing to see the visual effect of the applied theme.
 
 ## Installation
 
-It require *gtk2 (2.24+)* and *gtk3 (3.0+ including 3.24)* and *glib (2.28+)*.
+It require *gtk2 (2.24+)* or *gtk3 (3.0+ including 3.24)* or *gtk4 (3.98+)*, and *glib (2.28+)*.
 
-* From source: `apt install dh-autoreconf libgtk2.0-dev libgtk-3-dev` then: `./build.sh`
+* From source: `apt install dh-autoreconf libgtk2.0-dev libgtk-3-dev libgtk-4-dev` then: `./build.sh`
 
 ## Screenshots
 
@@ -20,7 +20,8 @@ It require *gtk2 (2.24+)* and *gtk3 (3.0+ including 3.24)* and *glib (2.28+)*.
 * Some options are available from command line (read -h).
 
 ![A widget factory - Gtk2](images/gtk2.png?raw=true)
-![A widget factory - Gtk2](images/gtk3.png?raw=true)
+![A widget factory - Gtk3](images/gtk3.png?raw=true)
+![A widget factory - Gtk4](images/gtk4.png?raw=true)
 
 ## SIGHUP
 
