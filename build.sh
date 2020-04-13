@@ -32,14 +32,19 @@ if which gtkdoc-depscan &> /dev/null; then
 	gtkdoc-depscan --book=gtk3 * | cut -d ' ' -f 2  | sort | uniq
 fi
 
+# Check minimum required gtk4 version
+if which gtkdoc-depscan &> /dev/null; then
+	echo "Minimum required version:"
+	gtkdoc-depscan --book=gtk4 * | cut -d ' ' -f 2  | sort | uniq
+fi
+
 # build
 ./configure
 make > ../log
 
 # final
-cp src/awf-gtk2 ..
-cp src/awf-gtk3 ..
+cp src/awf-gtk* ..
 
 cd ..
-ls -altrh awf-gtk2 awf-gtk3
+ls -altrh awf-gtk4 awf-gtk3 awf-gtk2
 rm -rf builder/
