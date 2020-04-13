@@ -20,24 +20,6 @@ cd builder/
 # reconfigure all
 autoreconf -f -i
 
-# check minimum required gtk2 version
-if which gtkdoc-depscan &> /dev/null; then
-	echo "Minimum required version:"
-	gtkdoc-depscan --book=gtk2 * | cut -d ' ' -f 2  | sort | uniq
-fi
-
-# Check minimum required gtk3 version
-if which gtkdoc-depscan &> /dev/null; then
-	echo "Minimum required version:"
-	gtkdoc-depscan --book=gtk3 * | cut -d ' ' -f 2  | sort | uniq
-fi
-
-# Check minimum required gtk4 version
-if which gtkdoc-depscan &> /dev/null; then
-	echo "Minimum required version:"
-	gtkdoc-depscan --book=gtk4 * | cut -d ' ' -f 2  | sort | uniq
-fi
-
 # build
 ./configure
 make > ../log
