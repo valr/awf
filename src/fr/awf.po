@@ -2,108 +2,116 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-08 12:41+0200\n"
-"PO-Revision-Date: 2020-04-08 12:41+0200\n"
+"POT-Creation-Date: 2020-04-14 13:46+0200\n"
+"PO-Revision-Date: 2020-04-14 13:46+0200\n"
 "Last-Translator: Fabrice Creuzot <code~luigifab~fr>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/awf.c:657 src/awf.c:663 src/awf.c:668 src/awf.c:673
+#: src/awf.c:785 src/awf.c:790 src/awf.c:798 src/awf.c:806
 msgid "(checked)"
 msgstr "(coché)"
 
-#: src/awf.c:658 src/awf.c:664 src/awf.c:669 src/awf.c:674
+#: src/awf.c:786 src/awf.c:791 src/awf.c:799 src/awf.c:807
 msgid "(inconsistent)"
 msgstr "(inconsistant)"
 
-#: src/awf.c:655 src/awf.c:661 src/awf.c:667 src/awf.c:672
+#: src/awf.c:784 src/awf.c:789 src/awf.c:794 src/awf.c:802
 msgid "(unchecked)"
 msgstr "(décoché)"
 
-#: src/awf.c:585
-msgid "A widget factory - Gtk2"
-msgstr "La fabrique à widgets - Gtk2"
+#: src/awf.c:674
+msgid "A widget factory - GTK 2"
+msgstr "La fabrique à widgets - GTK 2"
 
-#: src/awf.c:582
-msgid "A widget factory - Gtk3"
-msgstr "La fabrique à widgets - Gtk3"
+#: src/awf.c:669
+msgid "A widget factory - GTK 3"
+msgstr "La fabrique à widgets - GTK 3"
 
-#: src/awf.c:1189 src/awf.c:1525 src/awf.c:1569
+#: src/awf.c:664
+msgid "A widget factory - GTK 4"
+msgstr "La fabrique à widgets - GTK 4"
+
+#: src/awf.c:1454 src/awf.c:1805 src/awf.c:1850
 msgid ""
-"A widget factory is a theme preview application for gtk2 and gtk3. It "
-"displays the various widget types provided by gtk2/gtk3 in a single window "
+"A widget factory is a theme preview application for gtk2, gtk3 and gtk4. It "
+"displays the various widget types provided by GTK in a single window "
 "allowing to see the visual effect of the applied theme."
 msgstr ""
-"La fabrique à widgets est une application d'aperçu de thème pour gtk2 et "
-"gtk3. Elle affiche les différents types de widgets fournis par gtk2/gtk3 "
-"dans une seule fenêtre permettant de voir l'effet visuel du thème appliqué."
+"La fabrique à widgets est une application d'aperçu de thème pour gtk2, gtk3 "
+"et gtk4. Elle affiche les différents types de widgets fournis par GTK dans"
+"une seule fenêtre permettant de voir l'effet visuel du thème appliqué."
 
-#: src/awf.c:483
+#: src/awf.c:554
 #, c-format
 msgid "AWF %s / Theme %s loaded."
 msgstr "AWF %s / Thème %s chargé."
 
-#: src/awf.c:628
+#: src/awf.c:757
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: src/awf.c:944
+#: src/awf.c:1122
 msgid "Link button"
 msgstr ""
 
-#: src/awf.c:649 src/awf.c:1179
+#: src/awf.c:778 src/awf.c:1443
 msgid "More..."
 msgstr "Plus..."
 
-#: src/awf.c:625
+#: src/awf.c:1895
+msgid "Ok"
+msgstr "Ok"
+
+#: src/awf.c:754
 msgid "Open recent file"
 msgstr "Ouvrir un fichier récent"
 
-#: src/awf.c:634
+#: src/awf.c:763
 msgid "Refresh theme"
 msgstr "Actualiser le thème"
 
-#: src/awf.c:284
+#: src/awf.c:316
 #, c-format
 msgid "Theme %s loaded."
 msgstr "Thème %s chargé."
 
-#: src/awf.c:302
+#: src/awf.c:334
 #, c-format
 msgid "Theme %s reloaded at"
 msgstr "Thème %s rechargé à"
 
-#: src/awf.c:443
+#: src/awf.c:496
 #, c-format
 msgid "Theme reloaded, then screenshot saved (%s) at"
 msgstr "Thème rechargé, puis capture d'écran enregistrée (%s) à"
 
-#: src/awf.c:1608
+#: src/awf.c:1897
 msgid "This is a question bar."
 msgstr "Ceci est une barre de question."
 
-#: src/awf.c:1615
+#: src/awf.c:1903
 msgid "This is a warning bar."
 msgstr "Ceci est une barre d'avertissement."
 
-#: src/awf.c:1622
+#: src/awf.c:1909
 msgid "This is an error bar."
 msgstr "Ceci est une barre d'erreur."
 
-#: src/awf.c:1601
+#: src/awf.c:1891
 msgid "This is an info bar."
 msgstr "Ceci est une barre d'information."
 
-#: src/awf.c:619
+#: src/awf.c:748
 msgid "_Options"
 msgstr "_Options"
 
-#: src/awf.c:601
+#: src/awf.c:722
 msgid "_System theme"
 msgstr "Thème _système"
 
-#: src/awf.c:610
+#: src/awf.c:735
 msgid "_User theme"
 msgstr "Thème _utilisateur"
