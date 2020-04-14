@@ -12,8 +12,6 @@ cp configure.ac    builder/
 cp Makefile.am     builder/
 cp src/Makefile.am builder/src/
 cp src/awf.c       builder/src/
-cp src/gtk_empty.c builder/src/
-cp src/gtk_empty.h builder/src/
 
 cd builder/
 
